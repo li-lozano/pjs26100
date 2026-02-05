@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "degrees",
+  "info": {
+    "singularName": "degree",
+    "pluralName": "degrees",
+    "displayName": "Degree"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "section": {
+      "type": "string"
+    },
+    "capacity": {
+      "type": "integer"
+    },
+    "enrollments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::enrollment.enrollment",
+      "mappedBy": "degree"
+    }
+  }
+}

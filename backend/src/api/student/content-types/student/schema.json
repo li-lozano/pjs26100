@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "students",
+  "info": {
+    "singularName": "student",
+    "pluralName": "students",
+    "displayName": "Student"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "names": {
+      "type": "string"
+    },
+    "surnames": {
+      "type": "string"
+    },
+    "dni": {
+      "type": "string",
+      "unique": true
+    },
+    "birthday": {
+      "type": "date"
+    },
+    "enrollments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::enrollment.enrollment",
+      "mappedBy": "student"
+    },
+    "tutor": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::tutor.tutor",
+      "inversedBy": "students"
+    }
+  }
+}

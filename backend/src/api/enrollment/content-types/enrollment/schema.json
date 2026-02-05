@@ -1,0 +1,50 @@
+{
+  "kind": "collectionType",
+  "collectionName": "enrollments",
+  "info": {
+    "singularName": "enrollment",
+    "pluralName": "enrollments",
+    "displayName": "Enrollment"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "student": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::student.student",
+      "inversedBy": "enrollments"
+    },
+    "degree": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::degree.degree",
+      "inversedBy": "enrollments"
+    },
+    "academic_period": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::academic-period.academic-period",
+      "inversedBy": "enrollments"
+    },
+    "enrollment_status": {
+      "type": "enumeration",
+      "enum": [
+        "Pendiente",
+        "Aprobado",
+        "Rechazado",
+        "Pagado"
+      ]
+    },
+    "payment_document": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    }
+  }
+}
