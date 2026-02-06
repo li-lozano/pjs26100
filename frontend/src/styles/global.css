@@ -1,1 +1,53 @@
 @import "tailwindcss";
+
+@layer theme {
+  :root {
+    /* Brand Colors - Rayito de Luz */
+    --color-brand-primary: #0e7490;
+    --color-brand-secondary: #fbbf24;
+    --color-brand-accent: #db2717;
+
+    /* Harmonic UI Palette */
+    --color-rayito-blue: #0e7490;
+    --color-rayito-yellow: #fbbf24;
+    --color-rayito-pink: #db2717;
+    --color-rayito-green: #059669;
+    --color-rayito-orange: #ea580c;
+
+    /* Additional Tones for Dashboard */
+    --color-rayito-sky: #0ea5e9;
+    --color-rayito-amber: #f59e0b;
+  }
+}
+
+@layer utilities {
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+}
+
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}

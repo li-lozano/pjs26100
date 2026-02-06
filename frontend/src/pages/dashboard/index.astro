@@ -1,0 +1,20 @@
+---
+import DashboardLayout from "@layouts/DashboardLayout.astro";
+---
+
+<DashboardLayout pageTitle="Dashboard">
+  <h1>Dashboard</h1>
+  <button
+    id="logout-btn"
+    class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
+  >
+    Cerrar sesión
+  </button>
+</DashboardLayout>
+
+<script>
+  document.getElementById("logout-btn")?.addEventListener("click", () => {
+    // Redirige al endpoint de cierre de sesión o limpia el estado local
+    window.location.href = "/api/auth/logout";
+  });
+</script>
