@@ -3,6 +3,8 @@ import WebLayout from "@layouts/WebLayout.astro";
 import LoginForm from "@components/auth/LoginForm.astro";
 import MessageError from "@components/MessageError.astro";
 import MessageSuccess from "@components/MessageSuccess.astro";
+import { Image } from "astro:assets";
+import logo from "@assets/Logo_RDL.png";
 
 // Leer mensajes de error/éxito desde query params
 const errorMessage = Astro.url.searchParams.get("error");
@@ -31,6 +33,15 @@ const successMessage = Astro.url.searchParams.get("success");
     </div>
 
     <div class="w-full flex flex-col items-center px-4 relative">
+      <!-- Logo -->
+      <div class="mb-8 animate-fade-in">
+        <Image
+          src={logo}
+          alt="Logo Rayito de Luz"
+          class="w-48 h-auto drop-shadow-lg hover:scale-105 transition-transform duration-300"
+        />
+      </div>
+
       <LoginForm />
 
       <footer class="mt-12 text-gray-400 text-xs text-center">
