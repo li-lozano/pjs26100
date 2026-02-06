@@ -15,35 +15,30 @@ const uniqueId = `success-message-${Math.random().toString(36).substring(2, 9)}`
   role="alert"
 >
   <div
-    class="backdrop-blur-xl border rounded-2xl shadow-2xl px-4 py-3 flex items-center gap-3 relative overflow-hidden"
-    style="background-color: rgba(5, 150, 105, 0.1); border-color: rgba(5, 150, 105, 0.2); box-shadow: 0 25px 50px -12px rgba(5, 150, 105, 0.15);"
+    class="bg-emerald-900/90 backdrop-blur-xl border border-emerald-500/30 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] px-4 py-3 flex items-center gap-3 relative overflow-hidden"
   >
     <!-- Decorative gradient background -->
     <div
-      class="absolute inset-0 opacity-5"
+      class="absolute inset-0 opacity-10"
       style="background: linear-gradient(135deg, var(--color-rayito-green) 0%, var(--color-rayito-blue) 100%);"
     >
     </div>
 
     <div
-      class="shrink-0 w-10 h-10 rounded-xl flex items-center justify-center relative z-10"
-      style="background-color: rgba(5, 150, 105, 0.2);"
+      class="shrink-0 w-10 h-10 rounded-xl flex items-center justify-center relative z-10 bg-emerald-500/20"
     >
-      <Icon name="mdi:check-circle" class="w-6 h-6" style="color: #6ee7b7;" />
+      <Icon name="mdi:check-circle" class="w-6 h-6 text-emerald-400" />
     </div>
 
     <div
-      class="flex-1 text-sm font-medium leading-relaxed text-gray-100 relative z-10"
+      class="flex-1 text-sm font-semibold leading-relaxed text-white relative z-10"
     >
       {message}
     </div>
 
     <button
       onclick={`document.getElementById('${uniqueId}').remove()`}
-      class="shrink-0 p-1.5 rounded-lg transition-all duration-200 relative z-10"
-      style="color: rgba(110, 231, 183, 0.5);"
-      onmouseover="this.style.backgroundColor='rgba(5, 150, 105, 0.2)'; this.style.color='#6ee7b7';"
-      onmouseout="this.style.backgroundColor='transparent'; this.style.color='rgba(110, 231, 183, 0.5)';"
+      class="shrink-0 p-1.5 rounded-lg transition-all duration-200 relative z-10 text-emerald-300/60 hover:bg-emerald-500/20 hover:text-emerald-300"
       aria-label="Cerrar"
     >
       <Icon name="mdi:close" class="w-5 h-5" />

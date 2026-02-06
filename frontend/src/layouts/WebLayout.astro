@@ -1,7 +1,13 @@
 ---
 import "@styles/global.css";
+import MessageError from "@components/MessageError.astro";
+import MessageSuccess from "@components/MessageSuccess.astro";
 
 const { pageTitle } = Astro.props;
+
+// Leer mensajes de error/éxito desde query params
+const errorMessage = Astro.url.searchParams.get("error");
+const successMessage = Astro.url.searchParams.get("success");
 ---
 
 <!doctype html>
@@ -15,10 +21,9 @@ const { pageTitle } = Astro.props;
 		<title>Rayito de Luz - {pageTitle}</title>
 	</head>
 	<body>
-		<!-- Contenedor para mensajes de error/éxito -->
-		<div id="message-container"></div>
-
 		<div id="app">
+			{errorMessage && <MessageError message={errorMessage} />}
+			{successMessage && <MessageSuccess message={successMessage} />}
 			<slot />
 		</div>
 	</body>
