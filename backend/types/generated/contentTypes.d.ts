@@ -535,6 +535,49 @@ export interface ApiEnrollmentEnrollment extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiProfileProfile extends Struct.CollectionTypeSchema {
+  collectionName: 'profiles';
+  info: {
+    displayName: 'Profile';
+    pluralName: 'profiles';
+    singularName: 'profile';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    cell_phone: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        minLength: 9;
+      }>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    dni: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 8;
+        minLength: 8;
+      }>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::profile.profile'
+    > &
+      Schema.Attribute.Private;
+    names: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    surnames: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    users_permissions_user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
 export interface ApiStudentStudent extends Struct.CollectionTypeSchema {
   collectionName: 'students';
   info: {
@@ -564,43 +607,9 @@ export interface ApiStudentStudent extends Struct.CollectionTypeSchema {
     names: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     surnames: Schema.Attribute.String;
-    tutor: Schema.Attribute.Relation<'manyToOne', 'api::tutor.tutor'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-  };
-}
-
-export interface ApiTutorTutor extends Struct.CollectionTypeSchema {
-  collectionName: 'tutors';
-  info: {
-    displayName: 'Tutor';
-    pluralName: 'tutors';
-    singularName: 'tutor';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    cel_phone: Schema.Attribute.String;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    dni: Schema.Attribute.String;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::tutor.tutor'> &
-      Schema.Attribute.Private;
-    names: Schema.Attribute.String;
-    publishedAt: Schema.Attribute.DateTime;
-    students: Schema.Attribute.Relation<'oneToMany', 'api::student.student'>;
-    surnames: Schema.Attribute.String;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    user: Schema.Attribute.Relation<
-      'oneToOne',
-      'plugin::users-permissions.user'
-    >;
   };
 }
 
@@ -1060,7 +1069,6 @@ export interface PluginUsersPermissionsUser
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -1085,6 +1093,7 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
+    profile: Schema.Attribute.Relation<'oneToOne', 'api::profile.profile'>;
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;
@@ -1118,8 +1127,8 @@ declare module '@strapi/strapi' {
       'api::academic-period.academic-period': ApiAcademicPeriodAcademicPeriod;
       'api::degree.degree': ApiDegreeDegree;
       'api::enrollment.enrollment': ApiEnrollmentEnrollment;
+      'api::profile.profile': ApiProfileProfile;
       'api::student.student': ApiStudentStudent;
-      'api::tutor.tutor': ApiTutorTutor;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

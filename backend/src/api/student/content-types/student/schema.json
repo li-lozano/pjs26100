@@ -29,12 +29,6 @@
       "relation": "oneToMany",
       "target": "api::enrollment.enrollment",
       "mappedBy": "student"
-    },
-    "tutor": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::tutor.tutor",
-      "inversedBy": "students"
     }
   }
 }
