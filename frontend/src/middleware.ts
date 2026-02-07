@@ -10,7 +10,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const pathname = url.pathname;
   const token = cookies.get('strapi_jwt');
 
-  if (token?.value) {
+  if (token && token.value) {
     try {
       const user = await ReadMe(token.value);
       if (user) {

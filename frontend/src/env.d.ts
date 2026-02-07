@@ -20,6 +20,7 @@ declare namespace App {
       email: string;
       role: {
         id: number;
+        documentId: string;
         name: string;
         description: string;
         type: string;

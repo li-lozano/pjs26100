@@ -16,6 +16,16 @@ interface User {
   role: Role;
 }
 
+interface Tutor {
+  id: number;
+  documentId: string;
+  names: string;
+  surnames: string;
+  dni: string;
+  cel_phone: string;
+  user: User;
+}
+
 export default async function ReadMe(token: string): Promise<User> {
   const baseUrl = import.meta.env.BASE_API_URL;
   const endpoint = `${baseUrl}/api/users/me?populate=*`;
@@ -33,6 +43,7 @@ export default async function ReadMe(token: string): Promise<User> {
     }
 
     const data = await response.json();
+    console.log(data);
     return data;
   } catch (error) {
     console.error("Error fetching user data:", error);
