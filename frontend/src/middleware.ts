@@ -15,6 +15,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
       const user = await ReadMe(token.value);
       if (user) {
         locals.user = user;
+        locals.token = token.value;
       } else {
         cookies.delete('strapi_jwt', { path: '/' });
         locals.user = undefined;

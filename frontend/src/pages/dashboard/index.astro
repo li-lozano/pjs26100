@@ -1,20 +1,185 @@
 ---
 import DashboardLayout from "@layouts/DashboardLayout.astro";
+
+const { user } = Astro.locals;
+
+const stats = [
+  {
+    label: "Estudiantes Activos",
+    value: "124",
+    icon: "👶",
+    color: "bg-rayito-blue",
+  },
+  {
+    label: "Matrículas Pendientes",
+    value: "12",
+    icon: "📝",
+    color: "bg-rayito-yellow",
+  },
+  {
+    label: "Próximos Eventos",
+    value: "3",
+    icon: "📅",
+    color: "bg-rayito-pink",
+  },
+];
 ---
 
-<DashboardLayout pageTitle="Dashboard">
-  <h1>Dashboard</h1>
-  <button
-    id="logout-btn"
-    class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
-  >
-    Cerrar sesión
-  </button>
+<DashboardLayout pageTitle="Panel de Control">
+  <div class="space-y-8 animate-fade-in">
+    <!-- Hero Section -->
+    <section
+      class="relative overflow-hidden rounded-3xl bg-linear-to-br from-rayito-blue to-rayito-sky p-8 md:p-12 text-white shadow-2xl shadow-rayito-blue/20"
+    >
+      <div class="relative z-10 max-w-2xl">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">
+          ¡Hola de nuevo, {
+            user?.profile.names + " " + user?.profile.surnames || "Educa"
+          }! 👋
+        </h2>
+        <p class="text-text-on-brand/90 text-lg leading-relaxed">
+          Bienvenido al centro de gestión de Rayito de Luz. Aquí puedes
+          administrar inscripciones, hacer seguimiento a los estudiantes y
+          mantener todo bajo control de forma sencilla.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a
+            href="/dashboard/estudiantes"
+            class="px-6 py-3 bg-white text-rayito-blue font-bold rounded-xl hover:bg-blue-50 transition-all transform hover:scale-105 shadow-lg"
+          >
+            Ver Estudiantes
+          </a>
+          <button
+            class="px-6 py-3 bg-rayito-yellow text-white font-bold rounded-xl hover:bg-rayito-amber transition-all transform hover:scale-105 shadow-lg"
+          >
+            Nueva Matrícula
+          </button>
+        </div>
+      </div>
+
+      <!-- Decorative element -->
+      <div
+        class="absolute right-0 bottom-0 opacity-20 transform translate-x-1/4 translate-y-1/4"
+      >
+        <div class="w-64 h-64 bg-white rounded-full blur-3xl"></div>
+      </div>
+    </section>
+
+    <!-- Content Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {
+        stats.map((stat) => (
+          <div class="bg-white/60 backdrop-blur-md rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow group">
+            <div class="flex items-center justify-between mb-4">
+              <div
+                class={`w-12 h-12 rounded-xl ${stat.color} flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition-transform`}
+              >
+                {stat.icon}
+              </div>
+              <span class="text-sm font-medium text-green-600 bg-green-50 px-2 py-1 rounded-lg">
+                +5% este mes
+              </span>
+            </div>
+            <p class="text-text-secondary text-sm font-medium">{stat.label}</p>
+            <h3 class="text-2xl font-bold text-text-primary mt-1">
+              {stat.value}
+            </h3>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Placeholder Section for Future List -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <section
+        class="bg-white/40 backdrop-blur-sm rounded-2xl p-8 border border-white/40 shadow-sm"
+      >
+        <h3 class="text-xl font-bold text-text-primary mb-6 flex items-center">
+          <span class="mr-2">🕒</span> Actividad Reciente
+        </h3>
+        <div class="space-y-4">
+          {
+            [1, 2, 3].map(() => (
+              <div class="flex items-start space-x-4 p-4 rounded-xl hover:bg-white/50 transition-colors">
+                <div class="w-2 h-2 mt-2 rounded-full bg-rayito-yellow" />
+                <div>
+                  <p class="text-sm text-gray-800 font-medium">
+                    Nueva matrícula registrada
+                  </p>
+                  <p class="text-xs text-gray-500">Hace 2 horas • Por Admin</p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <section
+        class="bg-white/40 backdrop-blur-sm rounded-2xl p-8 border border-white/40 shadow-sm"
+      >
+        <h3 class="text-xl font-bold text-text-primary mb-6 flex items-center">
+          <span class="mr-2">💡</span> Accesos Rápidos
+        </h3>
+        <div class="grid grid-cols-2 gap-4">
+          <button
+            class="p-4 bg-white rounded-xl border border-gray-100 text-left hover:border-rayito-blue transition-all group"
+          >
+            <p class="text-2xl mb-2">📋</p>
+            <p
+              class="text-sm font-bold text-gray-700 group-hover:text-rayito-blue"
+            >
+              Reporte Mensual
+            </p>
+          </button>
+          <button
+            class="p-4 bg-white rounded-xl border border-gray-100 text-left hover:border-rayito-blue transition-all group"
+          >
+            <p class="text-2xl mb-2">💰</p>
+            <p
+              class="text-sm font-bold text-gray-700 group-hover:text-rayito-blue"
+            >
+              Gestión de Pagos
+            </p>
+          </button>
+          <button
+            class="p-4 bg-white rounded-xl border border-gray-100 text-left hover:border-rayito-blue transition-all group"
+          >
+            <p class="text-2xl mb-2">📧</p>
+            <p
+              class="text-sm font-bold text-gray-700 group-hover:text-rayito-blue"
+            >
+              Enviar Comunicados
+            </p>
+          </button>
+          <button
+            class="p-4 bg-white rounded-xl border border-gray-100 text-left hover:border-rayito-blue transition-all group"
+          >
+            <p class="text-2xl mb-2">📅</p>
+            <p
+              class="text-sm font-bold text-gray-700 group-hover:text-rayito-blue"
+            >
+              Calendario Acadêmico
+            </p>
+          </button>
+        </div>
+      </section>
+    </div>
+  </div>
 </DashboardLayout>
 
-<script>
-  document.getElementById("logout-btn")?.addEventListener("click", () => {
-    // Redirige al endpoint de cierre de sesión o limpia el estado local
-    window.location.href = "/api/auth/logout";
-  });
-</script>
+<style>
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

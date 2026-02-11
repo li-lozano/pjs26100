@@ -1,30 +1,4 @@
-interface Role {
-  id: number;
-  documentId: string;
-  name: string;
-  description: string;
-  type: string;
-}
-
-interface User {
-  id: number;
-  documentId: string;
-  firstName: string;
-  lastName: string;
-  username: string;
-  email: string;
-  role: Role;
-}
-
-interface Tutor {
-  id: number;
-  documentId: string;
-  names: string;
-  surnames: string;
-  dni: string;
-  cel_phone: string;
-  user: User;
-}
+import type { User } from "@lib/types/user";
 
 export default async function ReadMe(token: string): Promise<User> {
   const baseUrl = import.meta.env.BASE_API_URL;
@@ -43,7 +17,6 @@ export default async function ReadMe(token: string): Promise<User> {
     }
 
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.error("Error fetching user data:", error);

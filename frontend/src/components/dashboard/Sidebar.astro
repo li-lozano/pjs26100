@@ -1,0 +1,94 @@
+---
+import { Image } from "astro:assets";
+import logo from "@assets/Logo_RDL.png";
+
+const { user } = Astro.locals;
+const currentPath = Astro.url.pathname;
+
+const allNavItems = [
+  { label: "Inicio", icon: "🏠", href: "/dashboard" },
+  {
+    label: "Tutores",
+    icon: "👥",
+    href: "/dashboard/tutores",
+    roles: ["Administrador", "Encargado"],
+  },
+  {
+    label: "Estudiantes",
+    icon: "🎓",
+    href: "/dashboard/estudiantes",
+    roles: ["Administrador", "Encargado", "Tutor"],
+  },
+  {
+    label: "Matrículas",
+    icon: "📝",
+    href: "/dashboard/matriculas",
+    roles: ["Administrador", "Encargado"],
+  },
+  {
+    label: "Configuración",
+    icon: "⚙️",
+    href: "/dashboard/configuracion",
+    roles: ["Administrador"],
+  },
+];
+
+const navItems = allNavItems.filter((item) => {
+  if (!item.roles) return true;
+  const userRole = user?.role?.name || "";
+  return item.roles.includes(userRole);
+});
+---
+
+<aside
+  class="w-64 bg-white/80 backdrop-blur-md border-r border-gray-200 flex-col shadow-xl z-10 hidden md:flex"
+>
+  <div class="p-6">
+    <Image src={logo} alt="Rayito de Luz" class="w-32 h-auto" />
+  </div>
+
+  <nav class="flex-1 px-4 py-4 space-y-1">
+    {
+      navItems.map((item) => (
+        <a
+          href={item.href}
+          class={`flex items-center px-4 py-3 rounded-xl transition-all duration-200 group ${
+            currentPath === item.href
+              ? "bg-rayito-blue text-white shadow-lg shadow-rayito-blue/30"
+              : "text-gray-600 hover:bg-rayito-blue/5 hover:text-rayito-blue"
+          }`}
+        >
+          <span class="mr-3 text-xl">{item.icon}</span>
+          <span class="font-medium">{item.label}</span>
+        </a>
+      ))
+    }
+  </nav>
+
+  <div class="p-4 border-t border-gray-100">
+    <div class="flex items-center p-3 rounded-xl bg-gray-50">
+      <div
+        class="w-10 h-10 rounded-full bg-rayito-yellow flex items-center justify-center text-white font-bold shadow-sm"
+      >
+        {user?.username?.charAt(0).toUpperCase() || "U"}
+      </div>
+      <div class="ml-3 overflow-hidden">
+        <p class="text-sm font-semibold text-gray-900 truncate">
+          {user?.profile?.names || "Nombre"}
+          {user?.profile?.surnames || "Apellido"}
+        </p>
+        <p class="text-xs text-gray-500 truncate">
+          {user?.role?.name || ""}
+        </p>
+      </div>
+    </div>
+    <form action="/api/auth/logout" method="POST" class="mt-2">
+      <button
+        type="submit"
+        class="w-full text-left px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors flex items-center"
+      >
+        <span class="mr-2">🚪</span> Cerrar Sesión
+      </button>
+    </form>
+  </div>
+</aside>

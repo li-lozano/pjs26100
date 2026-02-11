@@ -1,19 +1,4 @@
-interface Credentials {
-  email: string;
-  password: string;
-}
-
-export interface AuthResponse {
-  jwt: string;
-  user: {
-    id: number;
-    documentId: string;
-    username: string;
-    email: string;
-    confirmed: boolean;
-    blocked: boolean;
-  };
-}
+import type { AuthResponse, Credentials } from "@lib/types/auth";
 
 export default async function AuthenticateUser(credentials: Credentials): Promise<AuthResponse> {
   const baseUrl = import.meta.env.BASE_API_URL;

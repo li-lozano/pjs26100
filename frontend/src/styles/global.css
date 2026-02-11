@@ -1,23 +1,23 @@
 @import "tailwindcss";
 
-@layer theme {
-  :root {
-    /* Brand Colors - Rayito de Luz */
-    --color-brand-primary: #0e7490;
-    --color-brand-secondary: #fbbf24;
-    --color-brand-accent: #db2717;
+@theme {
 
-    /* Harmonic UI Palette */
-    --color-rayito-blue: #0e7490;
-    --color-rayito-yellow: #fbbf24;
-    --color-rayito-pink: #db2717;
-    --color-rayito-green: #059669;
-    --color-rayito-orange: #ea580c;
+  /* Brand Colors - Rayito de Luz */
+  --color-brand-primary: #0e7490;
 
-    /* Additional Tones for Dashboard */
-    --color-rayito-sky: #0ea5e9;
-    --color-rayito-amber: #f59e0b;
-  }
+  /* Harmonic UI Palette */
+  --color-rayito-blue: #0e7490;
+  --color-rayito-yellow: #fbbf24;
+  --color-rayito-pink: #db2717;
+  --color-rayito-green: #059669;
+  --color-rayito-orange: #ea580c;
+
+  /* Typography */
+  --color-text-primary: #111827;
+  /* gray-900 */
+  --color-text-secondary: #4b5563;
+  --color-text-on-brand: #ffffff;
+
 }
 
 @layer utilities {
@@ -50,4 +50,8 @@
   100% {
     transform: translate(0px, 0px) scale(1);
   }
+}
+
+body {
+  font-family: "Outfit", sans-serif;
 }

@@ -8,23 +8,13 @@ interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
 
-declare namespace App {
-  interface Locals {
-    // El usuario puede ser undefined si no ha iniciado sesión.
-    user?: {
-      id: number;
-      documentId: string;
-      firstName: string;
-      lastName: string;
-      username: string;
-      email: string;
-      role: {
-        id: number;
-        documentId: string;
-        name: string;
-        description: string;
-        type: string;
-      };
+import type { User } from "./lib/types/user";
+
+declare global {
+  declare namespace App {
+    interface Locals {
+      user?: User;
+      token?: string;
     }
-  };
+  }
 }

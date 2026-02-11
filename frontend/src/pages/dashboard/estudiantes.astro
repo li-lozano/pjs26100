@@ -1,0 +1,202 @@
+---
+import DashboardLayout from "@layouts/DashboardLayout.astro";
+import ReadStudents from "@lib/services/private/ReadStudents";
+import type { Student } from "@lib/types/student";
+
+const { user, token } = Astro.locals;
+let students: Student[] = [];
+let error = "";
+
+try {
+  if (token) {
+    students = await ReadStudents(token);
+  }
+} catch (e) {
+  console.error("Error loading students:", e);
+  error = "No se pudieron cargar los estudiantes.";
+}
+
+const pageTitle = "Estudiantes";
+---
+
+<DashboardLayout pageTitle={pageTitle}>
+  <div class="space-y-8 animate-fade-in">
+    <!-- Header Actions -->
+    <div
+      class="flex flex-col md:flex-row md:items-center justify-between gap-4"
+    >
+      <div>
+        <h2 class="text-2xl font-bold text-text-primary">
+          Listado de Estudiantes
+        </h2>
+        <p class="text-text-secondary mt-1">
+          Gestiona la información y matrículas de los alumnos.
+        </p>
+      </div>
+      <button
+        class="flex items-center justify-center px-6 py-3 bg-rayito-blue text-white font-bold rounded-xl hover:bg-rayito-blue/90 transition-all transform hover:scale-105 shadow-lg shadow-rayito-blue/20"
+      >
+        <span class="mr-2 text-xl">+</span> Nuevo Estudiante
+      </button>
+    </div>
+
+    <!-- Search and Filters Bar -->
+    <div
+      class="bg-white/60 backdrop-blur-md p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4"
+    >
+      <div class="relative flex-1">
+        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+          >🔍</span
+        >
+        <input
+          type="text"
+          placeholder="Buscar por nombre, apellidos o DNI..."
+          class="w-full pl-11 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-rayito-blue/20 focus:border-rayito-blue outline-none transition-all placeholder:text-gray-400 text-sm"
+        />
+      </div>
+      <div class="flex gap-2">
+        <select
+          class="px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-600 focus:ring-2 focus:ring-rayito-blue/20 outline-none transition-all"
+        >
+          <option>Todos los Grados</option>
+          <option>1° Grado</option>
+          <option>2° Grado</option>
+        </select>
+        <button
+          class="px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
+        >
+          Filtros
+        </button>
+      </div>
+    </div>
+
+    <!-- Students List/Table -->
+    <div
+      class="bg-white/40 backdrop-blur-sm rounded-2xl border border-white/40 shadow-sm overflow-hidden"
+    >
+      {
+        error && (
+          <div class="p-8 text-center bg-red-50/50">
+            <p class="text-red-500 font-medium">⚠️ {error}</p>
+          </div>
+        )
+      }
+
+      {
+        !error && students.length === 0 ? (
+          <div class="p-16 text-center">
+            <div class="w-20 h-20 bg-rayito-blue/10 rounded-full flex items-center justify-center mx-auto mb-4 text-4xl">
+              🎓
+            </div>
+            <h3 class="text-lg font-bold text-gray-800">
+              No hay estudiantes registrados
+            </h3>
+            <p class="text-gray-500 max-w-xs mx-auto mt-2 text-sm leading-relaxed">
+              Comienza por añadir a tu primer estudiante para gestionar su
+              proceso académico.
+            </p>
+            <button class="mt-6 text-rayito-blue font-bold text-sm hover:underline">
+              Añadir ahora
+            </button>
+          </div>
+        ) : (
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-gray-50/50 border-b border-gray-100">
+                  <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                    Estudiante
+                  </th>
+                  <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                    DNI
+                  </th>
+                  <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                    Cumpleaños
+                  </th>
+                  <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">
+                    Acciones
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-50">
+                {students.map((student) => (
+                  <tr class="hover:bg-white/50 transition-colors group">
+                    <td class="px-6 py-4">
+                      <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-xl bg-rayito-blue/10 flex items-center justify-center text-rayito-blue font-bold mr-3 group-hover:bg-rayito-blue group-hover:text-white transition-colors">
+                          {student.names[0]}
+                        </div>
+                        <div>
+                          <p class="font-bold text-gray-800">
+                            {student.names} {student.surnames}
+                          </p>
+                          <p class="text-xs text-gray-500">
+                            ID: {student.documentId}
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-600 font-medium">
+                      {student.dni}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-600">
+                      {new Date(student.birthday).toLocaleDateString()}
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                      <div class="flex items-center justify-end space-x-2">
+                        <button
+                          class="p-2 text-gray-400 hover:text-rayito-blue hover:bg-rayito-blue/10 rounded-lg transition-all"
+                          title="Ver Detalles"
+                        >
+                          👁️
+                        </button>
+                        <button
+                          class="p-2 text-gray-400 hover:text-rayito-yellow hover:bg-rayito-yellow/10 rounded-lg transition-all"
+                          title="Editar"
+                        >
+                          ✏️
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</DashboardLayout>
+
+<style>
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Custom scrollbar for table */
+  .overflow-x-auto::-webkit-scrollbar {
+    height: 6px;
+  }
+  .overflow-x-auto::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .overflow-x-auto::-webkit-scrollbar-thumb {
+    background: #e5e7eb;
+    border-radius: 10px;
+  }
+  .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+    background: #d1d5db;
+  }
+</style>
