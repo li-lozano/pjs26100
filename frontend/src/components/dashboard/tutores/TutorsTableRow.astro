@@ -1,0 +1,48 @@
+---
+import type { User } from "@lib/types/user";
+
+interface Props {
+  tutor: User;
+}
+
+const { tutor } = Astro.props;
+---
+
+<tr class="hover:bg-white/40 transition-colors group">
+  <td class="px-6 py-4">
+    <div class="flex items-center gap-3">
+      <div
+        class="w-9 h-9 rounded-full bg-rayito-blue/10 text-rayito-blue flex items-center justify-center font-bold text-sm"
+      >
+        {tutor.profile?.names?.charAt(0) || "T"}
+      </div>
+      <div>
+        <p class="font-semibold text-gray-900">
+          {tutor.profile?.names}
+          {tutor.profile?.surnames}
+        </p>
+        <p class="text-xs text-gray-400">@{tutor.username}</p>
+      </div>
+    </div>
+  </td>
+  <td class="px-6 py-4 text-sm text-gray-700 font-medium">
+    {tutor.profile?.dni}
+  </td>
+  <td class="px-6 py-4 text-sm text-gray-700">
+    {tutor.profile?.cell_phone}
+  </td>
+  <td class="px-6 py-4 text-sm text-gray-600">
+    {tutor.email}
+  </td>
+  <td class="px-6 py-4">
+    <span
+      class={`px-2.5 py-1 rounded-full text-xs font-bold ${
+        tutor.confirmed
+          ? "bg-green-100 text-green-700"
+          : "bg-yellow-100 text-yellow-700"
+      }`}
+    >
+      {tutor.confirmed ? "Confirmado" : "Pendiente"}
+    </span>
+  </td>
+</tr>

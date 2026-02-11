@@ -1,0 +1,59 @@
+---
+import type { User } from "@lib/types/user";
+import TutorsTableRow from "./TutorsTableRow.astro";
+
+interface Props {
+  tutors: User[];
+}
+
+const { tutors } = Astro.props;
+---
+
+<div
+  class="bg-white/60 backdrop-blur-md rounded-2xl border border-gray-100 shadow-sm overflow-hidden"
+>
+  <div class="overflow-x-auto">
+    <table class="w-full text-left border-collapse">
+      <thead>
+        <tr class="bg-gray-50/50">
+          <th
+            class="px-6 py-4 text-sm font-bold text-gray-600 border-b border-gray-100"
+            >Nombre Completo</th
+          >
+          <th
+            class="px-6 py-4 text-sm font-bold text-gray-600 border-b border-gray-100"
+            >DNI</th
+          >
+          <th
+            class="px-6 py-4 text-sm font-bold text-gray-600 border-b border-gray-100"
+            >Teléfono</th
+          >
+          <th
+            class="px-6 py-4 text-sm font-bold text-gray-600 border-b border-gray-100"
+            >Email</th
+          >
+          <th
+            class="px-6 py-4 text-sm font-bold text-gray-600 border-b border-gray-100"
+            >Estado</th
+          >
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        {
+          tutors.length === 0 ? (
+            <tr>
+              <td
+                colspan="5"
+                class="px-6 py-12 text-center text-gray-500 italic"
+              >
+                No hay tutores registrados aún.
+              </td>
+            </tr>
+          ) : (
+            tutors.map((tutor) => <TutorsTableRow tutor={tutor} />)
+          )
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

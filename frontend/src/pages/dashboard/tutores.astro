@@ -3,6 +3,10 @@ import DashboardLayout from "@layouts/DashboardLayout.astro";
 import ReadTutors from "@lib/services/private/ReadTutors";
 import CreateTutor from "@lib/services/private/CreateTutor";
 import CreateTutorModal from "@components/dashboard/tutores/CreateTutorModal.astro";
+import TutorsHeader from "@components/dashboard/tutores/TutorsHeader.astro";
+import TutorsTable from "@components/dashboard/tutores/TutorsTable.astro";
+import MessageError from "@components/MessageError.astro";
+import MessageSuccess from "@components/MessageSuccess.astro";
 import type { User } from "@lib/types/user";
 
 const { user, token } = Astro.locals;
@@ -49,152 +53,13 @@ try {
 
 <DashboardLayout pageTitle="Gestión de Tutores">
   <div class="space-y-6">
-    <!-- Encabezado con Botón de Acción -->
-    <div
-      class="flex flex-col md:flex-row md:items-center justify-between gap-4"
-    >
-      <div>
-        <h2 class="text-2xl font-bold text-gray-800">Tutores Registrados</h2>
-        <p class="text-gray-500 text-sm">
-          Administra los tutores que podrán ser vinculados a estudiantes.
-        </p>
-      </div>
-      <button
-        onclick="document.getElementById('tutor-modal').showModal()"
-        class="bg-rayito-blue text-white px-6 py-2.5 rounded-xl font-bold hover:bg-rayito-sky transition-all shadow-lg shadow-rayito-blue/20 flex items-center justify-center gap-2"
-      >
-        <span>➕</span> Nuevo Tutor
-      </button>
-    </div>
+    <TutorsHeader modalId="tutor-modal" />
 
-    {
-      error && (
-        <div class="bg-red-50 border-l-4 border-red-500 p-4 text-red-700 rounded-r-xl shadow-sm animate-shake">
-          {error}
-        </div>
-      )
-    }
-    {
-      success && (
-        <div class="bg-green-50 border-l-4 border-green-500 p-4 text-green-700 rounded-r-xl shadow-sm animate-fade-in">
-          {success}
-        </div>
-      )
-    }
+    {error && <MessageError message={error} />}
+    {success && <MessageSuccess message={success} />}
 
-    <!-- Tabla de Tutores -->
-    <div
-      class="bg-white/60 backdrop-blur-md rounded-2xl border border-gray-100 shadow-sm overflow-hidden"
-    >
-      <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse">
-          <thead>
-            <tr class="bg-gray-50/50">
-              <th
-                class="px-6 py-4 text-sm font-bold text-gray-600 border-b border-gray-100"
-                >Nombre Completo</th
-              >
-              <th
-                class="px-6 py-4 text-sm font-bold text-gray-600 border-b border-gray-100"
-                >DNI</th
-              >
-              <th
-                class="px-6 py-4 text-sm font-bold text-gray-600 border-b border-gray-100"
-                >Teléfono</th
-              >
-              <th
-                class="px-6 py-4 text-sm font-bold text-gray-600 border-b border-gray-100"
-                >Email</th
-              >
-              <th
-                class="px-6 py-4 text-sm font-bold text-gray-600 border-b border-gray-100"
-                >Estado</th
-              >
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-100">
-            {
-              tutors.length === 0 ? (
-                <tr>
-                  <td
-                    colspan="5"
-                    class="px-6 py-12 text-center text-gray-500 italic"
-                  >
-                    No hay tutores registrados aún.
-                  </td>
-                </tr>
-              ) : (
-                tutors.map((tutor) => (
-                  <tr class="hover:bg-white/40 transition-colors group">
-                    <td class="px-6 py-4">
-                      <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 rounded-full bg-rayito-blue/10 text-rayito-blue flex items-center justify-center font-bold text-sm">
-                          {tutor.profile?.names?.charAt(0) || "T"}
-                        </div>
-                        <div>
-                          <p class="font-semibold text-gray-900">
-                            {tutor.profile?.names} {tutor.profile?.surnames}
-                          </p>
-                          <p class="text-xs text-gray-400">@{tutor.username}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="px-6 py-4 text-sm text-gray-700 font-medium">
-                      {tutor.profile?.dni}
-                    </td>
-                    <td class="px-6 py-4 text-sm text-gray-700">
-                      {tutor.profile?.cell_phone}
-                    </td>
-                    <td class="px-6 py-4 text-sm text-gray-600">
-                      {tutor.email}
-                    </td>
-                    <td class="px-6 py-4">
-                      <span
-                        class={`px-2.5 py-1 rounded-full text-xs font-bold ${tutor.confirmed ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}
-                      >
-                        {tutor.confirmed ? "Confirmado" : "Pendiente"}
-                      </span>
-                    </td>
-                  </tr>
-                ))
-              )
-            }
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <TutorsTable tutors={tutors} />
   </div>
 
   <CreateTutorModal />
 </DashboardLayout>
-
-<style>
-  @keyframes shake {
-    0%,
-    100% {
-      transform: translateX(0);
-    }
-    25% {
-      transform: translateX(-5px);
-    }
-    75% {
-      transform: translateX(5px);
-    }
-  }
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  .animate-shake {
-    animation: shake 0.4s ease-in-out;
-  }
-  .animate-fade-in {
-    animation: fadeIn 0.5s ease-out forwards;
-  }
-</style>
