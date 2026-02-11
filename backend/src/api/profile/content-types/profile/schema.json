@@ -13,8 +13,8 @@
   "attributes": {
     "dni": {
       "type": "string",
-      "minLength": 8,
-      "maxLength": 8
+      "maxLength": 8,
+      "required": true
     },
     "names": {
       "type": "string"
