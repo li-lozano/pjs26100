@@ -1,0 +1,80 @@
+---
+import type { Degree } from "@lib/types/enrollment";
+
+interface Props {
+  degrees: Degree[];
+}
+
+const { degrees } = Astro.props;
+---
+
+<div
+  class="overflow-hidden bg-white/40 backdrop-blur-md rounded-3xl border border-white/20 shadow-xl shadow-gray-200/50"
+>
+  <table class="w-full text-left border-collapse">
+    <thead>
+      <tr class="bg-gray-50/50 border-b border-gray-100">
+        <th
+          class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-widest"
+          >Grado</th
+        >
+        <th
+          class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-widest text-center"
+          >Sección</th
+        >
+        <th
+          class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-widest text-center"
+          >Capacidad</th
+        >
+        <th
+          class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-widest text-center"
+          >Acciones</th
+        >
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100/50">
+      {
+        degrees.length === 0 ? (
+          <tr>
+            <td colspan="4" class="px-6 py-20 text-center">
+              <div class="flex flex-col items-center gap-3">
+                <span class="text-4xl opacity-50">🏫</span>
+                <p class="text-gray-400 font-medium">
+                  No hay grados registrados
+                </p>
+              </div>
+            </td>
+          </tr>
+        ) : (
+          degrees.map((degree) => (
+            <tr class="group hover:bg-gray-50/80 transition-colors duration-200">
+              <td class="px-6 py-4">
+                <span class="text-base font-semibold text-gray-800 group-hover:text-rayito-blue transition-colors">
+                  {degree.name}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-center">
+                <span class="px-3 py-1 bg-rayito-blue/5 text-rayito-blue rounded-lg font-bold text-sm">
+                  {degree.section}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-center">
+                <div class="flex items-center justify-center gap-2">
+                  <span class="text-gray-500 font-medium">
+                    {degree.capacity}
+                  </span>
+                  <span class="text-xs text-gray-400">estudiantes</span>
+                </div>
+              </td>
+              <td class="px-6 py-4 text-center">
+                <button class="p-2 text-gray-400 hover:text-rayito-blue transition-colors rounded-lg hover:bg-rayito-blue/5">
+                  <span class="text-lg">⚙️</span>
+                </button>
+              </td>
+            </tr>
+          ))
+        )
+      }
+    </tbody>
+  </table>
+</div>

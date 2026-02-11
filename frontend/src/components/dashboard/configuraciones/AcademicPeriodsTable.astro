@@ -1,0 +1,80 @@
+---
+import type { AcademicPeriod } from "@lib/types/enrollment";
+
+interface Props {
+  periods: AcademicPeriod[];
+}
+
+const { periods } = Astro.props;
+---
+
+<div
+  class="overflow-hidden bg-white/40 backdrop-blur-md rounded-3xl border border-white/20 shadow-xl shadow-gray-200/50"
+>
+  <table class="w-full text-left border-collapse">
+    <thead>
+      <tr class="bg-gray-50/50 border-b border-gray-100">
+        <th
+          class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-widest"
+          >Nombre del Periodo</th
+        >
+        <th
+          class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-widest text-center"
+          >Estado</th
+        >
+        <th
+          class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-widest text-center"
+          >Acciones</th
+        >
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100/50">
+      {
+        periods.length === 0 ? (
+          <tr>
+            <td colspan="3" class="px-6 py-20 text-center">
+              <div class="flex flex-col items-center gap-3">
+                <span class="text-4xl opacity-50">📂</span>
+                <p class="text-gray-400 font-medium">
+                  No hay periodos académicos registrados
+                </p>
+              </div>
+            </td>
+          </tr>
+        ) : (
+          periods.map((period) => (
+            <tr class="group hover:bg-gray-50/80 transition-colors duration-200">
+              <td class="px-6 py-4">
+                <span class="text-base font-semibold text-gray-800 group-hover:text-rayito-blue transition-colors">
+                  {period.name}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-center">
+                <span
+                  class={`
+                    inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold ring-1 ring-inset
+                    ${
+                      period.active
+                        ? "bg-emerald-50 text-emerald-700 ring-emerald-600/10"
+                        : "bg-gray-50 text-gray-600 ring-gray-600/10"
+                    }
+                  `}
+                >
+                  <span
+                    class={`mr-1.5 h-1.5 w-1.5 rounded-full ${period.active ? "bg-emerald-500" : "bg-gray-400"}`}
+                  />
+                  {period.active ? "Activo" : "Inactivo"}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-center">
+                <button class="p-2 text-gray-400 hover:text-rayito-blue transition-colors rounded-lg hover:bg-rayito-blue/5">
+                  <span class="text-lg">⚙️</span>
+                </button>
+              </td>
+            </tr>
+          ))
+        )
+      }
+    </tbody>
+  </table>
+</div>
