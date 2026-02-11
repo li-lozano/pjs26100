@@ -1,0 +1,52 @@
+---
+import type { Student } from "@lib/types/student";
+
+interface Props {
+  student: Student;
+}
+
+const { student } = Astro.props;
+---
+
+<tr class="hover:bg-white/50 transition-colors group">
+  <td class="px-6 py-4">
+    <div class="flex items-center">
+      <div
+        class="w-10 h-10 rounded-xl bg-rayito-blue/10 flex items-center justify-center text-rayito-blue font-bold mr-3 group-hover:bg-rayito-blue group-hover:text-white transition-colors"
+      >
+        {student.names[0]}
+      </div>
+      <div>
+        <p class="font-bold text-gray-800">
+          {student.names}
+          {student.surnames}
+        </p>
+        <p class="text-xs text-gray-500">
+          ID: {student.documentId}
+        </p>
+      </div>
+    </div>
+  </td>
+  <td class="px-6 py-4 text-sm text-gray-600 font-medium">
+    {student.dni}
+  </td>
+  <td class="px-6 py-4 text-sm text-gray-600">
+    {new Date(student.birthday).toLocaleDateString()}
+  </td>
+  <td class="px-6 py-4 text-right">
+    <div class="flex items-center justify-end space-x-2">
+      <button
+        class="p-2 text-gray-400 hover:text-rayito-blue hover:bg-rayito-blue/10 rounded-lg transition-all"
+        title="Ver Detalles"
+      >
+        👁️
+      </button>
+      <button
+        class="p-2 text-gray-400 hover:text-rayito-yellow hover:bg-rayito-yellow/10 rounded-lg transition-all"
+        title="Editar"
+      >
+        ✏️
+      </button>
+    </div>
+  </td>
+</tr>
