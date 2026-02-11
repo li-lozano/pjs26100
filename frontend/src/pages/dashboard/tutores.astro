@@ -2,7 +2,7 @@
 import DashboardLayout from "@layouts/DashboardLayout.astro";
 import ReadTutors from "@lib/services/private/ReadTutors";
 import CreateTutor from "@lib/services/private/CreateTutor";
-import CreateTutorModal from "@components/dashboard/tutores/CreateTutorModal.astro";
+import CreateTutorSideOver from "@components/dashboard/tutores/CreateTutorSideOver.astro";
 import TutorsHeader from "@components/dashboard/tutores/TutorsHeader.astro";
 import TutorsTable from "@components/dashboard/tutores/TutorsTable.astro";
 import MessageError from "@components/MessageError.astro";
@@ -53,7 +53,7 @@ try {
 
 <DashboardLayout pageTitle="Gestión de Tutores">
   <div class="space-y-6">
-    <TutorsHeader modalId="tutor-modal" />
+    <TutorsHeader sideOverId="tutor-sideover" />
 
     {error && <MessageError message={error} />}
     {success && <MessageSuccess message={success} />}
@@ -61,5 +61,5 @@ try {
     <TutorsTable tutors={tutors} />
   </div>
 
-  <CreateTutorModal />
+  <CreateTutorSideOver />
 </DashboardLayout>

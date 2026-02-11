@@ -1,9 +1,9 @@
 ---
 interface Props {
-  modalId: string;
+  sideOverId: string;
 }
 
-const { modalId } = Astro.props;
+const { sideOverId } = Astro.props;
 ---
 
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -14,7 +14,7 @@ const { modalId } = Astro.props;
     </p>
   </div>
   <button
-    onclick={`document.getElementById('${modalId}').showModal()`}
+    onclick={`document.getElementById('${sideOverId}').showModal()`}
     class="bg-rayito-blue text-white px-6 py-2.5 rounded-xl font-bold hover:bg-rayito-sky transition-all shadow-lg shadow-rayito-blue/20 flex items-center justify-center gap-2"
   >
     <span>➕</span> Nuevo Tutor
