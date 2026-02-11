@@ -1,0 +1,126 @@
+---
+import DashboardLayout from "@layouts/DashboardLayout.astro";
+import ReadEnrollments from "@lib/services/private/ReadEnrollments";
+import CreateEnrollment from "@lib/services/private/CreateEnrollment";
+import ReadStudents from "@lib/services/private/ReadStudents";
+import ReadDegrees from "@lib/services/private/ReadDegrees";
+import ReadAcademicPeriods from "@lib/services/private/ReadAcademicPeriods";
+import type { Enrollment, Degree, AcademicPeriod } from "@lib/types/enrollment";
+import type { Student } from "@lib/types/student";
+import EnrollmentsHeader from "@components/dashboard/matriculas/EnrollmentsHeader.astro";
+import EnrollmentsFilters from "@components/dashboard/matriculas/EnrollmentsFilters.astro";
+import EnrollmentsTable from "@components/dashboard/matriculas/EnrollmentsTable.astro";
+import CreateEnrollmentSideOver from "@components/dashboard/matriculas/CreateEnrollmentSideOver.astro";
+import MessageError from "@components/MessageError.astro";
+import MessageSuccess from "@components/MessageSuccess.astro";
+
+const { user, token } = Astro.locals;
+
+// Redirigir si no tiene permiso (Administrador o Encargado)
+const allowedRoles = ["Administrador", "Encargado"];
+if (!user || !allowedRoles.includes(user.role?.name || "")) {
+  return Astro.redirect(
+    "/dashboard?error=No tienes permisos para acceder a esta sección",
+  );
+}
+
+let enrollments: Enrollment[] = [];
+let students: Student[] = [];
+let degrees: Degree[] = [];
+let academicPeriods: AcademicPeriod[] = [];
+let error = "";
+let success = "";
+
+// Manejo del formulario de creación
+if (Astro.request.method === "POST") {
+  try {
+    const formData = await Astro.request.formData();
+    const enrollmentData = {
+      student: formData.get("student") as string,
+      degree: formData.get("degree") as string,
+      academic_period: formData.get("academic_period") as string,
+      enrollment_status: formData.get("enrollment_status") as string,
+    };
+
+    await CreateEnrollment(token as string, enrollmentData);
+    success = "Matrícula registrada exitosamente";
+  } catch (e) {
+    error = e instanceof Error ? e.message : "Error al registrar la matrícula";
+  }
+}
+
+// Cargar datos iniciales
+try {
+  if (token) {
+    [enrollments, students, degrees, academicPeriods] = await Promise.all([
+      ReadEnrollments(token),
+      ReadStudents(token),
+      ReadDegrees(token),
+      ReadAcademicPeriods(token),
+    ]);
+  }
+} catch (e) {
+  console.error("Error loading layout data:", e);
+  error = "Hubo un error al cargar la información de la página.";
+}
+
+const pageTitle = "Matrículas";
+---
+
+<DashboardLayout pageTitle={pageTitle}>
+  <div class="space-y-8 animate-fade-in">
+    <EnrollmentsHeader sideOverId="enrollment-sideover" />
+
+    {error && <MessageError message={error} />}
+    {success && <MessageSuccess message={success} />}
+
+    <EnrollmentsFilters />
+    <EnrollmentsTable enrollments={enrollments} error={error} />
+  </div>
+
+  <CreateEnrollmentSideOver
+    students={students}
+    degrees={degrees}
+    academicPeriods={academicPeriods}
+  />
+</DashboardLayout>
+
+<style>
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Custom scrollbar for table */
+  .scrollbar-thin::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #e5e7eb;
+    border-radius: 10px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: #d1d5db;
+  }
+
+  :global(.dark) .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #374151;
+  }
+  :global(.dark) .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: #4b5563;
+  }
+</style>
