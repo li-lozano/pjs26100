@@ -8,7 +8,7 @@ interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
 
-import type { User } from "./lib/types/user";
+import type { User } from "@lib/types/user";
 
 declare global {
   declare namespace App {

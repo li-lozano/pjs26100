@@ -2,6 +2,7 @@
 import DashboardLayout from "@layouts/DashboardLayout.astro";
 
 const { user } = Astro.locals;
+console.log(user)
 
 const stats = [
   {
@@ -34,7 +35,7 @@ const stats = [
       <div class="relative z-10 max-w-2xl">
         <h2 class="text-2xl md:text-4xl font-bold mb-4">
           ¡Hola de nuevo, {
-            user?.profile.names + " " + user?.profile.surnames || "Educa"
+          user?.profile?.names + " " + user?.profile?.surnames || "Educa"
           }! 👋
         </h2>
         <p class="text-text-on-brand/90 text-lg leading-relaxed">

@@ -35,8 +35,8 @@ const allNavItems = [
 
 const navItems = allNavItems.filter((item) => {
   if (!item.roles) return true;
-  const userRole = user?.role?.name || "";
-  return item.roles.includes(userRole);
+  const userRole = (user?.role?.name || "").toLowerCase();
+  return item.roles.some((role) => role.toLowerCase() === userRole);
 });
 ---
 
@@ -110,7 +110,7 @@ const navItems = allNavItems.filter((item) => {
             </p>
           </div>
         </div>
-        <form action="/api/auth/logout" method="POST" class="mt-2">
+        <form action="/api/v1/auth/logout" method="POST" class="mt-2">
           <button
             type="submit"
             class="w-full text-left px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg flex items-center"
