@@ -68,11 +68,10 @@ const pageTitle = "Matrículas";
 ---
 
 <DashboardLayout pageTitle={pageTitle}>
+  {error && <MessageError message={error} />}
+  {success && <MessageSuccess message={success} />}
   <div class="space-y-8 animate-fade-in">
-    <EnrollmentsHeader sideOverId="enrollment-sideover" />
-
-    {error && <MessageError message={error} />}
-    {success && <MessageSuccess message={success} />}
+    <EnrollmentsHeader sideOverId="enrollment-sideover" />    
 
     <EnrollmentsFilters />
     <EnrollmentsTable enrollments={enrollments} error={error} />
