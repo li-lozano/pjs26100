@@ -35,3 +35,20 @@ export interface User {
   role: Role;
   profile: Profile;
 }
+
+export interface CreateUserData {
+  username: string;
+  email: string;
+  password?: string;
+  role: number | string; // ID o documentId del rol
+  confirmed?: boolean;
+  blocked?: boolean;
+}
+
+export interface CreateProfileData {
+  names: string;
+  surnames: string;
+  dni: string;
+  cell_phone: string;
+  users_permissions_user?: string | number;
+}

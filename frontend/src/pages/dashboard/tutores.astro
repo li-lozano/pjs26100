@@ -1,13 +1,13 @@
 ---
 import DashboardLayout from "@layouts/DashboardLayout.astro";
 import ReadTutors from "@lib/services/private/ReadTutors";
-import CreateTutor from "@lib/services/private/CreateTutor";
 import CreateTutorSideOver from "@components/dashboard/tutores/CreateTutorSideOver.astro";
 import TutorsHeader from "@components/dashboard/tutores/TutorsHeader.astro";
 import TutorsTable from "@components/dashboard/tutores/TutorsTable.astro";
 import MessageError from "@components/MessageError.astro";
 import MessageSuccess from "@components/MessageSuccess.astro";
 import type { User } from "@lib/types/user";
+
 
 const { user, token } = Astro.locals;
 
@@ -19,29 +19,10 @@ if (!user || !allowedRoles.includes(user.role?.name || "")) {
   );
 }
 
+const url = new URL(Astro.request.url);
+let error = url.searchParams.get("error") || "";
+let success = url.searchParams.get("success") || "";
 let tutors: User[] = [];
-let error = "";
-let success = "";
-
-// Manejo del formulario de creación
-if (Astro.request.method === "POST") {
-  try {
-    const formData = await Astro.request.formData();
-    const tutorData = {
-      username: formData.get("username") as string,
-      email: formData.get("email") as string,
-      names: formData.get("names") as string,
-      surnames: formData.get("surnames") as string,
-      dni: formData.get("dni") as string,
-      cell_phone: formData.get("cell_phone") as string,
-    };
-
-    await CreateTutor(token as string, tutorData);
-    success = "Tutor registrado exitosamente";
-  } catch (e) {
-    error = e instanceof Error ? e.message : "Error al registrar el tutor";
-  }
-}
 
 // Cargar tutores
 try {
