@@ -12,26 +12,8 @@ import MessageSuccess from "@components/MessageSuccess.astro";
 
 const { user, token } = Astro.locals;
 let students: Student[] = [];
-let error = "";
-let success = "";
-
-// Manejo del formulario de creación
-if (Astro.request.method === "POST") {
-  try {
-    const formData = await Astro.request.formData();
-    const studentData = {
-      names: formData.get("names") as string,
-      surnames: formData.get("surnames") as string,
-      dni: formData.get("dni") as string,
-      birthday: formData.get("birthday") as string,
-    };
-
-    await CreateStudent(token as string, studentData);
-    success = "Estudiante registrado exitosamente";
-  } catch (e) {
-    error = e instanceof Error ? e.message : "Error al registrar el estudiante";
-  }
-}
+let error = Astro.url.searchParams.get("error") || "";
+let success = Astro.url.searchParams.get("success") || "";
 
 // Cargar estudiantes
 try {
@@ -47,12 +29,10 @@ const pageTitle = "Estudiantes";
 ---
 
 <DashboardLayout pageTitle={pageTitle}>
+  {error && <MessageError message={error} />}
+  {success && <MessageSuccess message={success} />}
   <div class="space-y-8 animate-fade-in">
     <StudentsHeader sideOverId="student-sideover" />
-
-    {error && <MessageError message={error} />}
-    {success && <MessageSuccess message={success} />}
-
     <StudentsFilters />
     <StudentsTable students={students} error={error} />
   </div>

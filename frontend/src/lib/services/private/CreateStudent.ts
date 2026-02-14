@@ -1,27 +1,16 @@
-export interface CreateStudentData {
-  names: string;
-  surnames: string;
-  dni: string;
-  birthday: string;
-}
 
-export default async function CreateStudent(token: string, data: CreateStudentData): Promise<any> {
+import type { CreateStudentData, Student } from "@lib/types/student";
+
+export default async function CreateStudent(token: string, data: CreateStudentData): Promise<Student> {
   const baseUrl = import.meta.env.BASE_API_URL;
 
   const response = await fetch(`${baseUrl}/api/students`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      "Authorization": `Bearer ${token}`,
     },
-    body: JSON.stringify({
-      data: {
-        names: data.names,
-        surnames: data.surnames,
-        dni: data.dni,
-        birthday: data.birthday,
-      },
-    }),
+    body: JSON.stringify({ data }),
   });
 
   if (!response.ok) {

@@ -21,3 +21,10 @@ export interface StrapiResponse<T> {
     };
   };
 }
+
+export interface CreateStudentData {
+  names: string;
+  surnames: string;
+  dni: string;
+  birthday: string;
+}
