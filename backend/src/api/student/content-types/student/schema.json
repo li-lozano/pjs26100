@@ -24,6 +24,23 @@
     "birthday": {
       "type": "date"
     },
+    "gender": {
+      "type": "enumeration",
+      "enum": [
+        "Masculino",
+        "Femenino",
+        "Otro"
+      ]
+    },
+    "address": {
+      "type": "string"
+    },
+    "profile": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::profile.profile",
+      "inversedBy": "students"
+    },
     "enrollments": {
       "type": "relation",
       "relation": "oneToMany",

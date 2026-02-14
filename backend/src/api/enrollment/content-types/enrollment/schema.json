@@ -45,6 +45,28 @@
         "images",
         "files"
       ]
+    },
+    "enrollment_date": {
+      "type": "datetime"
+    },
+    "observations": {
+      "type": "text"
+    },
+    "student_dni_copy": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "medical_certificate": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
     }
   }
 }

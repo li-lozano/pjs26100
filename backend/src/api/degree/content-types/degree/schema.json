@@ -20,6 +20,17 @@
     "capacity": {
       "type": "integer"
     },
+    "level": {
+      "type": "enumeration",
+      "enum": [
+        "Inicial",
+        "Primaria",
+        "Secundaria"
+      ]
+    },
+    "order": {
+      "type": "integer"
+    },
     "enrollments": {
       "type": "relation",
       "relation": "oneToMany",

@@ -483,6 +483,7 @@ export interface ApiDegreeDegree extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::enrollment.enrollment'
     >;
+    level: Schema.Attribute.Enumeration<['Inicial', 'Primaria', 'Secundaria']>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -490,6 +491,7 @@ export interface ApiDegreeDegree extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     name: Schema.Attribute.String;
+    order: Schema.Attribute.Integer;
     publishedAt: Schema.Attribute.DateTime;
     section: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
@@ -517,6 +519,7 @@ export interface ApiEnrollmentEnrollment extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     degree: Schema.Attribute.Relation<'manyToOne', 'api::degree.degree'>;
+    enrollment_date: Schema.Attribute.DateTime;
     enrollment_status: Schema.Attribute.Enumeration<
       ['Pendiente', 'Aprobado', 'Rechazado', 'Pagado']
     >;
@@ -526,9 +529,12 @@ export interface ApiEnrollmentEnrollment extends Struct.CollectionTypeSchema {
       'api::enrollment.enrollment'
     > &
       Schema.Attribute.Private;
+    medical_certificate: Schema.Attribute.Media<'images' | 'files'>;
+    observations: Schema.Attribute.Text;
     payment_document: Schema.Attribute.Media<'images' | 'files'>;
     publishedAt: Schema.Attribute.DateTime;
     student: Schema.Attribute.Relation<'manyToOne', 'api::student.student'>;
+    student_dni_copy: Schema.Attribute.Media<'images' | 'files'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -567,6 +573,7 @@ export interface ApiProfileProfile extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     names: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    students: Schema.Attribute.Relation<'oneToMany', 'api::student.student'>;
     surnames: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -589,6 +596,7 @@ export interface ApiStudentStudent extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    address: Schema.Attribute.String;
     birthday: Schema.Attribute.Date;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -598,6 +606,7 @@ export interface ApiStudentStudent extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::enrollment.enrollment'
     >;
+    gender: Schema.Attribute.Enumeration<['Masculino', 'Femenino', 'Otro']>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -605,6 +614,7 @@ export interface ApiStudentStudent extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     names: Schema.Attribute.String;
+    profile: Schema.Attribute.Relation<'manyToOne', 'api::profile.profile'>;
     publishedAt: Schema.Attribute.DateTime;
     surnames: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
