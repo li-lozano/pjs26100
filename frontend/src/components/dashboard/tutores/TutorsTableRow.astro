@@ -35,6 +35,19 @@ const { tutor } = Astro.props;
     {tutor.email}
   </td>
   <td class="px-6 py-4">
+    <div class="flex flex-wrap gap-1">
+      {tutor.profile?.students && tutor.profile.students.length > 0 ? (
+        tutor.profile.students.map((student) => (
+          <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-rayito-blue/5 text-rayito-blue border border-rayito-blue/10">
+            {student.names}
+          </span>
+        ))
+      ) : (
+        <span class="text-[10px] text-gray-400 italic">Sin alumnos</span>
+      )}
+    </div>
+  </td>
+  <td class="px-6 py-4">
     <span
       class={`px-2.5 py-1 rounded-full text-xs font-bold ${
         tutor.confirmed

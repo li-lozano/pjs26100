@@ -33,6 +33,16 @@ const { student } = Astro.props;
   <td class="px-6 py-4 text-sm text-gray-600">
     {new Date(student.birthday).toLocaleDateString()}
   </td>
+  <td class="px-6 py-4">
+    {student.profile ? (
+      <div class="flex flex-col">
+        <span class="text-sm font-medium text-gray-700">{student.profile.names} {student.profile.surnames}</span>
+        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-tight">Responsable</span>
+      </div>
+    ) : (
+      <span class="text-xs text-gray-400 italic">No asignado</span>
+    )}
+  </td>
   <td class="px-6 py-4 text-right">
     <div class="flex items-center justify-end space-x-2">
       <button

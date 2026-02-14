@@ -5,23 +5,15 @@ export interface CreateEnrollmentData {
   enrollment_status: string;
 }
 
-export default async function CreateEnrollment(token: string, data: CreateEnrollmentData): Promise<any> {
+export default async function CreateEnrollment(token: string, formData: FormData): Promise<any> {
   const baseUrl = import.meta.env.BASE_API_URL;
 
   const response = await fetch(`${baseUrl}/api/enrollments`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({
-      data: {
-        student: data.student,
-        degree: data.degree,
-        academic_period: data.academic_period,
-        enrollment_status: data.enrollment_status,
-      },
-    }),
+    body: formData,
   });
 
   if (!response.ok) {

@@ -6,6 +6,8 @@ export interface Degree {
   name: string;
   section: string;
   capacity: number;
+  level: "Inicial" | "Primaria" | "Secundaria";
+  order: number;
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
@@ -30,6 +32,10 @@ export interface Enrollment {
   student?: Student;
   degree?: Degree;
   academic_period?: AcademicPeriod;
+  enrollment_date?: string;
+  observations?: string;
+  student_dni_copy?: any;
+  medical_certificate?: any;
   createdAt: string;
   updatedAt: string;
   publishedAt: string;

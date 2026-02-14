@@ -34,15 +34,34 @@ let success = "";
 // Manejo del formulario de creación
 if (Astro.request.method === "POST") {
   try {
-    const formData = await Astro.request.formData();
+    const originalFormData = await Astro.request.formData();
+    
+    // Strapi Multispart format: data: JSON string, files.field: File
+    const bodyFormData = new FormData();
+    
     const enrollmentData = {
-      student: formData.get("student") as string,
-      degree: formData.get("degree") as string,
-      academic_period: formData.get("academic_period") as string,
-      enrollment_status: formData.get("enrollment_status") as string,
+      student: originalFormData.get("student"),
+      degree: originalFormData.get("degree"),
+      academic_period: originalFormData.get("academic_period"),
+      enrollment_status: originalFormData.get("enrollment_status"),
+      enrollment_date: originalFormData.get("enrollment_date") || new Date().toISOString(),
+      observations: originalFormData.get("observations"),
     };
 
-    await CreateEnrollment(token as string, enrollmentData);
+    bodyFormData.append("data", JSON.stringify(enrollmentData));
+    
+    // Append files if they exist
+    const dniFile = originalFormData.get("student_dni_copy");
+    if (dniFile instanceof File && dniFile.size > 0) {
+      bodyFormData.append("files.student_dni_copy", dniFile);
+    }
+    
+    const medicalFile = originalFormData.get("medical_certificate");
+    if (medicalFile instanceof File && medicalFile.size > 0) {
+      bodyFormData.append("files.medical_certificate", medicalFile);
+    }
+
+    await CreateEnrollment(token as string, bodyFormData);
     success = "Matrícula registrada exitosamente";
   } catch (e) {
     error = e instanceof Error ? e.message : "Error al registrar la matrícula";

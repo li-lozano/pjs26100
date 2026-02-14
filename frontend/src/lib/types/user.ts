@@ -19,6 +19,12 @@ export interface Profile {
   createdAt: string;
   updatedAt: string;
   publishedAt: string | null;
+  students?: Array<{
+    id: number;
+    documentId: string;
+    names: string;
+    surnames: string;
+  }>;
 }
 
 export interface User {

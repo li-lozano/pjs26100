@@ -9,6 +9,11 @@ const studentSchema = z.object({
   surnames: z.string().min(1, "El apellido es requerido"),
   dni: z.string().min(8, "El DNI debe tener al menos 8 caracteres").max(8, "El DNI debe tener como máximo 8 caracteres"),
   birthday: z.string().min(1, "La fecha de nacimiento es requerida"),
+  gender: z.enum(["Masculino", "Femenino", "Otro"], {
+    errorMap: () => ({ message: "Seleccione un género válido" }),
+  }),
+  address: z.string().min(1, "La dirección es requerida"),
+  profile: z.string().optional(),
 });
 
 export const POST: APIRoute = async ({ request, redirect, locals }) => {
@@ -28,6 +33,9 @@ export const POST: APIRoute = async ({ request, redirect, locals }) => {
     surnames: result.data.surnames,
     dni: result.data.dni,
     birthday: result.data.birthday,
+    gender: result.data.gender,
+    address: result.data.address,
+    profile: result.data.profile || undefined,
   }
 
   try {

@@ -4,7 +4,7 @@ export default async function ReadTutors(token: string): Promise<User[]> {
   const baseUrl = import.meta.env.BASE_API_URL;
 
 
-  const endpoint = `${baseUrl}/api/users?filters[role][name][$eq]=Tutor&populate=profile`;
+  const endpoint = `${baseUrl}/api/users?filters[role][name][$eq]=Tutor&populate[profile][populate]=students`;
 
   try {
     const response = await fetch(endpoint, {

@@ -5,6 +5,14 @@ export interface Student {
   surnames: string;
   dni: string;
   birthday: string;
+  gender: string;
+  address: string;
+  profile?: {
+    id: number;
+    documentId: string;
+    names: string;
+    surnames: string;
+  };
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
@@ -27,4 +35,7 @@ export interface CreateStudentData {
   surnames: string;
   dni: string;
   birthday: string;
+  gender: string;
+  address: string;
+  profile?: string;
 }
