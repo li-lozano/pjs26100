@@ -46,6 +46,14 @@
       "relation": "oneToMany",
       "target": "api::enrollment.enrollment",
       "mappedBy": "student"
+    },
+    "studjent_status": {
+      "type": "enumeration",
+      "enum": [
+        "Pendiente",
+        "Activo",
+        "Rechazado"
+      ]
     }
   }
 }

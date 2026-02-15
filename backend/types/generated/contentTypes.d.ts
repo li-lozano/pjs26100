@@ -616,6 +616,9 @@ export interface ApiStudentStudent extends Struct.CollectionTypeSchema {
     names: Schema.Attribute.String;
     profile: Schema.Attribute.Relation<'manyToOne', 'api::profile.profile'>;
     publishedAt: Schema.Attribute.DateTime;
+    studjent_status: Schema.Attribute.Enumeration<
+      ['Pendiente', 'Activo', 'Rechazado']
+    >;
     surnames: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
