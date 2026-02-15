@@ -57,3 +57,12 @@ export interface StrapiSingleResponse<T> {
   data: T;
   meta: {};
 }
+
+export interface CreateEnrollmentData {
+  student: string; // documentId
+  degree: string; // documentId
+  academic_period: string; // documentId
+  enrollment_status: EnrollmentStatus;
+  enrollment_date?: string;
+  observations?: string;
+}

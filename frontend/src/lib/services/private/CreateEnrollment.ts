@@ -1,26 +1,37 @@
-export interface CreateEnrollmentData {
-  student: string; // documentId
-  degree: string; // documentId
-  academic_period: string; // documentId
-  enrollment_status: string;
-}
+import type { CreateEnrollmentData, Enrollment, StrapiSingleResponse } from "@lib/types/enrollment";
 
-export default async function CreateEnrollment(token: string, formData: FormData): Promise<any> {
+export default async function CreateEnrollment(
+  token: string,
+  data: CreateEnrollmentData | FormData
+): Promise<StrapiSingleResponse<Enrollment>> {
+
   const baseUrl = import.meta.env.BASE_API_URL;
+  const endpoint = `${baseUrl}/api/enrollments`;
 
-  const response = await fetch(`${baseUrl}/api/enrollments`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: formData,
-  });
+  try {
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify({ data }),
+    });
 
-  if (!response.ok) {
-    const errorBody = await response.json();
-    console.error("Error creating enrollment:", errorBody);
-    throw new Error("No se pudo registrar la matrícula");
+    if (!response.ok) {
+      const errorBody = await response.json();
+      console.error(
+        "DEBUG: Strapi Error Response:",
+        JSON.stringify(errorBody, null, 2)
+      );
+      throw new Error(
+        errorBody.error?.message || "No se pudo registrar la matrícula"
+      );
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error creating enrollment:", error);
+    throw error;
   }
-
-  return await response.json();
 }
