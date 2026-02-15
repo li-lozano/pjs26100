@@ -15,8 +15,11 @@ const tutorSchema = z.object({
 
 export const POST: APIRoute = async ({ request, redirect, locals }) => {
   const { token } = locals;
-  const jwt = token;
   const roleId = await getRoleIdByName(jwt as string, "Tutor");
+
+  if (!token) {
+    return redirect("/login?error=" + encodeURIComponent("Sesión expirada"));
+  }
 
   const formData = await request.formData();
   const data = Object.fromEntries(formData.entries());
@@ -37,7 +40,7 @@ export const POST: APIRoute = async ({ request, redirect, locals }) => {
   }
 
   try {
-    const userResult = await CreateUser(jwt as string, userData);
+    const userResult = await CreateUser(token as string, userData);
     if (!userResult || !userResult.id) {
       return redirect(`/dashboard/tutores?error=Error al crear el usuario`);
     }
@@ -50,7 +53,7 @@ export const POST: APIRoute = async ({ request, redirect, locals }) => {
       users_permissions_user: userResult.id,
     }
 
-    const profile = await CreateProfile(jwt as string, profileData);
+    const profile = await CreateProfile(token as string, profileData);
     if (!profile) {
       return redirect(`/dashboard/tutores?error=Error al crear el perfil`);
     }

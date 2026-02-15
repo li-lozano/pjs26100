@@ -28,9 +28,7 @@ try {
 const pageTitle = "Estudiantes";
 ---
 
-<DashboardLayout pageTitle={pageTitle}>
-  {error && <MessageError message={error} />}
-  {success && <MessageSuccess message={success} />}
+<DashboardLayout pageTitle={pageTitle}>  
   <div class="space-y-8 animate-fade-in">
     <StudentsHeader sideOverId="student-sideover" />
     <StudentsFilters />

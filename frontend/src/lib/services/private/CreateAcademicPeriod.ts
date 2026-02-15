@@ -1,13 +1,9 @@
-import type { AcademicPeriod, StrapiSingleResponse } from "@lib/types/enrollment";
-
-export interface AcademicPeriodData {
-  name: string;
-  active: boolean;
-}
+import type { AcademicPeriod, CreateAcademicPeriodData } from "@lib/types/academic_period";
+import type { StrapiSingleResponse } from "@lib/types/strapi";
 
 export default async function CreateAcademicPeriod(
   token: string,
-  data: AcademicPeriodData,
+  data: CreateAcademicPeriodData,
 ): Promise<AcademicPeriod> {
   const baseUrl = import.meta.env.BASE_API_URL;
   const endpoint = `${baseUrl}/api/academic-periods`;

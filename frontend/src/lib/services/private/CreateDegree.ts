@@ -1,14 +1,9 @@
-import type { Degree, StrapiSingleResponse } from "@lib/types/enrollment";
-
-export interface DegreeData {
-  name: string;
-  section: string;
-  capacity: number;
-}
+import type { CreateDegreeData } from "@lib/types/degree";
+import type { StrapiSingleResponse } from "@lib/types/strapi";
 
 export default async function CreateDegree(
   token: string,
-  data: DegreeData,
+  data: CreateDegreeData,
 ): Promise<Degree> {
   const baseUrl = import.meta.env.BASE_API_URL;
   const endpoint = `${baseUrl}/api/degrees`;

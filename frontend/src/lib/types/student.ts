@@ -1,3 +1,5 @@
+import type { StrapiResponse } from "./strapi";
+
 export interface Student {
   id: number;
   documentId: string;
@@ -16,18 +18,6 @@ export interface Student {
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
-}
-
-export interface StrapiResponse<T> {
-  data: T[];
-  meta: {
-    pagination: {
-      page: number;
-      pageSize: number;
-      pageCount: number;
-      total: number;
-    };
-  };
 }
 
 export interface CreateStudentData {

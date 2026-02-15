@@ -1,27 +1,7 @@
 import type { Student } from "./student";
-
-export interface Degree {
-  id: number;
-  documentId: string;
-  name: string;
-  section: string;
-  capacity: number;
-  level: "Inicial" | "Primaria" | "Secundaria";
-  order: number;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-}
-
-export interface AcademicPeriod {
-  id: number;
-  documentId: string;
-  name: string;
-  active: boolean;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-}
+import type { AcademicPeriod } from "./academic_period";
+import type { StrapiResponse, StrapiSingleResponse } from "./strapi";
+import type { Degree } from "./degree";
 
 export type EnrollmentStatus = "Pendiente" | "Aprobado" | "Rechazado" | "Pagado";
 
@@ -39,23 +19,6 @@ export interface Enrollment {
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
-}
-
-export interface StrapiResponse<T> {
-  data: T[];
-  meta: {
-    pagination: {
-      page: number;
-      pageSize: number;
-      pageCount: number;
-      total: number;
-    };
-  };
-}
-
-export interface StrapiSingleResponse<T> {
-  data: T;
-  meta: {};
 }
 
 export interface CreateEnrollmentData {

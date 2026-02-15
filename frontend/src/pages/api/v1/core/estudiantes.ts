@@ -19,6 +19,10 @@ const studentSchema = z.object({
 export const POST: APIRoute = async ({ request, redirect, locals }) => {
   const { token } = locals;
 
+  if (!token) {
+    return redirect("/login?error=" + encodeURIComponent("Sesión expirada"));
+  }
+
   const formData = await request.formData();
   const data = Object.fromEntries(formData.entries());
   const result = studentSchema.safeParse(data);

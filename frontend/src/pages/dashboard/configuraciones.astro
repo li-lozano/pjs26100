@@ -2,7 +2,6 @@
 import DashboardLayout from "@layouts/DashboardLayout.astro";
 import ReadAcademicPeriods from "@lib/services/private/ReadAcademicPeriods";
 import ReadDegrees from "@lib/services/private/ReadDegrees";
-import CreateAcademicPeriod from "@lib/services/private/CreateAcademicPeriod";
 import CreateDegree from "@lib/services/private/CreateDegree";
 import ConfigHeader from "@components/dashboard/configuraciones/ConfigHeader.astro";
 import ConfigTabs from "@components/dashboard/configuraciones/ConfigTabs.astro";
@@ -12,7 +11,8 @@ import CreateAcademicPeriodSideOver from "@components/dashboard/configuraciones/
 import CreateDegreeSideOver from "@components/dashboard/configuraciones/CreateDegreeSideOver.astro";
 import MessageError from "@components/MessageError.astro";
 import MessageSuccess from "@components/MessageSuccess.astro";
-import type { AcademicPeriod, Degree } from "@lib/types/enrollment";
+import type { AcademicPeriod } from "@lib/types/academic_period";
+import type { Degree } from "@lib/types/degree";
 
 const { user, token } = Astro.locals;
 
@@ -30,35 +30,10 @@ const activeTab = url.searchParams.get("tab") || "periodos";
 
 let periods: AcademicPeriod[] = [];
 let degrees: Degree[] = [];
-let error = "";
-let success = "";
+let error = url.searchParams.get("error") || "";
+let success = url.searchParams.get("success") || "";
 
-// Manejo de formularios (POST)
-if (Astro.request.method === "POST") {
-  try {
-    const formData = await Astro.request.formData();
-    const action = formData.get("action");
-
-    if (action === "create-period") {
-      const data = {
-        name: formData.get("name") as string,
-        active: formData.get("active") === "on",
-      };
-      await CreateAcademicPeriod(token as string, data);
-      success = "Periodo académico creado correctamente";
-    } else if (action === "create-degree") {
-      const data = {
-        name: formData.get("name") as string,
-        section: formData.get("section") as string,
-        capacity: Number(formData.get("capacity")),
-      };
-      await CreateDegree(token as string, data);
-      success = "Grado y sección creados correctamente";
-    }
-  } catch (e) {
-    error = e instanceof Error ? e.message : "Error al procesar la solicitud";
-  }
-}
+// Cargar datos según la pestaña activa
 
 // Cargar datos según la pestaña activa
 try {
@@ -73,12 +48,14 @@ try {
 ---
 
 <DashboardLayout pageTitle="Configuraciones del Sistema">
+  
   <div
     class="max-w-7xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500"
   >
     <div class="flex flex-col gap-6">
+      {error && <MessageError message={error} />}
+      {success && <MessageSuccess message={success} />}
       <ConfigTabs activeTab={activeTab} />
-
       <div
         class="bg-white/60 backdrop-blur-xl rounded-[2.5rem] p-8 border border-white shadow-2xl shadow-rayito-blue/5"
       >
@@ -91,10 +68,6 @@ try {
                 buttonText="Nuevo Periodo"
                 sideOverId="academic-period-sideover"
               />
-
-              {error && <MessageError message={error} />}
-              {success && <MessageSuccess message={success} />}
-
               <AcademicPeriodsTable periods={periods} />
             </div>
           )
@@ -109,10 +82,6 @@ try {
                 buttonText="Agregar Grado"
                 sideOverId="degree-sideover"
               />
-
-              {error && <MessageError message={error} />}
-              {success && <MessageSuccess message={success} />}
-
               <DegreesTable degrees={degrees} />
             </div>
           )
@@ -120,7 +89,6 @@ try {
       </div>
     </div>
   </div>
-
   <CreateAcademicPeriodSideOver />
   <CreateDegreeSideOver />
 </DashboardLayout>
