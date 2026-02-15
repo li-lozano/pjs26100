@@ -1,37 +1,10 @@
 ---
 import { Image } from "astro:assets";
 import logo from "@assets/Logo_RDL.png";
+import { allNavItems } from "@lib/utils/allNavItems";
 
 const { user } = Astro.locals;
 const currentPath = Astro.url.pathname;
-
-const allNavItems = [
-  { label: "Inicio", icon: "🏠", href: "/dashboard" },
-  {
-    label: "Tutores",
-    icon: "👥",
-    href: "/dashboard/tutores",
-    roles: ["Administrador", "Encargado"],
-  },
-  {
-    label: "Estudiantes",
-    icon: "🎓",
-    href: "/dashboard/estudiantes",
-    roles: ["Administrador", "Encargado", "Tutor"],
-  },
-  {
-    label: "Matrículas",
-    icon: "📝",
-    href: "/dashboard/matriculas",
-    roles: ["Administrador", "Encargado"],
-  },
-  {
-    label: "Configuración",
-    icon: "⚙️",
-    href: "/dashboard/configuraciones",
-    roles: ["Administrador"],
-  },
-];
 
 const navItems = allNavItems.filter((item) => {
   if (!item.roles) return true;

@@ -1,5 +1,7 @@
 import type { StrapiResponse } from "./strapi";
 
+export type StudentStatus = "Pendiente" | "Activo" | "Rechazado";
+
 export interface Student {
   id: number;
   documentId: string;
@@ -9,6 +11,7 @@ export interface Student {
   birthday: string;
   gender: string;
   address: string;
+  student_status?: StudentStatus;
   profile?: {
     id: number;
     documentId: string;
@@ -27,5 +30,6 @@ export interface CreateStudentData {
   birthday: string;
   gender: string;
   address: string;
+  student_status?: StudentStatus;
   profile?: string;
 }

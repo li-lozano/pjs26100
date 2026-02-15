@@ -1,0 +1,134 @@
+---
+import DashboardLayout from "@layouts/DashboardLayout.astro";
+import ReadStudentsByTutor from "@lib/services/private/ReadStudentsByTutor";
+import ReadDegrees from "@lib/services/private/ReadDegrees";
+import ReadAcademicPeriods from "@lib/services/private/ReadAcademicPeriods";
+import RequestEnrollmentSideOver from "@components/dashboard/tutor/RequestEnrollmentSideOver.astro";
+import RegisterStudentSideOver from "@components/dashboard/tutor/RegisterStudentSideOver.astro";
+import type { Student } from "@lib/types/student";
+import type { Degree, AcademicPeriod } from "@lib/types/enrollment";
+import TutorHeader from "@components/dashboard/tutor/TutorHeader.astro";
+import StudentCard from "@components/dashboard/tutor/StudentCard.astro";
+
+const { user, token } = Astro.locals;
+
+// Redirigir si no es tutor
+if (!user || user.role?.name?.toLowerCase() !== "tutor") {
+  return Astro.redirect(
+    "/dashboard?error=No tienes permisos para acceder a esta sección"
+  );
+}
+
+let students: Student[] = [];
+let degrees: Degree[] = [];
+let academicPeriods: AcademicPeriod[] = [];
+let error = "";
+
+// Obtener datos
+try {
+  if (token && user.profile?.documentId) {
+    [students, degrees, academicPeriods] = await Promise.all([
+      ReadStudentsByTutor(token, user.profile.documentId),
+      ReadDegrees(token),
+      ReadAcademicPeriods(token),
+    ]);
+    
+    // DEBUG: Ver qué trae students
+    console.log("=== DEBUG STUDENTS ===");
+    console.log("Total students:", students.length);
+    students.forEach((s, i) => {
+      console.log(`Student ${i}:`, {
+        name: s.names,
+        dni: s.dni,
+        student_status: s.student_status || "❌ NO TIENE STUDENT_STATUS"
+      });
+    });
+  }
+} catch (e) {
+  console.error("Error loading tutor's students:", e);
+  error = "No se pudieron cargar los estudiantes.";
+}
+
+const pageTitle = "Mis Estudiantes";
+---
+
+<DashboardLayout pageTitle={pageTitle}>
+  <div class="space-y-8 animate-fade-in">
+    <TutorHeader 
+      title="Mis Estudiantes" 
+      description="Aquí puedes ver la información de tus hijos registrados"
+      showSecondaryButton={true}
+      secondaryButtonText="Registrar Nuevo Hijo"
+      secondaryButtonId="register-student-btn"
+      showActionButton={true}
+      actionButtonText="Solicitar Matrícula"
+      actionButtonId="request-enrollment-btn"
+    />
+
+    {error && (
+      <div class="bg-red-50 border border-red-200 rounded-xl p-4">
+        <p class="text-red-800 text-sm">{error}</p>
+      </div>
+    )}
+
+    {!error && students.length === 0 && (
+      <div class="bg-white/60 backdrop-blur-md rounded-2xl p-12 border border-gray-100 text-center">
+        <div class="text-6xl mb-4">👶</div>
+        <h3 class="text-xl font-bold text-gray-700 mb-2">
+          No tienes estudiantes registrados
+        </h3>
+        <p class="text-gray-500 mb-6">
+          Ponte en contacto con la administración para registrar a tus hijos
+        </p>
+      </div>
+    )}
+
+    {!error && students.length > 0 && (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {students.map((student) => (
+          <StudentCard student={student} />
+        ))}
+      </div>
+    )}
+  </div>
+
+  <RequestEnrollmentSideOver 
+    students={students}
+    degrees={degrees}
+    academicPeriods={academicPeriods}
+    tutorProfileId={user.profile?.documentId || ""}
+  />
+
+  <RegisterStudentSideOver 
+    tutorProfileId={user.profile?.documentId || ""}
+  />
+</DashboardLayout>
+
+<style>
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<script>
+  document.getElementById("request-enrollment-btn")?.addEventListener("click", () => {
+    const dialog = document.getElementById("tutor-enrollment-sideover") as HTMLDialogElement;
+    dialog?.showModal();
+  });
+
+  document.getElementById("register-student-btn")?.addEventListener("click", () => {
+    const dialog = document.getElementById("register-student-sideover") as HTMLDialogElement;
+    dialog?.showModal();
+  });
+</script>

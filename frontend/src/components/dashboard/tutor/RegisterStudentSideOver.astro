@@ -1,0 +1,206 @@
+---
+interface Props {
+  tutorProfileId: string;
+}
+
+const { tutorProfileId } = Astro.props;
+---
+
+<dialog
+  id="register-student-sideover"
+  class="fixed inset-y-0 right-0 h-screen w-full max-w-lg m-0 p-0 border-none shadow-2xl backdrop:backdrop-blur-sm overflow-hidden transition-all duration-300 ease-in-out translate-x-full open:translate-x-0 bg-white"
+>
+  <style>
+    dialog#register-student-sideover {
+      display: flex;
+      flex-direction: column;
+      margin-right: 0;
+      margin-left: auto;
+      max-height: none;
+      height: 100dvh;
+    }
+
+    dialog::backdrop {
+      background-color: rgba(0, 0, 0, 0);
+      transition: all 0.3s allow-discrete;
+    }
+
+    dialog[open]::backdrop {
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    @starting-style {
+      dialog[open] {
+        transform: translateX(100%);
+      }
+      dialog[open]::backdrop {
+        background-color: rgba(0, 0, 0, 0);
+      }
+    }
+  </style>
+
+  <div
+    class="bg-linear-to-br from-rayito-yellow to-rayito-orange p-8 text-white flex justify-between items-center shrink-0"
+  >
+    <div>
+      <h3 class="text-2xl font-bold">Registrar Nuevo Hijo</h3>
+      <p class="text-white/90 text-sm mt-1">
+        Completa la información de tu hijo/a
+      </p>
+    </div>
+    <button
+      onclick="document.getElementById('register-student-sideover').close()"
+      class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors text-2xl"
+      aria-label="Cerrar"
+    >
+      ×
+    </button>
+  </div>
+
+  <form
+    method="POST"
+    action="/api/v1/core/estudiantes"
+    class="flex-1 overflow-y-auto p-8 space-y-6 bg-white"
+  >
+    <!-- Hidden fields -->
+    <input type="hidden" name="profile" value={tutorProfileId} />
+    <input type="hidden" name="student_status" value="Pendiente" />
+
+    <div class="space-y-4">
+      <h4
+        class="text-sm font-bold text-rayito-orange uppercase tracking-widest border-b border-gray-50 pb-2"
+      >
+        Información Personal
+      </h4>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="space-y-1.5">
+          <label
+            class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1"
+          >
+            Nombres <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            name="names"
+            required
+            class="w-full px-4 py-3 rounded-xl border border-gray-100 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-rayito-orange/20 focus:border-rayito-orange transition-all outline-none text-gray-800"
+            placeholder="Ej: Ana Maria"
+          />
+        </div>
+        <div class="space-y-1.5">
+          <label
+            class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1"
+          >
+            Apellidos <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            name="surnames"
+            required
+            class="w-full px-4 py-3 rounded-xl border border-gray-100 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-rayito-orange/20 focus:border-rayito-orange transition-all outline-none text-gray-800"
+            placeholder="Ej: García López"
+          />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="space-y-1.5">
+          <label
+            class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1"
+          >
+            DNI <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            name="dni"
+            required
+            maxlength="8"
+            class="w-full px-4 py-3 rounded-xl border border-gray-100 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-rayito-orange/20 focus:border-rayito-orange transition-all outline-none text-gray-800"
+            placeholder="8 dígitos"
+          />
+        </div>
+        <div class="space-y-1.5">
+          <label
+            class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1"
+          >
+            F. Nacimiento <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="date"
+            name="birthday"
+            required
+            class="w-full px-4 py-3 rounded-xl border border-gray-100 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-rayito-orange/20 focus:border-rayito-orange transition-all outline-none text-gray-800"
+          />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="space-y-1.5">
+          <label
+            class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1"
+          >
+            Género <span class="text-red-500">*</span>
+          </label>
+          <select
+            name="gender"
+            required
+            class="w-full px-4 py-3 rounded-xl border border-gray-100 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-rayito-orange/20 focus:border-rayito-orange transition-all outline-none text-gray-800"
+          >
+            <option value="" disabled selected>Seleccionar</option>
+            <option value="Masculino">Masculino</option>
+            <option value="Femenino">Femenino</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+        <div class="space-y-1.5">
+          <label
+            class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1"
+          >
+            Dirección <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            name="address"
+            required
+            class="w-full px-4 py-3 rounded-xl border border-gray-100 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-rayito-orange/20 focus:border-rayito-orange transition-all outline-none text-gray-800"
+            placeholder="Ej: Av. Las Flores 123"
+          />
+        </div>
+      </div>
+
+      <!-- Info Box -->
+      <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+        <div class="flex items-start space-x-2">
+          <span class="text-blue-600 text-xl">ℹ️</span>
+          <div class="text-sm text-blue-800">
+            <p class="font-medium mb-1">Información importante:</p>
+            <ul class="list-disc list-inside space-y-0.5 text-xs">
+              <li>El estudiante será registrado con estado "Pendiente"</li>
+              <li>Un administrador debe aprobar el registro</li>
+              <li>Solo podrás solicitar matrículas para estudiantes activos</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="pt-8 border-t border-gray-50 flex gap-4 sticky bottom-0 bg-white"
+    >
+      <button
+        type="button"
+        onclick="document.getElementById('register-student-sideover').close()"
+        class="flex-1 px-6 py-3.5 rounded-xl border border-gray-200 text-gray-600 font-bold hover:bg-gray-50 transition-all"
+      >
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        class="flex-2 px-6 py-3.5 rounded-xl bg-linear-to-r from-rayito-yellow to-rayito-orange text-white font-bold hover:shadow-lg transition-all shadow-md"
+      >
+        Registrar Estudiante
+      </button>
+    </div>
+  </form>
+</dialog>

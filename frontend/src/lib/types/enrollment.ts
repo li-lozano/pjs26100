@@ -3,6 +3,9 @@ import type { AcademicPeriod } from "./academic_period";
 import type { StrapiResponse, StrapiSingleResponse } from "./strapi";
 import type { Degree } from "./degree";
 
+// Re-export for convenience
+export type { Degree, AcademicPeriod };
+
 export type EnrollmentStatus = "Pendiente" | "Aprobado" | "Rechazado" | "Pagado";
 
 export interface Enrollment {

@@ -1,0 +1,61 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  showActionButton?: boolean;
+  actionButtonText?: string;
+  actionButtonId?: string;
+  showSecondaryButton?: boolean;
+  secondaryButtonText?: string;
+  secondaryButtonId?: string;
+}
+
+const {
+  title,
+  description,
+  showActionButton = false,
+  actionButtonText = "Acción",
+  actionButtonId = "action-btn",
+  showSecondaryButton = false,
+  secondaryButtonText = "Acción Secundaria",
+  secondaryButtonId = "secondary-btn",
+} = Astro.props;
+---
+
+<div
+  class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4 w-full"
+>
+  <div class="flex-1 min-w-0">
+    <h1
+      class="text-3xl font-bold bg-linear-to-r from-rayito-blue to-rayito-sky bg-clip-text text-transparent mb-2"
+    >
+      {title}
+    </h1>
+    {description && (
+      <p class="text-text-secondary text-sm md:text-base">{description}</p>
+    )}
+  </div>
+
+  {(showActionButton || showSecondaryButton) && (
+    <div class="flex flex-col sm:flex-row gap-3 shrink-0">
+      {showSecondaryButton && (
+        <button
+          id={secondaryButtonId}
+          class="px-6 py-3 bg-white text-rayito-blue border-2 border-rayito-blue font-bold rounded-xl hover:bg-rayito-blue hover:text-white transition-all transform hover:scale-105 shadow-sm whitespace-nowrap"
+        >
+          <span class="mr-2">➕</span>
+          {secondaryButtonText}
+        </button>
+      )}
+      {showActionButton && (
+        <button
+          id={actionButtonId}
+          class="px-6 py-3 bg-linear-to-r from-rayito-yellow to-rayito-orange text-white font-bold rounded-xl hover:shadow-lg transition-all transform hover:scale-105 shadow-md whitespace-nowrap"
+        >
+          <span class="mr-2">✨</span>
+          {actionButtonText}
+        </button>
+      )}
+    </div>
+  )}
+</div>
