@@ -18,6 +18,12 @@ export const allNavItems = [
     roles: ["Administrador", "Encargado"],
   },
   {
+    label: "Inicio",
+    icon: "🏠",
+    href: "/dashboard/tutor",
+    roles: ["Tutor"],
+  },
+  {
     label: "Mis Estudiantes",
     icon: "👶",
     href: "/dashboard/tutor/mis-estudiantes",

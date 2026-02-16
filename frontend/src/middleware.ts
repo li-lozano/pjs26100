@@ -37,7 +37,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     // Redirección específica para Tutores
     if (roleName.toLowerCase() === "tutor") {
       if (pathname === loginRoute || pathname === "/dashboard") {
-        return redirect("/dashboard/tutor/mis-estudiantes");
+        return redirect("/dashboard/tutor");
       }
     }
 
