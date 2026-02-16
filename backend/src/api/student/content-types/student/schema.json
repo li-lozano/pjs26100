@@ -47,7 +47,7 @@
       "target": "api::enrollment.enrollment",
       "mappedBy": "student"
     },
-    "studjent_status": {
+    "student_status": {
       "type": "enumeration",
       "enum": [
         "Pendiente",

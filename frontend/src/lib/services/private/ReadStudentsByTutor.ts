@@ -21,12 +21,9 @@ export default async function ReadStudentsByTutor(
 
     const json = await response.json();
 
-    // DEBUG: Ver la respuesta completa
-    console.log("=== RAW API RESPONSE ===");
-    console.log("Full response:", JSON.stringify(json, null, 2));
-
     const { data } = json as StrapiResponse<Student>;
     return data;
+
   } catch (error) {
     console.error("Error fetching students by tutor:", error);
     throw error;
