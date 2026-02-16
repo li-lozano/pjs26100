@@ -515,6 +515,7 @@ export interface ApiEnrollmentEnrollment extends Struct.CollectionTypeSchema {
       'manyToOne',
       'api::academic-period.academic-period'
     >;
+    code: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

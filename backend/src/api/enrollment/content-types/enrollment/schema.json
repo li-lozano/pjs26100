@@ -11,6 +11,9 @@
   },
   "pluginOptions": {},
   "attributes": {
+    "code": {
+      "type": "string"
+    },
     "student": {
       "type": "relation",
       "relation": "manyToOne",
