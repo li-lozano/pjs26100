@@ -34,7 +34,7 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
         sameSite: 'strict',
       });
 
-      const successMessage = 'Has iniciado sesión correctamente.';
+      let successMessage = 'Has iniciado sesión correctamente.';
       return redirect(`/dashboard?success=${encodeURIComponent(successMessage)}`);
 
     } else {

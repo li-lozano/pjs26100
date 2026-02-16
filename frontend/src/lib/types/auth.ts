@@ -1,3 +1,5 @@
+import type { Role } from "@lib/types/user";
+
 export interface AuthUser {
   id: number;
   documentId: string;
@@ -5,6 +7,7 @@ export interface AuthUser {
   email: string;
   confirmed: boolean;
   blocked: boolean;
+  role: Role;
 }
 
 export interface AuthResponse {

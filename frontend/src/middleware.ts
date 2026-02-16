@@ -31,8 +31,20 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return redirect(loginRoute);
   }
 
-  if (pathname === loginRoute && locals.user) {
-    return redirect('/dashboard');
+  if (locals.user) {
+    const roleName = locals.user.role?.name || "";
+
+    // Redirección específica para Tutores
+    if (roleName.toLowerCase() === "tutor") {
+      if (pathname === loginRoute || pathname === "/dashboard") {
+        return redirect("/dashboard/tutor/mis-estudiantes");
+      }
+    }
+
+    // Redirección general para otros roles (como Administrador)
+    if (pathname === loginRoute) {
+      return redirect("/dashboard");
+    }
   }
 
   return next();
