@@ -18,6 +18,17 @@ export interface Student {
     names: string;
     surnames: string;
   };
+  enrollments?: {
+    id: number;
+    documentId: string;
+    enrollment_status: string;
+    academic_period?: {
+      id: number;
+      documentId: string;
+      name: string;
+      active: boolean;
+    };
+  }[];
   createdAt: string;
   updatedAt: string;
   publishedAt: string;

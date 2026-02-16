@@ -1,11 +1,12 @@
-import type { Student, StrapiResponse } from "@lib/types/student";
+import type { Student } from "@lib/types/student";
+import type { StrapiResponse } from "@lib/types/strapi";
 
 export default async function ReadStudentsByTutor(
   token: string,
   tutorProfileId: string
 ): Promise<Student[]> {
   const baseUrl = import.meta.env.BASE_API_URL;
-  const endpoint = `${baseUrl}/api/students?filters[profile][documentId][$eq]=${tutorProfileId}&populate=*`;
+  const endpoint = `${baseUrl}/api/students?filters[profile][documentId][$eq]=${tutorProfileId}&populate[profile]=*&populate[enrollments][populate][academic_period]=*`;
 
   try {
     const response = await fetch(endpoint, {

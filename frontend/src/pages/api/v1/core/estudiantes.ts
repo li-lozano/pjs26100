@@ -35,7 +35,7 @@ export const POST: APIRoute = async ({ request, redirect, locals }) => {
 
   // Detectar si el usuario es tutor
   const isTutor = user?.role?.name?.toLowerCase() === "tutor";
-  let redirectUrl = "/dashboard/estudiantes";
+  let redirectUrl = isTutor ? "/dashboard/tutor/mis-estudiantes" : "/dashboard/estudiantes";
 
   const studentData: CreateStudentData = {
     names: result.data.names,

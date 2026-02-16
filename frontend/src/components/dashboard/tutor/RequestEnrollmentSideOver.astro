@@ -10,6 +10,22 @@ interface Props {
 }
 
 const { students, degrees, academicPeriods, tutorProfileId } = Astro.props;
+
+const currentPeriod = academicPeriods.find(p => p.active);
+
+const availableStudents = students.filter(student => {
+  const isActive = student.student_status === "Activo";
+  const hasEnrollmentInCurrentPeriod = student.enrollments?.some(enrollment => 
+    enrollment.academic_period?.documentId === currentPeriod?.documentId &&
+    enrollment.enrollment_status !== "Rechazado" // Opcional: permitir re-intentar si fue rechazado? Asumo que sí, o que si ya tiene una, no puede. 
+    // "sin matricula" suele significar sin matricula *activa* o *pendiente*. 
+    // Si fue rechazada, técnicamente no tiene matrícula válida, pero dejémoslo simple por ahora: si existe para el periodo, se filtra.
+    // ADDITION: Let's assume ANY enrollment record for this period means they are already processed or in process.
+  );
+
+  return isActive && !hasEnrollmentInCurrentPeriod;
+});
+
 ---
 
 <dialog
@@ -73,7 +89,7 @@ const { students, degrees, academicPeriods, tutorProfileId } = Astro.props;
     <input type="hidden" name="tutor" value={tutorProfileId} />
     
     <!-- Hidden field: Status (always "Pendiente de Revisión" for tutors) -->
-    <input type="hidden" name="enrollment_status" value="Pendiente de Revisión" />
+    <input type="hidden" name="enrollment_status" value="Pendiente" />
 
     <div class="space-y-4">
       <h4
@@ -94,15 +110,13 @@ const { students, degrees, academicPeriods, tutorProfileId } = Astro.props;
           class="w-full px-4 py-3 rounded-xl border border-gray-100 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-rayito-blue/20 focus:border-rayito-blue transition-all outline-none text-gray-800 appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236b7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22m6%208%204%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-size-[1.25rem_1.25rem] bg-position-[right_0.5rem_center] bg-no-repeat"
         >
           <option value="" disabled selected>Selecciona tu hijo/a</option>
-          {students
-            .filter((s) => s.student_status === "Activo")
-            .map((student) => (
+          {availableStudents.map((student) => (
               <option value={student.documentId}>
                 {student.names} {student.surnames}
               </option>
             ))}
         </select>
-        {students.filter((s) => s.student_status === "Activo").length === 0 && (
+        {availableStudents.length === 0 && (
           <p class="text-xs text-yellow-600 ml-1 mt-1">
             ⚠️ No tienes estudiantes activos. Espera la aprobación del administrador.
           </p>
