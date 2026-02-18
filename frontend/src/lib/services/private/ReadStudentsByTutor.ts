@@ -12,7 +12,7 @@ export default async function ReadStudentsByTutor(
     const response = await fetch(endpoint, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`,
+        "Authorization": `Bearer ${token}`,
       },
     });
 

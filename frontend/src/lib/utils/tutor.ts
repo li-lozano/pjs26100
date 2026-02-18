@@ -1,6 +1,7 @@
 import ReadTutor from "@lib/services/private/ReadTutor";
 import ReadDegrees from "@lib/services/private/ReadDegrees";
 import ReadAcademicPeriods from "@lib/services/private/ReadAcademicPeriods";
+import ReadEnrollments from "@lib/services/private/ReadEnrollments";
 import type { Degree, AcademicPeriod } from "@lib/types/enrollment";
 
 export function isTutor(user: any): boolean {
@@ -9,16 +10,18 @@ export function isTutor(user: any): boolean {
 
 export async function getTutorPageData(token: string, tutorId: string) {
   try {
-    const [tutorData, degrees, academicPeriods] = await Promise.all([
+    const [tutorData, degrees, academicPeriods, enrollmentData] = await Promise.all([
       ReadTutor(token, tutorId),
       ReadDegrees(token),
       ReadAcademicPeriods(token),
+      ReadEnrollments(token)
     ]);
 
     return {
       tutorData,
       degrees,
       academicPeriods,
+      enrollmentData,
       error: null
     };
   } catch (error) {

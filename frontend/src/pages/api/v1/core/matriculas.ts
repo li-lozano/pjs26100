@@ -23,8 +23,10 @@ export const POST: APIRoute = async ({ request, redirect, locals }) => {
   }
 
   const formData = await request.formData();
+  console.log(formData);
   const data = Object.fromEntries(formData.entries());
   const result = enrollmentSchema.safeParse(data);
+  console.log(result);
 
   // Detectar si el usuario es tutor
   const isTutor = user?.role?.name?.toLowerCase() === "tutor";

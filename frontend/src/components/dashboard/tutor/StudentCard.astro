@@ -1,16 +1,25 @@
 ---
 import type { Student } from "@lib/types/student";
+import type { Enrollment } from "@lib/types/enrollment";
 import { calculateAge } from "@lib/utils/date";
 import StudentStatusBadge from "./StudentStatusBadge.astro";
 
+
 interface Props {
   student: Student;
+  enrollmentsList: Enrollment[];
 }
 
-const { student } = Astro.props;
+const { student, enrollmentsList } = Astro.props;
 
 const age = calculateAge(student.birthday);
 const initials = student.names.charAt(0) + student.surnames.charAt(0);
+
+
+const studentEnrollments = enrollmentsList.filter((enrollment) => {
+  return enrollment.student?.documentId === student.documentId
+});
+
 ---
 
 <div
@@ -54,6 +63,6 @@ const initials = student.names.charAt(0) + student.surnames.charAt(0);
     </p>
   </div>
 
-  <!-- Status Badge Component -->
-  <StudentStatusBadge status={student.student_status} />
+  <!-- Status Badge Component -->   
+  <StudentStatusBadge status={student.student_status} studentEnrollments={studentEnrollments} />
 </div>

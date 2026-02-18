@@ -1,11 +1,9 @@
 ---
 import DashboardLayout from "@layouts/DashboardLayout.astro";
-import ReadStudentsByTutor from "@lib/services/private/ReadStudentsByTutor";
-import ReadDegrees from "@lib/services/private/ReadDegrees";
-import ReadAcademicPeriods from "@lib/services/private/ReadAcademicPeriods";
 import RequestEnrollmentSideOver from "@components/dashboard/tutor/RequestEnrollmentSideOver.astro";
 import type { Student } from "@lib/types/student";
 import type { Degree, AcademicPeriod } from "@lib/types/enrollment";
+import { getTutorPageData } from "@lib/utils/tutor";
 
 const { user, token } = Astro.locals;
 
@@ -14,24 +12,15 @@ if (!user || user.role?.name?.toLowerCase() !== "tutor") {
   return Astro.redirect("/dashboard?error=No tienes permisos para acceder a esta sección");
 }
 
-const studentCount = user?.profile?.students?.length || 0;
+const tutorId = user.profile?.documentId;
+const { tutorData, degrees, academicPeriods, enrollmentData, error: fetchError } = await getTutorPageData(token as string, tutorId);
 
-// Cargar datos para el formulario de matrícula
-let students: Student[] = [];
-let degrees: Degree[] = [];
-let academicPeriods: AcademicPeriod[] = [];
+const apiError = tutorData?.error;
+const displayError = fetchError || apiError;
+const students: Student[] = tutorData?.data?.students || [];
+const enrollmentsList: Enrollment[] = enrollmentData || [];
 
-try {
-  if (token && user.profile?.documentId) {
-    [students, degrees, academicPeriods] = await Promise.all([
-      ReadStudentsByTutor(token, user.profile.documentId),
-      ReadDegrees(token),
-      ReadAcademicPeriods(token),
-    ]);
-  }
-} catch (error) {
-  console.error("Error loading tutor dashboard data:", error);
-}
+const studentCount = students.length;
 ---
 
 <DashboardLayout pageTitle="Mi Panel">

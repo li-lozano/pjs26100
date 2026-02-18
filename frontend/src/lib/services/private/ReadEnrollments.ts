@@ -1,4 +1,5 @@
-import type { Enrollment, StrapiResponse } from "@lib/types/enrollment";
+import type { Enrollment, } from "@lib/types/enrollment";
+import type { StrapiResponse } from "@lib/types/strapi";
 
 export default async function ReadEnrollments(token: string): Promise<Enrollment[]> {
   const baseUrl = import.meta.env.BASE_API_URL;

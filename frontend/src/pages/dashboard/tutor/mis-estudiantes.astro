@@ -8,6 +8,7 @@ import EmptyState from "@components/dashboard/tutor/EmptyState.astro";
 import ErrorBanner from "@components/dashboard/tutor/ErrorBanner.astro";
 import { isTutor, getTutorPageData } from "@lib/utils/tutor";
 import type { Student } from "@lib/types/student";
+import type { Enrollment } from "@lib/types/enrollment";
 
 const { user, token } = Astro.locals;
 
@@ -19,11 +20,12 @@ if (!user || !isTutor(user)) {
 }
 
 const tutorId = user.profile?.documentId;
-const { tutorData, degrees, academicPeriods, error: fetchError } = await getTutorPageData(token as string, tutorId);
+const { tutorData, degrees, academicPeriods, enrollmentData, error: fetchError } = await getTutorPageData(token as string, tutorId);
 
 const apiError = tutorData?.error;
 const displayError = fetchError || apiError;
 const students: Student[] = tutorData?.data?.students || [];
+const enrollmentsList: Enrollment[] = enrollmentData || [];
 
 const pageTitle = "Mis Estudiantes";
 ---
@@ -48,7 +50,7 @@ const pageTitle = "Mis Estudiantes";
     {!displayError && students.length > 0 && (
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {students.map((student) => (
-          <StudentCard student={student} />
+          <StudentCard student={student} enrollmentsList={enrollmentsList} />
         ))}
       </div>
     )}
@@ -56,6 +58,7 @@ const pageTitle = "Mis Estudiantes";
 
   <RequestEnrollmentSideOver 
     students={students}
+    enrollmentsList={enrollmentsList}
     degrees={degrees}
     academicPeriods={academicPeriods}
     tutorProfileId={user.profile?.documentId || ""}

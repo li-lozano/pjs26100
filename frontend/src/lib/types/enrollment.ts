@@ -11,6 +11,7 @@ export type EnrollmentStatus = "Pendiente" | "Aprobado" | "Rechazado" | "Pagado"
 export interface Enrollment {
   id: number;
   documentId: string;
+  code: string;
   enrollment_status: EnrollmentStatus;
   student?: Student;
   degree?: Degree;

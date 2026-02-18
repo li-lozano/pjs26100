@@ -1,4 +1,4 @@
-import type { StudentStatus } from '../types/student';
+import type { StudentStatus } from '@lib/types/student';
 
 interface StatusConfig {
   bgIndex: string;
@@ -8,19 +8,19 @@ interface StatusConfig {
 
 export const STUDENT_STATUS_CONFIG: Record<StudentStatus, StatusConfig> = {
   Pendiente: {
-    bgIndex: "bg-yellow-100",
-    textIndex: "text-yellow-800",
-    label: "⏳ Pendiente de Aprobación",
+    bgIndex: "bg-yellow-600",
+    textIndex: "text-yellow-100",
+    label: "Pendiente",
   },
   Activo: {
-    bgIndex: "bg-green-100",
-    textIndex: "text-green-800",
-    label: "✅ Activo",
+    bgIndex: "bg-green-600",
+    textIndex: "text-green-100",
+    label: "Activo",
   },
   Rechazado: {
-    bgIndex: "bg-red-100",
-    textIndex: "text-red-800",
-    label: "❌ Rechazado",
+    bgIndex: "bg-red-600",
+    textIndex: "text-red-100",
+    label: "Rechazado",
   },
 };
 

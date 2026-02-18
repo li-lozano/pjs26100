@@ -1,31 +1,41 @@
 ---
 import type { Student } from "@lib/types/student";
+import type { Enrollment } from "@lib/types/enrollment";
 import type { Degree, AcademicPeriod } from "@lib/types/enrollment";
 
 interface Props {
   students: Student[];
+  enrollmentsList: Enrollment[];
   degrees: Degree[];
   academicPeriods: AcademicPeriod[];
   tutorProfileId: string;
 }
 
-const { students, degrees, academicPeriods, tutorProfileId } = Astro.props;
+const {
+  students: propStudents,
+  degrees: propDegrees,
+  academicPeriods: propAcademicPeriods,
+  tutorProfileId,
+  enrollmentsList: propEnrollmentsList,
+} = Astro.props;
 
-const currentPeriod = academicPeriods.find(p => p.active);
+const students = propStudents || [];
+const degrees = propDegrees || [];
+const academicPeriods = propAcademicPeriods || [];
+const enrollmentsList = propEnrollmentsList || [];
 
-const availableStudents = students.filter(student => {
-  const isActive = student.student_status === "Activo";
-  const hasEnrollmentInCurrentPeriod = student.enrollments?.some(enrollment => 
-    enrollment.academic_period?.documentId === currentPeriod?.documentId &&
-    enrollment.enrollment_status !== "Rechazado" // Opcional: permitir re-intentar si fue rechazado? Asumo que sí, o que si ya tiene una, no puede. 
-    // "sin matricula" suele significar sin matricula *activa* o *pendiente*. 
-    // Si fue rechazada, técnicamente no tiene matrícula válida, pero dejémoslo simple por ahora: si existe para el periodo, se filtra.
-    // ADDITION: Let's assume ANY enrollment record for this period means they are already processed or in process.
+const currentPeriod = academicPeriods.find((p) => p.active);
+
+const availableStudents = students.filter((student) => {
+  const hasEnrollmentInCurrentPeriod = enrollmentsList.some(
+    (enrollment) =>
+      enrollment.student?.documentId === student.documentId &&
+      enrollment.academic_period?.documentId === currentPeriod?.documentId
   );
-
-  return isActive && !hasEnrollmentInCurrentPeriod;
+  return !hasEnrollmentInCurrentPeriod;
 });
 
+const enrollment_date = new Date().toISOString().slice(0, 16);
 ---
 
 <dialog
@@ -84,12 +94,10 @@ const availableStudents = students.filter(student => {
     action="/api/v1/core/matriculas"
     enctype="multipart/form-data"
     class="flex-1 overflow-y-auto p-8 space-y-6 bg-white"
-  >
-    <!-- Hidden field: Tutor profile (auto-filled) -->
-    <input type="hidden" name="tutor" value={tutorProfileId} />
-    
+  >     
     <!-- Hidden field: Status (always "Pendiente de Revisión" for tutors) -->
     <input type="hidden" name="enrollment_status" value="Pendiente" />
+    <input type="hidden" name="enrollment_date" value={enrollment_date} />
 
     <div class="space-y-4">
       <h4
