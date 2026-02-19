@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'astro-icon/components';
+
 interface Props {
   sideOverId: string;
 }
@@ -15,8 +17,9 @@ const { sideOverId } = Astro.props;
   </div>
   <button
     onclick={`document.getElementById('${sideOverId}').showModal()`}
-    class="bg-rayito-blue text-white px-6 py-2.5 rounded-xl font-bold hover:bg-rayito-sky transition-all shadow-lg shadow-rayito-blue/20 flex items-center justify-center gap-2"
+    class="flex items-center justify-center px-6 py-3 bg-rayito-blue text-white font-bold rounded-xl hover:bg-rayito-blue/90 transition-all transform hover:scale-105 shadow-lg shadow-rayito-blue/20"
   >
-    <span>➕</span> Nuevo Tutor
+    <Icon name="mdi:plus" class="mr-2"/>
+    Nuevo Tutor
   </button>
 </div>

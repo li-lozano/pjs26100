@@ -2,6 +2,8 @@
 import type { Student } from "@lib/types/student";
 import StudentsTableRow from "./StudentsTableRow.astro";
 
+
+
 interface Props {
   students: Student[];
   error?: string;
@@ -45,11 +47,14 @@ const { students, error } = Astro.props;
             <thead>
               <tr class="bg-gray-50/50 border-b border-gray-100">
                 <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  DNI
+                </th>                
+                <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">
                   Estudiante
                 </th>
                 <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">
-                  DNI
-                </th>
+                  Estado
+                </th>                
                 <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">
                   Cumpleaños
                 </th>
@@ -61,9 +66,9 @@ const { students, error } = Astro.props;
                 </th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-50">
-              {students.map((student) => (
-                <StudentsTableRow student={student} />
+            <tbody class="divide-y divide-gray-50">              
+              {students.map((student) => (                
+                <StudentsTableRow student={student} />                
               ))}
             </tbody>
           </table>

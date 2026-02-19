@@ -1,5 +1,6 @@
 ---
 import type { Student } from "@lib/types/student";
+import { Icon } from "astro-icon/components";
 
 interface Props {
   student: Student;
@@ -9,6 +10,9 @@ const { student } = Astro.props;
 ---
 
 <tr class="hover:bg-white/50 transition-colors group">
+  <td class="px-6 py-4 text-sm text-gray-600 font-medium">
+    {student.dni}
+  </td>
   <td class="px-6 py-4">
     <div class="flex items-center">
       <div
@@ -27,8 +31,8 @@ const { student } = Astro.props;
       </div>
     </div>
   </td>
-  <td class="px-6 py-4 text-sm text-gray-600 font-medium">
-    {student.dni}
+  <td class="px-6 py-4 text-sm text-gray-600">
+    {student.student_status}
   </td>
   <td class="px-6 py-4 text-sm text-gray-600">
     {new Date(student.birthday).toLocaleDateString()}
@@ -45,18 +49,9 @@ const { student } = Astro.props;
   </td>
   <td class="px-6 py-4 text-right">
     <div class="flex items-center justify-end space-x-2">
-      <button
-        class="p-2 text-gray-400 hover:text-rayito-blue hover:bg-rayito-blue/10 rounded-lg transition-all"
-        title="Ver Detalles"
-      >
-        👁️
-      </button>
-      <button
-        class="p-2 text-gray-400 hover:text-rayito-yellow hover:bg-rayito-yellow/10 rounded-lg transition-all"
-        title="Editar"
-      >
-        ✏️
-      </button>
+      <Icon name="mdi:eye" class="w-5 h-5 text-gray-400 hover:text-rayito-blue hover:bg-rayito-blue/10 rounded-lg transition-all" />
+      <Icon name="mdi:pencil" class="w-5 h-5 text-gray-400 hover:text-rayito-yellow hover:bg-rayito-yellow/10 rounded-lg transition-all" />
+      <Icon name="mdi:delete" class="w-5 h-5 text-gray-400 hover:text-rayito-red hover:bg-rayito-red/10 rounded-lg transition-all" />
     </div>
   </td>
 </tr>

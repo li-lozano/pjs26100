@@ -1,5 +1,6 @@
 ---
 import type { User } from "@lib/types/user";
+import { Icon } from "astro-icon/components";
 
 interface Props {
   tutor: User;
@@ -9,6 +10,9 @@ const { tutor } = Astro.props;
 ---
 
 <tr class="hover:bg-white/40 transition-colors group">
+  <td class="px-6 py-4 text-sm text-gray-700 font-medium">
+    {tutor.profile?.dni}
+  </td>
   <td class="px-6 py-4">
     <div class="flex items-center gap-3">
       <div
@@ -25,9 +29,7 @@ const { tutor } = Astro.props;
       </div>
     </div>
   </td>
-  <td class="px-6 py-4 text-sm text-gray-700 font-medium">
-    {tutor.profile?.dni}
-  </td>
+  
   <td class="px-6 py-4 text-sm text-gray-700">
     {tutor.profile?.cell_phone}
   </td>
@@ -48,14 +50,10 @@ const { tutor } = Astro.props;
     </div>
   </td>
   <td class="px-6 py-4">
-    <span
-      class={`px-2.5 py-1 rounded-full text-xs font-bold ${
-        tutor.confirmed
-          ? "bg-green-100 text-green-700"
-          : "bg-yellow-100 text-yellow-700"
-      }`}
-    >
-      {tutor.confirmed ? "Confirmado" : "Pendiente"}
-    </span>
+    <div class="flex flex-row justify-between">
+      <Icon name="mdi:eye" class="w-5 h-5 text-gray-400 hover:text-rayito-blue cursor-pointer"/>
+      <Icon name="mdi:pencil" class="w-5 h-5 text-gray-400 hover:text-rayito-blue cursor-pointer"/>
+      <Icon name="mdi:delete" class="w-5 h-5 text-gray-400 hover:text-rayito-blue cursor-pointer"/>
+    </div>    
   </td>
 </tr>
