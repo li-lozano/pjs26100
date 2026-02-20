@@ -1,0 +1,72 @@
+---
+import type { Enrollment } from "@lib/types/enrollment";
+import { Icon } from "astro-icon/components";
+import { getEnrollmentStatusConfig } from "@lib/utils/enrollmentStatus";
+
+
+interface Props {
+  enrollment: Enrollment;
+}
+
+const { enrollment } = Astro.props;
+
+const currentEnrollmentStatus = getEnrollmentStatusConfig(enrollment.enrollment_status);
+
+---
+
+<tr class="hover:bg-white/60 transition-colors group">
+  <td class="px-6 py-4">
+    <div class="text-sm font-medium text-gray-700">
+      {enrollment.code}
+    </div>
+  </td>
+  <td class="px-6 py-4">
+    <div class="flex items-center gap-3">
+      <div
+        class="w-10 h-10 rounded-full bg-rayito-blue/10 flex items-center justify-center text-rayito-blue font-bold text-sm"
+      >
+        {enrollment.student?.names.charAt(0)}
+        {enrollment.student?.surnames.charAt(0)}
+      </div>
+      <div>
+        <div class="text-sm font-bold text-gray-800">
+          {enrollment.student?.names}{" "} {enrollment.student?.surnames}
+        </div>
+        <div class="text-xs text-gray-500">
+          DNI: {enrollment.student?.dni}
+        </div>
+      </div>
+    </div>
+  </td>
+  <td class="px-6 py-4">
+    <div class="text-sm font-medium text-gray-700">
+      {enrollment.degree?.name}
+    </div>
+    <div class="text-xs text-gray-400 font-medium uppercase tracking-tight">
+      Sección: {enrollment.degree?.section}
+    </div>
+  </td>
+  <td class="px-6 py-4 border-l border-gray-50">
+    <span
+      class="text-sm font-bold text-gray-600 bg-gray-100/80 px-2 py-1 rounded-md"
+    >
+      {enrollment.academic_period?.name}
+    </span>
+  </td>
+  <td class="px-6 py-4">
+    <span
+      class={`${currentEnrollmentStatus?.bgIndex} ${currentEnrollmentStatus?.textIndex} text-sm font-bold px-2 py-1 rounded-md`}
+    >
+      {currentEnrollmentStatus?.label}
+    </span>
+    
+  </td>
+  <td class="px-6 py-4 text-right">
+    <button
+      class="text-gray-400 hover:text-rayito-blue transition-colors font-bold text-sm"
+    >
+      <Icon name="mdi:eye" />
+    </button>
+  </td>
+</tr>
+

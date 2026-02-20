@@ -1,4 +1,4 @@
-import type { EnrollmentStatus } from '@lib/types/enrollment';
+import type { EnrollmentStatus } from "@lib/types/enrollment";
 
 interface EnrollmentConfig {
   bgIndex: string;
@@ -6,7 +6,10 @@ interface EnrollmentConfig {
   label: string;
 }
 
-export const ENROLLMENT_STATUS_CONFIG: Record<EnrollmentStatus, EnrollmentConfig> = {
+export const ENROLLMENT_STATUS_CONFIG: Record<
+  EnrollmentStatus,
+  EnrollmentConfig
+> = {
   Pendiente: {
     bgIndex: "bg-yellow-600",
     textIndex: "text-yellow-100",
@@ -23,13 +26,15 @@ export const ENROLLMENT_STATUS_CONFIG: Record<EnrollmentStatus, EnrollmentConfig
     label: "Rechazado",
   },
   Pagado: {
-    bgIndex: "bg-green-600",
+    bgIndex: "bg-rayito-blue",
     textIndex: "text-white",
     label: "Pagado",
   },
 };
 
-export const getEnrollmentStatusConfig = (status: EnrollmentStatus | undefined): EnrollmentConfig | null => {
+export const getEnrollmentStatusConfig = (
+  status: EnrollmentStatus | undefined,
+): EnrollmentConfig | null => {
   if (!status) return null;
   return ENROLLMENT_STATUS_CONFIG[status] || null;
 };

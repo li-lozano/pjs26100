@@ -5,7 +5,7 @@ import type { Degree, AcademicPeriod } from "@lib/types/enrollment";
 interface Props {
   students: Student[];
   degrees: Degree[];
-  academicPeriods: AcademicPeriod[];
+  academicPeriods: AcademicPeriod[];  
 }
 
 const { students, degrees, academicPeriods } = Astro.props;
@@ -156,6 +156,7 @@ const { students, degrees, academicPeriods } = Astro.props;
         >
           <option value="Pendiente" selected>Pendiente</option>
           <option value="Aprobado">Aprobado</option>
+          <option value="Rechazado">Rechazado</option>
           <option value="Pagado">Pagado</option>
         </select>
       </div>
