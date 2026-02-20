@@ -7,6 +7,8 @@ interface Props {
 }
 
 const { tutor } = Astro.props;
+
+const tutorDetailUrl = `/dashboard/tutores/${tutor.profile?.documentId}`;
 ---
 
 <tr class="hover:bg-white/40 transition-colors group">
@@ -51,7 +53,10 @@ const { tutor } = Astro.props;
   </td>
   <td class="px-6 py-4">
     <div class="flex flex-row justify-between">
-      <Icon name="mdi:eye" class="w-5 h-5 text-gray-400 hover:text-rayito-blue cursor-pointer"/>
+      <a href={tutorDetailUrl}>
+        <Icon name="mdi:eye" class="w-5 h-5 text-gray-400 hover:text-rayito-blue cursor-pointer"/>
+      </a>
+      
       <Icon name="mdi:pencil" class="w-5 h-5 text-gray-400 hover:text-rayito-blue cursor-pointer"/>
       <Icon name="mdi:delete" class="w-5 h-5 text-gray-400 hover:text-rayito-blue cursor-pointer"/>
     </div>    
