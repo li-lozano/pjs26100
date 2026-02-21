@@ -48,21 +48,29 @@ const navItems = allNavItems.filter((item) => {
         <div class="flex justify-center shrink-0 items-center px-6 py-8">
           <Image src={logo} alt="Rayito de Luz" class="w-32 h-auto" />
         </div>
+
         <nav class="mt-2 flex-1 space-y-1 px-4">
           {
-            navItems.map((item) => (
-              <a
-                href={item.href}
-                class={`flex items-center px-4 py-3 rounded-xl transition-all duration-200 group ${
-                  currentPath === item.href
-                    ? "bg-rayito-blue text-white shadow-lg shadow-rayito-blue/30"
-                    : "text-gray-600 hover:bg-rayito-blue/5 hover:text-rayito-blue"
-                }`}
-              >
-                <span class="mr-3 text-xl">{item.icon}</span>
-                <span class="font-medium">{item.label}</span>
-              </a>
-            ))
+            navItems.map((item) => {
+              const isActive =
+                item.href === "/dashboard" || item.href === "/dashboard/tutor"
+                  ? currentPath === item.href
+                  : currentPath.startsWith(item.href);
+
+              return (
+                <a
+                  href={item.href}
+                  class={`flex items-center px-4 py-3 rounded-xl transition-all duration-200 group ${
+                    isActive
+                      ? "bg-rayito-blue text-white shadow-lg shadow-rayito-blue/30"
+                      : "text-gray-600 hover:bg-rayito-blue/5 hover:text-rayito-blue"
+                  }`}
+                >
+                  <span class="mr-3 text-xl">{item.icon}</span>
+                  <span class="font-medium">{item.label}</span>
+                </a>
+              );
+            })
           }
         </nav>
       </div>
