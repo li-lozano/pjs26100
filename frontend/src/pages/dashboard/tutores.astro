@@ -2,6 +2,7 @@
 import DashboardLayout from "@layouts/DashboardLayout.astro";
 import ReadTutors from "@lib/services/private/ReadTutors";
 import CreateTutorSideOver from "@components/dashboard/tutores/CreateTutorSideOver.astro";
+import CreateStudentFromTutorSideOver from "@components/dashboard/estudiantes/CreateStudentFromTutorSideOver.astro";
 import TutorsHeader from "@components/dashboard/tutores/TutorsHeader.astro";
 import TutorsTable from "@components/dashboard/tutores/TutorsTable.astro";
 import MessageError from "@components/MessageError.astro";
@@ -39,4 +40,5 @@ try {
   </div>
 
   <CreateTutorSideOver />
+  <CreateStudentFromTutorSideOver />
 </DashboardLayout>

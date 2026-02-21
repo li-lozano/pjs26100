@@ -5,8 +5,17 @@ import type { Profile } from "@lib/types/user";
 import type { StrapiSingleResponse } from "@lib/types/strapi";
 
 
+const { user, token } = Astro.locals;
+
+// Redirigir si no tiene permiso
+const allowedRoles = ["Administrador", "Encargado"];
+if (!user || !allowedRoles.includes(user.role?.name || "")) {
+  return Astro.redirect(
+    "/dashboard?error=No tienes permisos para acceder a esta sección",
+  );
+}
+
 const { documentId } = Astro.params;
-const { token } = Astro.locals;
 
 let tutor: Profile | null = null;
 let error = "";
