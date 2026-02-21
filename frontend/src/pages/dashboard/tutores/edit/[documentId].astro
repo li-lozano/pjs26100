@@ -1,9 +1,153 @@
 ---
 import DashboardLayout from "@layouts/DashboardLayout.astro";
+import ReadTutor from "@lib/services/private/ReadTutor";
+import type { Profile } from "@lib/types/user";
+import type { StrapiSingleResponse } from "@lib/types/strapi";
+
+const { user, token } = Astro.locals;
+
+// Redirigir si no tiene permiso
+const allowedRoles = ["Administrador", "Encargado"];
+if (!user || !allowedRoles.includes(user.role?.name || "")) {
+  return Astro.redirect(
+    "/dashboard?error=No tienes permisos para acceder a esta sección",
+  );
+}
+
 const { documentId } = Astro.params;
 
+let tutor: Profile | null = null;
+let error = "";
+
+try {
+  const tutorData: StrapiSingleResponse<Profile> = await ReadTutor(
+    token as string,
+    documentId as string
+  );
+  tutor = tutorData.data;
+} catch (e) {
+  error = "No se pudo cargar la información del tutor.";
+}
 ---
 
-<DashboardLayout>
-  <h1>Editar tutor</h1>
+<DashboardLayout pageTitle="Editar Tutor">
+  <div class="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 animate-fade-in">
+    <!-- Header with App Gradient -->
+    <div class="bg-linear-to-br from-rayito-blue to-rayito-sky p-6 sm:p-8 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center relative overflow-hidden space-y-6 sm:space-y-0">
+      <!-- Decorative background elements -->
+      <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-20 -mt-20 blur-3xl"></div>
+      <div class="absolute bottom-0 left-0 w-48 h-48 bg-rayito-sky/20 rounded-full -ml-10 -mb-10 blur-2xl"></div>
+
+      <div class="relative z-10 flex items-center space-x-4 sm:space-x-6">
+        <a
+          href={`/dashboard/tutores/${documentId}`}
+          class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-xl sm:rounded-2xl bg-white/20 hover:bg-white/30 transition-all backdrop-blur-md shrink-0"
+          title="Regresar"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+          </svg>
+        </a>
+        <div class="min-w-0">
+          <h1 class="text-2xl sm:text-3xl font-bold tracking-tight truncate">
+            {tutor ? `Editar: ${tutor.names}` : "Cargando..."}
+          </h1>
+          <p class="text-white/80 text-xs sm:text-sm mt-1 font-medium">Modifica la información del perfil</p>
+        </div>
+      </div>
+    </div>
+
+    {
+      error ? (
+        <div class="p-12 text-center">
+          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-50 text-red-500 mb-4 font-bold text-2xl">!</div>
+          <p class="text-gray-600 font-medium">{error}</p>
+          <a href="/dashboard/tutores" class="mt-6 inline-block text-rayito-blue font-bold hover:underline">Regresar a la lista</a>
+        </div>
+      ) : tutor ? (
+        <form method="POST" action="/api/v1/core/PUT/tutores" class="p-8 md:p-10 space-y-10">
+          <input type="hidden" name="documentId" value={documentId} />
+          <!-- Form Grid -->
+          <div class="space-y-6">
+            <h4 class="text-sm font-black text-rayito-blue uppercase tracking-widest border-b border-gray-50 pb-2 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-rayito-blue"></span>
+              Información Personal
+            </h4>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Nombres</label>
+                <input
+                  type="text"
+                  name="names"
+                  value={tutor.names}
+                  required
+                  class="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-2 focus:ring-rayito-blue/20 focus:border-rayito-blue transition-all outline-none text-gray-800 font-medium text-lg"
+                  placeholder="Ej: Juan"
+                />
+              </div>
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Apellidos</label>
+                <input
+                  type="text"
+                  name="surnames"
+                  value={tutor.surnames}
+                  required
+                  class="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-2 focus:ring-rayito-blue/20 focus:border-rayito-blue transition-all outline-none text-gray-800 font-medium text-lg"
+                  placeholder="Ej: Perez"
+                />
+              </div>
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">DNI / Documento</label>
+                <input
+                  type="text"
+                  name="dni"
+                  value={tutor.dni}
+                  required
+                  class="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-2 focus:ring-rayito-blue/20 focus:border-rayito-blue transition-all outline-none text-gray-800 font-mono text-lg"
+                  placeholder="8 dígitos"
+                />
+              </div>
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Teléfono / Celular</label>
+                <input
+                  type="text"
+                  name="cell_phone"
+                  value={tutor.cell_phone}
+                  class="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-2 focus:ring-rayito-blue/20 focus:border-rayito-blue transition-all outline-none text-gray-800 font-medium text-lg"
+                  placeholder="Ej: 987654321"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer/Action Row -->
+          <div class="pt-8 border-t border-gray-50 flex flex-col sm:flex-row gap-4">
+            <a
+              href={`/dashboard/tutores/${documentId}`}
+              class="flex-1 px-8 py-4 rounded-2xl border border-gray-200 text-gray-600 font-bold hover:bg-gray-50 transition-all text-center"
+            >
+              Cancelar
+            </a>
+            <button
+              type="submit"
+              class="flex-2 px-8 py-4 rounded-2xl bg-rayito-blue text-white font-bold hover:bg-rayito-sky transition-all shadow-xl shadow-rayito-blue/20 text-center"
+            >
+              Guardar Cambios
+            </button>
+          </div>
+        </form>
+      ) : null
+    }
+  </div>
 </DashboardLayout>
+
+<style>
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in {
+    animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+</style>
