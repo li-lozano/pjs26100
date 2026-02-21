@@ -14,7 +14,7 @@ const currentEnrollmentStatus = getEnrollmentStatusConfig(enrollment.enrollment_
 
 ---
 
-<tr class="hover:bg-white/60 transition-colors group">
+<tr class="hover:bg-white/50 transition-colors group">
   <td class="px-6 py-4">
     <div class="text-sm font-medium text-gray-700">
       {enrollment.code}
@@ -23,7 +23,7 @@ const currentEnrollmentStatus = getEnrollmentStatusConfig(enrollment.enrollment_
   <td class="px-6 py-4">
     <div class="flex items-center gap-3">
       <div
-        class="w-10 h-10 rounded-full bg-rayito-blue/10 flex items-center justify-center text-rayito-blue font-bold text-sm"
+        class="w-10 h-10 rounded-xl bg-rayito-blue/10 flex items-center justify-center text-rayito-blue font-bold text-sm group-hover:bg-rayito-blue group-hover:text-white transition-colors"
       >
         {enrollment.student?.names.charAt(0)}
         {enrollment.student?.surnames.charAt(0)}
@@ -62,11 +62,13 @@ const currentEnrollmentStatus = getEnrollmentStatusConfig(enrollment.enrollment_
     
   </td>
   <td class="px-6 py-4 text-right">
-    <button
-      class="text-gray-400 hover:text-rayito-blue transition-colors font-bold text-sm"
-    >
-      <Icon name="mdi:eye" />
-    </button>
+    <div class="flex items-center justify-end space-x-2">
+      <button
+        class="text-gray-400 hover:text-rayito-blue hover:bg-rayito-blue/10 rounded-lg transition-all p-1"
+      >
+        <Icon name="mdi:eye" class="w-5 h-5" />
+      </button>
+    </div>
   </td>
 </tr>
 

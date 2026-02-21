@@ -11,14 +11,14 @@ const { tutor } = Astro.props;
 const tutorDetailUrl = `/dashboard/tutores/${tutor.profile?.documentId}`;
 ---
 
-<tr class="hover:bg-white/40 transition-colors group">
+<tr class="hover:bg-white/50 transition-colors group">
   <td class="px-6 py-4 text-sm text-gray-700 font-medium">
     {tutor.profile?.dni}
   </td>
   <td class="px-6 py-4">
     <div class="flex items-center gap-3">
       <div
-        class="w-9 h-9 rounded-full bg-rayito-blue/10 text-rayito-blue flex items-center justify-center font-bold text-sm"
+        class="w-10 h-10 rounded-xl bg-rayito-blue/10 text-rayito-blue flex items-center justify-center font-bold text-sm group-hover:bg-rayito-blue group-hover:text-white transition-colors"
       >
         {tutor.profile?.names?.charAt(0) || "T"}
       </div>
@@ -52,13 +52,13 @@ const tutorDetailUrl = `/dashboard/tutores/${tutor.profile?.documentId}`;
     </div>
   </td>
   <td class="px-6 py-4">
-    <div class="flex flex-row justify-between">
+    <div class="flex items-center justify-end space-x-2">
       <a href={tutorDetailUrl}>
-        <Icon name="mdi:eye" class="w-5 h-5 text-gray-400 hover:text-rayito-blue cursor-pointer"/>
+        <Icon name="mdi:eye" class="w-5 h-5 text-gray-400 hover:text-rayito-blue hover:bg-rayito-blue/10 rounded-lg transition-all" />
       </a>
       
-      <Icon name="mdi:pencil" class="w-5 h-5 text-gray-400 hover:text-rayito-blue cursor-pointer"/>
-      <Icon name="mdi:delete" class="w-5 h-5 text-gray-400 hover:text-rayito-blue cursor-pointer"/>
+      <Icon name="mdi:pencil" class="w-5 h-5 text-gray-400 hover:text-rayito-yellow hover:bg-rayito-yellow/10 rounded-lg transition-all" />
+      <Icon name="mdi:delete" class="w-5 h-5 text-gray-400 hover:text-rayito-red hover:bg-rayito-red/10 rounded-lg transition-all" />
     </div>    
   </td>
 </tr>
