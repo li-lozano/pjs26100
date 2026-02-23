@@ -65,7 +65,7 @@ try {
           <a href="/dashboard/tutores" class="mt-6 inline-block text-rayito-blue font-bold hover:underline">Regresar a la lista</a>
         </div>
       ) : tutor ? (
-        <form method="POST" action="/api/v1/core/PUT/tutores" class="p-8 md:p-10 space-y-10">
+        <form method="POST" action="/api/v1/core/PUT/tutor" class="p-8 md:p-10 space-y-10">
           <input type="hidden" name="documentId" value={documentId} />
           <!-- Form Grid -->
           <div class="space-y-6">

@@ -16,6 +16,7 @@ if (!user || !allowedRoles.includes(user.role?.name || "")) {
 }
 
 const { documentId } = Astro.params;
+const tutorId = documentId;
 
 let tutor: Profile | null = null;
 let error = "";
@@ -23,7 +24,7 @@ let error = "";
 try {
   const tutorData: StrapiSingleResponse<Profile> = await ReadTutor(
     token as string,
-    documentId as string
+    tutorId as string
   );
   tutor = tutorData.data;
 } catch (e) {
@@ -59,7 +60,7 @@ try {
 
       <div class="relative z-10 flex gap-2 sm:gap-3 w-full sm:w-auto">
         <button
-          onclick={`if(confirm('¿Estás seguro de que deseas eliminar a este tutor?')) { window.location.href='/dashboard/tutores/delete/${documentId}' }`}
+          onclick={`if(confirm('¿Estás seguro de que deseas eliminar a este tutor?')) { document.getElementById('delete-tutor-form').submit(); }`}
           class="flex-1 sm:flex-none px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-white/10 hover:bg-red-500 hover:scale-105 text-white text-sm sm:text-base font-bold transition-all backdrop-blur-sm border border-white/20"
         >
           Eliminar
@@ -178,6 +179,10 @@ try {
       ) : null
     }
   </div>
+
+  <form id="delete-tutor-form" action="/api/v1/core/DELETE/tutor" method="POST" style="display: none;">
+    <input type="hidden" name="documentId" value={tutorId} />
+  </form>
 </DashboardLayout>
 
 <style>
