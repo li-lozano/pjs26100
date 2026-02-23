@@ -20,7 +20,7 @@ const currentEnrollmentStatus = getEnrollmentStatusConfig(enrollment.enrollment_
       {enrollment.code}
     </div>
   </td>
-  <td class="px-6 py-4">
+  <td class="px-6 py-4 hidden md:table-cell">
     <div class="flex items-center gap-3">
       <div
         class="w-10 h-10 rounded-xl bg-rayito-blue/10 flex items-center justify-center text-rayito-blue font-bold text-sm group-hover:bg-rayito-blue group-hover:text-white transition-colors"
@@ -38,7 +38,7 @@ const currentEnrollmentStatus = getEnrollmentStatusConfig(enrollment.enrollment_
       </div>
     </div>
   </td>
-  <td class="px-6 py-4">
+  <td class="px-6 py-4 hidden md:table-cell">
     <div class="text-sm font-medium text-gray-700">
       {enrollment.degree?.name}
     </div>
@@ -53,7 +53,7 @@ const currentEnrollmentStatus = getEnrollmentStatusConfig(enrollment.enrollment_
       {enrollment.academic_period?.name}
     </span>
   </td>
-  <td class="px-6 py-4">
+  <td class="px-6 py-4 hidden md:table-cell">
     <span
       class={`${currentEnrollmentStatus?.bgIndex} ${currentEnrollmentStatus?.textIndex} text-sm font-bold px-2 py-1 rounded-md`}
     >
@@ -63,11 +63,12 @@ const currentEnrollmentStatus = getEnrollmentStatusConfig(enrollment.enrollment_
   </td>
   <td class="px-6 py-4 text-right">
     <div class="flex items-center justify-end space-x-2">
-      <button
-        class="text-gray-400 hover:text-rayito-blue hover:bg-rayito-blue/10 rounded-lg transition-all p-1"
-      >
-        <Icon name="mdi:eye" class="w-5 h-5" />
-      </button>
+      <a 
+      href="#" 
+      class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-rayito-blue/10 group-hover:bg-rayito-blue group-hover:text-white transition-all cursor-pointer"
+      >        
+       <Icon name="mdi:dots-horizontal" class="w-5 h-5 text-gray-400 hover:text-rayito-blue transition-all" />
+      </a>
     </div>
   </td>
 </tr>

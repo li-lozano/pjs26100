@@ -60,8 +60,11 @@ const tutorDetailUrl = `/dashboard/tutores/${tutor.profile?.documentId}`;
         <span class="text-rayito-blue group-hover:text-white text-xs font-medium">Nuevo</span>
         <Icon name="mdi:account-student" class="w-5 h-5 text-rayito-blue group-hover:text-white transition-all" />        
       </button>
-      <a href={tutorDetailUrl} class="p-1 rounded-lg hover:bg-rayito-blue/10 transition-colors">
-        <Icon name="mdi:eye" class="w-5 h-5 text-gray-400 hover:text-rayito-blue transition-all" />
+      <a 
+      href={tutorDetailUrl} 
+      class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-rayito-blue/10 group-hover:bg-rayito-blue group-hover:text-white transition-all cursor-pointer"
+      >        
+        <Icon name="mdi:dots-horizontal" class="w-5 h-5 text-gray-400 hover:text-rayito-blue transition-all" />
       </a>
     </div>    
   </td>
