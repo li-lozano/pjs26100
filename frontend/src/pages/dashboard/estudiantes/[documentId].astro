@@ -1,0 +1,278 @@
+---
+import DashboardLayout from "@layouts/DashboardLayout.astro";
+import ReadStudent from "@lib/services/private/ReadStudent";
+import ReadEnrollments from "@lib/services/private/ReadEnrollments";
+import ReadEnrollment from "@lib/services/private/ReadEnrollment";
+import type { Student } from "@lib/types/student";
+import type { Enrollment } from "@lib/types/enrollment";
+
+
+const { user, token } = Astro.locals;
+
+// Redirigir si no tiene permiso
+const allowedRoles = ["Administrador", "Encargado"];
+if (!user || !allowedRoles.includes(user.role?.name || "")) {
+  return Astro.redirect(
+    "/dashboard?error=No tienes permisos para acceder a esta sección",
+  );
+}
+
+const { documentId } = Astro.params;
+const studentId = documentId as string;
+
+let student: Student | null = null;
+let error = "";
+
+try {
+  student = await ReadStudent(token as string, studentId);
+  if (!student) {
+    error = "No se encontró la información del estudiante.";
+  }
+} catch (e) {
+  console.error(e);
+  error = "Ocurrió un error al cargar los datos del estudiante.";
+}
+
+let enrollmentDocumentId = "";
+if (student && student.enrollments) {
+  enrollmentDocumentId = student.enrollments.map((enrollment) => enrollment.documentId).toString();     
+}
+
+let enrollment: Enrollment | null = null;
+try {
+  enrollment = await ReadEnrollment(token as string, enrollmentDocumentId);
+  if (!enrollment) {
+    error = "No se encontró la información de la matrícula.";
+  }
+} catch (e) {
+  console.error(e);
+  error = "Ocurrió un error al cargar los datos de la matrícula.";
+}
+
+
+// Función para obtener color de badge según estado
+const getStatusClasses = (status?: string) => {
+  switch (status) {
+    case "Activo":
+      return "bg-green-100 text-green-700 border-green-200";
+    case "Pendiente":
+      return "bg-amber-100 text-amber-700 border-amber-200";
+    case "Rechazado":
+      return "bg-red-100 text-red-700 border-red-200";
+    default:
+      return "bg-gray-100 text-gray-700 border-gray-200";
+  }
+};
+---
+
+<DashboardLayout pageTitle={student ? `Detalle: ${student.names} ${student.surnames}` : error ? "Error" : "Detalles del Estudiante"}>
+  <div class="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 animate-fade-in">
+    <!-- Header with App Gradient -->
+    <div class="bg-linear-to-br from-rayito-blue to-rayito-sky p-6 sm:p-8 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center relative overflow-hidden space-y-6 sm:space-y-0">
+      <!-- Decorative background elements -->
+      <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-20 -mt-20 blur-3xl"></div>
+      <div class="absolute bottom-0 left-0 w-48 h-48 bg-rayito-sky/20 rounded-full -ml-10 -mb-10 blur-2xl"></div>
+
+      <div class="relative z-10 flex items-center space-x-4 sm:space-x-6">
+        <a href="/dashboard/estudiantes"
+           class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-xl sm:rounded-2xl bg-white/20 hover:bg-white/30 transition-all backdrop-blur-md shrink-0"
+           title="Regresar">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+          </svg>
+        </a>
+        <div class="min-w-0">
+          <div class="flex items-center gap-3">
+            <h1 class="text-2xl sm:text-3xl font-bold tracking-tight truncate">
+              {student ? `${student.names} ${student.surnames}` : "Cargando..."}
+            </h1>
+            {student?.student_status && (
+              <span class={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider border ${getStatusClasses(student.student_status)}`}>
+                {student.student_status}
+              </span>
+            )}
+          </div>
+          <p class="text-white/80 text-xs sm:text-sm mt-1 font-medium italic">Ficha técnica del estudiante</p>
+        </div>
+      </div>
+
+      <div class="relative z-10 flex gap-2 sm:gap-3 w-full sm:w-auto">
+        <button
+          onclick={`if(confirm('¿Estás seguro de que deseas eliminar a este estudiante?')) { document.getElementById('delete-student-form').submit(); }`}
+          class="flex-1 sm:flex-none px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-white/10 hover:bg-red-500 hover:scale-105 text-white text-sm sm:text-base font-bold transition-all backdrop-blur-sm border border-white/20"
+        >
+          Eliminar
+        </button>
+        <a
+          href={`/dashboard/estudiantes/edit/${studentId}`}
+          class="flex-1 sm:flex-none px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-white text-rayito-blue hover:bg-gray-50 hover:scale-105 text-sm sm:text-base font-bold transition-all shadow-lg text-center"
+        >
+          Modificar
+        </a>
+      </div>
+    </div>
+
+    {error ? (
+      <div class="p-12 text-center">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-50 text-red-500 mb-4 font-bold text-2xl">!</div>
+        <p class="text-gray-600 font-medium">{error}</p>
+        <a href="/dashboard/estudiantes" class="mt-6 inline-block text-rayito-blue font-bold hover:underline">Regresar a la lista</a>
+      </div>
+    ) : student ? (
+      <div class="p-8 md:p-10 space-y-10">
+        <!-- Info Grid: Personal -->
+        <div class="space-y-6">
+          <h4 class="text-sm font-black text-rayito-blue uppercase tracking-widest border-b border-gray-50 pb-2 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-rayito-blue"></span>
+            Información Académica y Personal
+          </h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-1.5">
+              <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Nombres</label>
+              <div class="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 text-gray-800 font-medium text-lg">{student.names}</div>
+            </div>
+            <div class="space-y-1.5">
+              <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Apellidos</label>
+              <div class="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 text-gray-800 font-medium text-lg">{student.surnames}</div>
+            </div>
+            <div class="space-y-1.5">
+              <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">DNI / Documento</label>
+              <div class="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 text-gray-800 font-mono text-lg">{student.dni}</div>
+            </div>
+            <div class="space-y-1.5">
+              <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Fecha de Nacimiento</label>
+              <div class="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 text-gray-800 font-medium text-lg">
+                {student.birthday ? new Date(student.birthday).toLocaleDateString("es-ES", { day: '2-digit', month: 'long', year: 'numeric' }) : "No registrada"}
+              </div>
+            </div>
+            <div class="space-y-1.5">
+              <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Género</label>
+              <div class="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 text-gray-800 font-medium text-lg">{student.gender || "No registrado"}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Info Grid: Contact -->
+        <div class="space-y-6">
+          <h4 class="text-sm font-black text-rayito-blue uppercase tracking-widest border-b border-gray-50 pb-2 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-rayito-blue"></span>
+            Contacto y Ubicación
+          </h4>
+          <div class="grid grid-cols-1 gap-6">
+            <div class="space-y-1.5">
+              <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Dirección de Domicilio</label>
+              <div class="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 text-gray-800 font-medium text-lg">{student.address || "No registrada"}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tutor Responsable -->
+        <div class="space-y-6">
+          <h4 class="text-sm font-black text-rayito-blue uppercase tracking-widest border-b border-gray-50 pb-2 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-rayito-blue"></span>
+            Tutor Responsable
+          </h4>
+          {student.profile ? (
+            <a 
+              href={`/dashboard/tutores/${student.profile.documentId}`}
+              class="group flex items-center p-5 rounded-2xl border border-gray-100 bg-white hover:border-rayito-blue/30 hover:shadow-md transition-all"
+            >
+              <div class="w-14 h-14 rounded-xl bg-linear-to-br from-rayito-blue/10 to-rayito-sky/10 flex items-center justify-center text-rayito-blue font-black text-xl mr-5 group-hover:from-rayito-blue group-hover:to-rayito-sky group-hover:text-white transition-all">
+                {student.profile.names[0]}{student.profile.surnames[0]}
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-base font-bold text-gray-900 truncate group-hover:text-rayito-blue transition-colors">
+                  {student.profile.names} {student.profile.surnames}
+                </p>
+                <p class="text-xs text-gray-400 font-semibold mt-0.5 uppercase tracking-wide">Tutor Legal / Apoderado</p>
+              </div>
+              <div class="text-gray-300 group-hover:text-rayito-blue group-hover:translate-x-1 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                </svg>
+              </div>
+            </a>
+          ) : (
+            <div class="p-8 rounded-2xl border-2 border-dashed border-gray-100 text-center">
+              <p class="text-gray-400 font-medium">No tiene un tutor asignado en el sistema.</p>
+            </div>
+          )}
+        </div>
+
+        <!-- Matrículas Section -->
+        <div class="space-y-6">
+          <h4 class="text-sm font-black text-rayito-blue uppercase tracking-widest border-b border-gray-50 pb-2 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-rayito-blue"></span>
+              Historial de Matrículas
+            </div>
+            <span class="bg-rayito-blue/10 text-rayito-blue px-3 py-1 rounded-full text-xs font-bold">
+              {student.enrollments?.length || 0} REGISTROS
+            </span>
+          </h4>
+
+          <div class="grid grid-cols-1 sm:grid-cols-1 gap-4">
+            {enrollment ? (
+                <div class="p-5 rounded-2xl border border-gray-100 bg-gray-50/30 flex flex-col justify-between">
+                  <div>
+                    <p 
+                    class="text-sm font-bold text-gray-800">
+                    {enrollment.enrollment_status ? "Matrícula Registrada" : "Matrícula Pendiente"}
+                    </p>
+                    <div class="flex justify-between items-start mt-2 gap-2">
+                      <span
+                      class="text-xs font-black text-rayito-blue uppercase"
+                      >
+                        {enrollment.code ? enrollment.code : "Sin Codigo de matricula"}                        </span>
+                      <span 
+                      class="text-xs font-black text-rayito-blue uppercase">
+                      Periodo: {enrollment.academic_period?.name || "Periodo: N/A"}
+                      </span>
+                      <span 
+                      class={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${enrollment.enrollment_status === 'Pagado' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-500'}`}>
+                        {enrollment.enrollment_status}
+                      </span>
+                    </div>
+                          
+                  </div>
+                </div>
+            ) : (
+              <div class="col-span-full p-8 rounded-2xl border-2 border-dashed border-gray-100 text-center">
+                <p class="text-gray-400 font-medium">El estudiante no cuenta con matrículas registradas o hubo un error al cargar.</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <!-- Footer/Action Row -->
+        <div class="pt-8 border-t border-gray-50 flex flex-col sm:flex-row gap-4">
+          <a
+            href="/dashboard/estudiantes"
+            class="flex-1 px-8 py-4 rounded-2xl border border-gray-200 text-gray-600 font-bold hover:bg-gray-50 transition-all text-center"
+          >
+            Cerrar y Volver
+          </a>
+          <button
+            class="flex-2 px-8 py-4 rounded-2xl bg-gray-900 text-white font-bold hover:bg-gray-800 transition-all shadow-xl shadow-gray-200 text-center"
+          >
+            Descargar Ficha PDF
+          </button>
+        </div>
+      </div>
+    ) : null}
+  </div>
+
+  <form id="delete-student-form" action="/api/v1/core/DELETE/student" method="POST" style="display: none;">
+    <input type="hidden" name="documentId" value={studentId} />
+  </form>
+</DashboardLayout>
+
+<style>
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in {
+    animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+</style>

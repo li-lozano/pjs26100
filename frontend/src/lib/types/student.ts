@@ -1,5 +1,5 @@
 import type { StrapiResponse } from "./strapi";
-
+import type { Enrollment } from "./enrollment";
 export type StudentStatus = "Pendiente" | "Activo" | "Rechazado";
 
 export interface Student {
@@ -18,17 +18,7 @@ export interface Student {
     names: string;
     surnames: string;
   };
-  enrollments?: {
-    id: number;
-    documentId: string;
-    enrollment_status: string;
-    academic_period?: {
-      id: number;
-      documentId: string;
-      name: string;
-      active: boolean;
-    };
-  }[];
+  enrollments?: Enrollment[];
   createdAt: string;
   updatedAt: string;
   publishedAt: string;

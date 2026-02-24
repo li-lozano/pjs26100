@@ -50,7 +50,7 @@ const { student } = Astro.props;
   <td class="px-6 py-4 text-right">
     <div class="flex items-center justify-end space-x-2">
       <a 
-      href="#" 
+      href={`/dashboard/estudiantes/${student.documentId}`}
       class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-rayito-blue/10 group-hover:bg-rayito-blue group-hover:text-white transition-all cursor-pointer"
       >        
        <Icon name="mdi:dots-horizontal" class="w-5 h-5 text-gray-400 hover:text-rayito-blue transition-all" />
