@@ -217,16 +217,16 @@ const getStatusClasses = (status?: string) => {
                   <div>
                     <p 
                     class="text-sm font-bold text-gray-800">
-                    {enrollment.enrollment_status ? "Matrícula Registrada" : "Matrícula Pendiente"}
+                    {enrollment.enrollment_status ? "Matrícula Registrada" : ""}
                     </p>
                     <div class="flex justify-between items-start mt-2 gap-2">
                       <span
                       class="text-xs font-black text-rayito-blue uppercase"
                       >
-                        {enrollment.code ? enrollment.code : "Sin Codigo de matricula"}                        </span>
+                        {enrollment.code ? enrollment.code : ""}                        </span>
                       <span 
                       class="text-xs font-black text-rayito-blue uppercase">
-                      Periodo: {enrollment.academic_period?.name || "Periodo: N/A"}
+                      {enrollment.academic_period?.name || "N/A"}
                       </span>
                       <span 
                       class={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${enrollment.enrollment_status === 'Pagado' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-500'}`}>
