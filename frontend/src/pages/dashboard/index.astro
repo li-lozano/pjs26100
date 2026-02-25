@@ -1,26 +1,63 @@
 ---
 import DashboardLayout from "@layouts/DashboardLayout.astro";
+import ReadStudents from "@lib/services/private/ReadStudents";
+import ReadEnrollments from "@lib/services/private/ReadEnrollments";
+import type { Student } from "@lib/types/student";
+import type { Enrollment } from "@lib/types/enrollment";
 
-const { user } = Astro.locals;
+const { user, token } = Astro.locals;
+
+// Obtener datos reales
+let students: Student[] = [];
+let enrollments: Enrollment[] = [];
+
+try {
+  if (token) {
+    [students, enrollments] = await Promise.all([
+      ReadStudents(token),
+      ReadEnrollments(token),
+    ]);
+  }
+} catch (error) {
+  console.error("Error al cargar datos del dashboard:", error);
+}
+
+// Calcular estadísticas
+const activeStudentsCount = students.filter(
+  (s) => s.student_status === "Activo",
+).length;
+const pendingEnrollmentsCount = enrollments.filter(
+  (e) => e.enrollment_status === "Pendiente",
+).length;
+
+// Actividad reciente (las últimas 5 matrículas)
+const recentActivity = enrollments
+  .sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  )
+  .slice(0, 5);
 
 const stats = [
   {
     label: "Estudiantes Activos",
-    value: "124",
+    value: activeStudentsCount.toString(),
     icon: "👶",
     color: "bg-rayito-blue",
+    trend: "+5% este mes", // Placeholder
   },
   {
     label: "Matrículas Pendientes",
-    value: "12",
+    value: pendingEnrollmentsCount.toString(),
     icon: "📝",
     color: "bg-rayito-yellow",
+    trend: "Acción requerida",
   },
   {
-    label: "Próximos Eventos",
-    value: "3",
-    icon: "📅",
+    label: "Total Estudiantes",
+    value: students.length.toString(),
+    icon: "📊",
     color: "bg-rayito-pink",
+    trend: "En crecimiento",
   },
 ];
 ---
@@ -49,11 +86,12 @@ const stats = [
           >
             Ver Estudiantes
           </a>
-          <button
+          <a
+            href="/dashboard/matriculas"
             class="bg-rayito-yellow hover:bg-rayito-amber transform rounded-xl px-6 py-3 font-bold text-white shadow-lg transition-all hover:scale-105"
           >
-            Nueva Matrícula
-          </button>
+            Control Matrículas
+          </a>
         </div>
       </div>
 
@@ -77,7 +115,7 @@ const stats = [
                 {stat.icon}
               </div>
               <span class="rounded-lg bg-green-50 px-2 py-1 text-sm font-medium text-green-600">
-                +5% este mes
+                {stat.trend}
               </span>
             </div>
             <p class="text-text-secondary text-sm font-medium">{stat.label}</p>
@@ -89,27 +127,49 @@ const stats = [
       }
     </div>
 
-    <!-- Placeholder Section for Future List -->
+    <!-- Activity and Shortcuts Section -->
     <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
       <section
         class="rounded-2xl border border-white/40 bg-white/40 p-6 shadow-sm backdrop-blur-sm md:p-8"
       >
         <h3 class="text-text-primary mb-6 flex items-center text-xl font-bold">
-          <span class="mr-2">🕒</span> Actividad Reciente
+          <span class="mr-2">🕒</span> Actividad Reciente (Matrículas)
         </h3>
         <div class="space-y-4">
           {
-            [1, 2, 3].map(() => (
-              <div class="flex items-start space-x-4 rounded-xl p-4 transition-colors hover:bg-white/50">
-                <div class="bg-rayito-yellow mt-2 h-2 w-2 rounded-full" />
-                <div>
-                  <p class="text-sm font-medium text-gray-800">
-                    Nueva matrícula registrada
-                  </p>
-                  <p class="text-xs text-gray-500">Hace 2 horas • Por Admin</p>
-                </div>
-              </div>
-            ))
+            recentActivity.length > 0 ? (
+              recentActivity.map((activity) => (
+                <a
+                  href={`/dashboard/matriculas/${activity.documentId}`}
+                  class="flex items-start space-x-4 rounded-xl p-4 transition-colors hover:bg-white/50"
+                >
+                  <div
+                    class={`mt-2 h-2 w-2 rounded-full ${activity.enrollment_status === "Pendiente" ? "bg-rayito-yellow" : "bg-green-500"}`}
+                  />
+                  <div>
+                    <p class="text-sm font-medium text-gray-800">
+                      Matrícula {activity.code} - {activity.student?.names}{" "}
+                      {activity.student?.surnames}
+                    </p>
+                    <p class="text-xs text-gray-500">
+                      {new Date(activity.createdAt).toLocaleDateString(
+                        "es-ES",
+                        {
+                          day: "2-digit",
+                          month: "short",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        },
+                      )}
+                    </p>
+                  </div>
+                </a>
+              ))
+            ) : (
+              <p class="py-4 text-center text-gray-500">
+                No hay actividad reciente.
+              </p>
+            )
           }
         </div>
       </section>
@@ -121,44 +181,48 @@ const stats = [
           <span class="mr-2">💡</span> Accesos Rápidos
         </h3>
         <div class="grid grid-cols-2 gap-4">
-          <button
+          <a
+            href="/dashboard/estudiantes"
             class="hover:border-rayito-blue group rounded-xl border border-gray-100 bg-white p-4 text-left transition-all"
           >
-            <p class="mb-2 text-2xl">📋</p>
+            <p class="mb-2 text-2xl">👶</p>
             <p
               class="group-hover:text-rayito-blue text-sm font-bold text-gray-700"
             >
-              Reporte Mensual
+              Gestión Estudiantes
             </p>
-          </button>
-          <button
+          </a>
+          <a
+            href="/dashboard/matriculas"
             class="hover:border-rayito-blue group rounded-xl border border-gray-100 bg-white p-4 text-left transition-all"
           >
-            <p class="mb-2 text-2xl">💰</p>
+            <p class="mb-2 text-2xl">📝</p>
             <p
               class="group-hover:text-rayito-blue text-sm font-bold text-gray-700"
             >
-              Gestión de Pagos
+              Control Matrículas
             </p>
-          </button>
-          <button
+          </a>
+          <a
+            href="/dashboard/tutors"
             class="hover:border-rayito-blue group rounded-xl border border-gray-100 bg-white p-4 text-left transition-all"
           >
-            <p class="mb-2 text-2xl">📧</p>
+            <p class="mb-2 text-2xl">👥</p>
             <p
               class="group-hover:text-rayito-blue text-sm font-bold text-gray-700"
             >
-              Enviar Comunicados
+              Gestión de Tutores
             </p>
-          </button>
+          </a>
+          <!-- Placeholder for future sections -->
           <button
-            class="hover:border-rayito-blue group rounded-xl border border-gray-100 bg-white p-4 text-left transition-all"
+            class="hover:border-rayito-blue group cursor-not-allowed rounded-xl border border-gray-100 bg-white p-4 text-left opacity-50 transition-all"
           >
             <p class="mb-2 text-2xl">📅</p>
             <p
               class="group-hover:text-rayito-blue text-sm font-bold text-gray-700"
             >
-              Calendario Acadêmico
+              Calendario Académico
             </p>
           </button>
         </div>
