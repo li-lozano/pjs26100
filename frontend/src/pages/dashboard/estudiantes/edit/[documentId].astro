@@ -1,0 +1,187 @@
+---
+import DashboardLayout from "@layouts/DashboardLayout.astro";
+import ReadStudent from "@lib/services/private/ReadStudent";
+import type { Student } from "@lib/types/student";
+
+const { user, token } = Astro.locals;
+
+// Redirigir si no tiene permiso
+const allowedRoles = ["Administrador", "Encargado"];
+if (!user || !allowedRoles.includes(user.role?.name || "")) {
+  return Astro.redirect(
+    "/dashboard?error=No tienes permisos para acceder a esta sección",
+  );
+}
+
+const { documentId } = Astro.params;
+
+let student: Student | null = null;
+let error = Astro.url.searchParams.get("error") || "";
+
+try {
+  student = await ReadStudent(token as string, documentId as string);
+  if (!student) {
+    error = "No se pudo cargar la información del estudiante.";
+  }
+} catch (e) {
+  error = "Ocurrió un error al cargar los datos del estudiante.";
+}
+---
+
+<DashboardLayout pageTitle="Editar Estudiante">
+  <div class="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 animate-fade-in">
+    <!-- Header with App Gradient -->
+    <div class="bg-linear-to-br from-rayito-blue to-rayito-sky p-6 sm:p-8 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center relative overflow-hidden space-y-6 sm:space-y-0">
+      <!-- Decorative background elements -->
+      <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-20 -mt-20 blur-3xl"></div>
+      <div class="absolute bottom-0 left-0 w-48 h-48 bg-rayito-sky/20 rounded-full -ml-10 -mb-10 blur-2xl"></div>
+
+      <div class="relative z-10 flex items-center space-x-4 sm:space-x-6">
+        <a
+          href={`/dashboard/estudiantes/${documentId}`}
+          class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-xl sm:rounded-2xl bg-white/20 hover:bg-white/30 transition-all backdrop-blur-md shrink-0"
+          title="Regresar"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+          </svg>
+        </a>
+        <div class="min-w-0">
+          <h1 class="text-2xl sm:text-3xl font-bold tracking-tight truncate">
+            {student ? `Editar: ${student.names}` : "Cargando..."}
+          </h1>
+          <p class="text-white/80 text-xs sm:text-sm mt-1 font-medium">Modifica la información del estudiante</p>
+        </div>
+      </div>
+    </div>
+
+    {
+      error && (
+        <div class="mx-8 mt-6 p-4 rounded-2xl bg-red-50 border border-red-100 text-red-600 text-sm font-medium flex items-center gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+          </svg>
+          {error}
+        </div>
+      )
+    }
+
+    {
+      student ? (
+        <form method="POST" action="/api/v1/core/PUT/student" class="p-8 md:p-10 space-y-10">
+          <input type="hidden" name="documentId" value={documentId} />
+          
+          <!-- Personal Info -->
+          <div class="space-y-6">
+            <h4 class="text-sm font-black text-rayito-blue uppercase tracking-widest border-b border-gray-50 pb-2 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-rayito-blue"></span>
+              Información Personal y Académica
+            </h4>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Nombres</label>
+                <input
+                  type="text"
+                  name="names"
+                  value={student.names}
+                  required
+                  class="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-2 focus:ring-rayito-blue/20 focus:border-rayito-blue transition-all outline-none text-gray-800 font-medium text-lg"
+                />
+              </div>
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Apellidos</label>
+                <input
+                  type="text"
+                  name="surnames"
+                  value={student.surnames}
+                  required
+                  class="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-2 focus:ring-rayito-blue/20 focus:border-rayito-blue transition-all outline-none text-gray-800 font-medium text-lg"
+                />
+              </div>
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">DNI / Documento</label>
+                <input
+                  type="text"
+                  name="dni"
+                  value={student.dni}
+                  required
+                  class="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-2 focus:ring-rayito-blue/20 focus:border-rayito-blue transition-all outline-none text-gray-800 font-mono text-lg"
+                />
+              </div>
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Fecha de Nacimiento</label>
+                <input
+                  type="date"
+                  name="birthday"
+                  value={student.birthday}
+                  required
+                  class="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-2 focus:ring-rayito-blue/20 focus:border-rayito-blue transition-all outline-none text-gray-800 font-medium text-lg"
+                />
+              </div>
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Género</label>
+                <select
+                  name="gender"
+                  required
+                  class="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-2 focus:ring-rayito-blue/20 focus:border-rayito-blue transition-all outline-none text-gray-800 font-medium text-lg appearance-none"
+                >
+                  <option value="Masculino" selected={student.gender === "Masculino"}>Masculino</option>
+                  <option value="Femenino" selected={student.gender === "Femenino"}>Femenino</option>
+                  <option value="Otro" selected={student.gender === "Otro"}>Otro</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact & Address -->
+          <div class="space-y-6">
+            <h4 class="text-sm font-black text-rayito-blue uppercase tracking-widest border-b border-gray-50 pb-2 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-rayito-blue"></span>
+              Contacto y Ubicación
+            </h4>
+            <div class="space-y-1.5">
+              <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Dirección de Domicilio</label>
+              <textarea
+                name="address"
+                required
+                rows="2"
+                class="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-2 focus:ring-rayito-blue/20 focus:border-rayito-blue transition-all outline-none text-gray-800 font-medium text-lg resize-none"
+              >{student.address}</textarea>
+            </div>
+          </div>
+
+          <!-- Footer/Action Row -->
+          <div class="pt-8 border-t border-gray-50 flex flex-col sm:flex-row gap-4">
+            <a
+              href={`/dashboard/estudiantes/${documentId}`}
+              class="flex-1 px-8 py-4 rounded-2xl border border-gray-200 text-gray-600 font-bold hover:bg-gray-50 transition-all text-center"
+            >
+              Cancelar
+            </a>
+            <button
+              type="submit"
+              class="flex-2 px-8 py-4 rounded-2xl bg-rayito-blue text-white font-bold hover:bg-rayito-sky transition-all shadow-xl shadow-rayito-blue/20 text-center"
+            >
+              Guardar Cambios
+            </button>
+          </div>
+        </form>
+      ) : !error && (
+        <div class="p-12 text-center">
+            <p class="text-gray-400 animate-pulse">Cargando información...</p>
+        </div>
+      )
+    }
+  </div>
+</DashboardLayout>
+
+<style>
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in {
+    animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+</style>
