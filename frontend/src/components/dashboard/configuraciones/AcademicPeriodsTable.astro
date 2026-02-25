@@ -64,7 +64,10 @@ const { periods } = Astro.props;
                 </span>
               </td>
               <td class="px-6 py-4 text-center">
-                <button class="hover:text-rayito-blue hover:bg-rayito-blue/5 rounded-lg p-2 text-gray-400 transition-colors">
+                <button
+                  onclick={`window.dispatchEvent(new CustomEvent('open-update-period-sideover', { detail: { period: ${JSON.stringify(period)} } }))`}
+                  class="hover:text-rayito-blue hover:bg-rayito-blue/5 rounded-lg p-2 text-gray-400 transition-colors"
+                >
                   <span class="text-lg">⚙️</span>
                 </button>
               </td>

@@ -8,7 +8,9 @@ import ConfigTabs from "@components/dashboard/configuraciones/ConfigTabs.astro";
 import AcademicPeriodsTable from "@components/dashboard/configuraciones/AcademicPeriodsTable.astro";
 import DegreesTable from "@components/dashboard/configuraciones/DegreesTable.astro";
 import CreateAcademicPeriodSideOver from "@components/dashboard/configuraciones/CreateAcademicPeriodSideOver.astro";
+import UpdateAcademicPeriodSideOver from "@components/dashboard/configuraciones/UpdateAcademicPeriodSideOver.astro";
 import CreateDegreeSideOver from "@components/dashboard/configuraciones/CreateDegreeSideOver.astro";
+import UpdateDegreeSideOver from "@components/dashboard/configuraciones/UpdateDegreeSideOver.astro";
 import MessageError from "@components/MessageError.astro";
 import MessageSuccess from "@components/MessageSuccess.astro";
 import type { AcademicPeriod } from "@lib/types/academic_period";
@@ -89,5 +91,7 @@ try {
     </div>
   </div>
   <CreateAcademicPeriodSideOver />
+  <UpdateAcademicPeriodSideOver />
   <CreateDegreeSideOver />
+  <UpdateDegreeSideOver />
 </DashboardLayout>

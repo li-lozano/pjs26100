@@ -1,0 +1,147 @@
+---
+
+---
+
+<dialog
+  id="update-academic-period-sideover"
+  class="fixed inset-y-0 right-0 m-0 h-screen w-full max-w-lg translate-x-full overflow-hidden border-none bg-white p-0 shadow-2xl transition-all duration-300 ease-in-out backdrop:backdrop-blur-sm open:translate-x-0"
+>
+  <style>
+    dialog#update-academic-period-sideover {
+      display: flex;
+      flex-direction: column;
+      margin-right: 0;
+      margin-left: auto;
+      max-height: none;
+      height: 100dvh;
+    }
+
+    dialog::backdrop {
+      background-color: rgba(0, 0, 0, 0);
+      transition: all 0.3s allow-discrete;
+    }
+
+    dialog[open]::backdrop {
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    @starting-style {
+      dialog[open] {
+        transform: translateX(100%);
+      }
+      dialog[open]::backdrop {
+        background-color: rgba(0, 0, 0, 0);
+      }
+    }
+  </style>
+
+  <div
+    class="from-rayito-blue to-rayito-sky flex shrink-0 items-center justify-between bg-linear-to-br p-8 text-white"
+  >
+    <div>
+      <h3 class="text-2xl font-bold">Editar Periodo Académico</h3>
+      <p class="mt-1 text-sm text-white/80">
+        Actualiza los detalles del ciclo lectivo
+      </p>
+    </div>
+    <button
+      onclick="document.getElementById('update-academic-period-sideover').close()"
+      class="flex h-10 w-10 items-center justify-center rounded-full text-2xl transition-colors hover:bg-white/10"
+      aria-label="Cerrar"
+    >
+      ×
+    </button>
+  </div>
+
+  <form
+    id="update-academic-period-form"
+    method="POST"
+    action="/api/v1/core/PUT/periodo_academico"
+    class="flex-1 space-y-6 overflow-y-auto bg-white p-8"
+  >
+    <input type="hidden" name="documentId" id="update-period-documentId" />
+    <div class="space-y-4">
+      <h4
+        class="text-rayito-blue border-b border-gray-50 pb-2 text-sm font-bold tracking-widest uppercase"
+      >
+        Detalles del Periodo
+      </h4>
+
+      <div class="space-y-1.5">
+        <label
+          class="ml-1 text-xs font-bold tracking-wider text-gray-400 uppercase"
+          >Nombre del Periodo</label
+        >
+        <input
+          type="text"
+          name="name"
+          id="update-period-name"
+          required
+          class="focus:ring-rayito-blue/20 focus:border-rayito-blue w-full rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-gray-800 transition-all outline-none focus:bg-white focus:ring-2"
+          placeholder="Ej: 2024-I"
+        />
+      </div>
+
+      <div
+        class="flex items-center gap-3 rounded-2xl border border-gray-100 bg-gray-50 p-4"
+      >
+        <input
+          type="checkbox"
+          name="active"
+          id="update-period-active"
+          class="text-rayito-blue focus:ring-rayito-blue h-5 w-5 rounded border-gray-300"
+        />
+        <label
+          for="update-period-active"
+          class="cursor-pointer text-sm font-bold text-gray-600"
+        >
+          Marcar como periodo activo
+        </label>
+      </div>
+    </div>
+
+    <div
+      class="sticky bottom-0 flex gap-4 border-t border-gray-50 bg-white pt-8"
+    >
+      <button
+        type="button"
+        onclick="document.getElementById('update-academic-period-sideover').close()"
+        class="flex-1 rounded-xl border border-gray-200 px-6 py-3.5 font-bold text-gray-600 transition-all hover:bg-gray-50"
+      >
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        class="bg-rayito-blue hover:bg-rayito-sky shadow-rayito-blue/20 flex-2 rounded-xl px-6 py-3.5 font-bold text-white shadow-lg transition-all"
+      >
+        Guardar Cambios
+      </button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+  window.addEventListener("open-update-period-sideover", (event: any) => {
+    const { period } = event.detail;
+    const dialog = document.getElementById(
+      "update-academic-period-sideover",
+    ) as HTMLDialogElement;
+    const form = document.getElementById(
+      "update-academic-period-form",
+    ) as HTMLFormElement;
+
+    if (dialog && form) {
+      (
+        document.getElementById("update-period-documentId") as HTMLInputElement
+      ).value = period.documentId;
+      (
+        document.getElementById("update-period-name") as HTMLInputElement
+      ).value = period.name;
+      (
+        document.getElementById("update-period-active") as HTMLInputElement
+      ).checked = period.active;
+
+      dialog.showModal();
+    }
+  });
+</script>
