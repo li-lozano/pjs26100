@@ -2,8 +2,6 @@
 import type { Student } from "@lib/types/student";
 import StudentsTableRow from "./StudentsTableRow.astro";
 
-
-
 interface Props {
   students: Student[];
   error?: string;
@@ -13,12 +11,12 @@ const { students, error } = Astro.props;
 ---
 
 <div
-  class="bg-white/40 backdrop-blur-sm rounded-2xl border border-white/40 shadow-sm overflow-hidden"
+  class="overflow-hidden rounded-2xl border border-white/40 bg-white/40 shadow-sm backdrop-blur-sm"
 >
   {
     error && (
-      <div class="p-8 text-center bg-red-50/50">
-        <p class="text-red-500 font-medium">⚠️ {error}</p>
+      <div class="bg-red-50/50 p-8 text-center">
+        <p class="font-medium text-red-500">⚠️ {error}</p>
       </div>
     )
   }
@@ -26,49 +24,49 @@ const { students, error } = Astro.props;
   {
     !error && students.length === 0 ? (
       <div class="p-16 text-center">
-        <div class="w-20 h-20 bg-rayito-blue/10 rounded-full flex items-center justify-center mx-auto mb-4 text-4xl">
+        <div class="bg-rayito-blue/10 mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full text-4xl">
           🎓
         </div>
         <h3 class="text-lg font-bold text-gray-800">
           No hay estudiantes registrados
         </h3>
-        <p class="text-gray-500 max-w-xs mx-auto mt-2 text-sm leading-relaxed">
+        <p class="mx-auto mt-2 max-w-xs text-sm leading-relaxed text-gray-500">
           Comienza por añadir a tu primer estudiante para gestionar su proceso
           académico.
         </p>
-        <button class="mt-6 text-rayito-blue font-bold text-sm hover:underline">
+        <button class="text-rayito-blue mt-6 text-sm font-bold hover:underline">
           Añadir ahora
         </button>
       </div>
     ) : (
       !error && (
         <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse">
+          <table class="w-full border-collapse text-left">
             <thead>
-              <tr class="bg-gray-50/50 border-b border-gray-100">
-                <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider hidden md:table-cell">
+              <tr class="border-b border-gray-100 bg-gray-50/50">
+                <th class="hidden px-6 py-4 text-xs font-bold tracking-wider text-gray-500 uppercase md:table-cell">
                   DNI
-                </th>                
-                <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                </th>
+                <th class="px-6 py-4 text-xs font-bold tracking-wider text-gray-500 uppercase">
                   Estudiante
                 </th>
-                <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                <th class="hidden px-6 py-4 text-xs font-bold tracking-wider text-gray-500 uppercase md:table-cell">
                   Estado
-                </th>                
-                <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                </th>
+                <th class="hidden px-6 py-4 text-xs font-bold tracking-wider text-gray-500 uppercase md:table-cell">
                   Cumpleaños
                 </th>
-                <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                <th class="hidden px-6 py-4 text-xs font-bold tracking-wider text-gray-500 uppercase md:table-cell">
                   Tutor
                 </th>
-                <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">
+                <th class="px-6 py-4 text-right text-xs font-bold tracking-wider text-gray-500 uppercase">
                   Acciones
                 </th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-50">              
-              {students.map((student) => (                
-                <StudentsTableRow student={student} />                
+            <tbody class="divide-y divide-gray-50">
+              {students.map((student) => (
+                <StudentsTableRow student={student} />
               ))}
             </tbody>
           </table>

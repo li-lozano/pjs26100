@@ -1,4 +1,7 @@
-import type { AcademicPeriod, CreateAcademicPeriodData } from "@lib/types/academic_period";
+import type {
+  AcademicPeriod,
+  CreateAcademicPeriodData,
+} from "@lib/types/academic_period";
 import type { StrapiSingleResponse } from "@lib/types/strapi";
 
 export default async function CreateAcademicPeriod(
@@ -25,7 +28,8 @@ export default async function CreateAcademicPeriod(
       );
     }
 
-    const { data: createdData } = (await response.json()) as StrapiSingleResponse<AcademicPeriod>;
+    const { data: createdData } =
+      (await response.json()) as StrapiSingleResponse<AcademicPeriod>;
     return createdData;
   } catch (error) {
     console.error("Error creating academic period:", error);

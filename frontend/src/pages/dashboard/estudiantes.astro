@@ -28,8 +28,8 @@ try {
 const pageTitle = "Estudiantes";
 ---
 
-<DashboardLayout pageTitle={pageTitle}>  
-  <div class="space-y-8 animate-fade-in">
+<DashboardLayout pageTitle={pageTitle}>
+  <div class="animate-fade-in space-y-8">
     <StudentsHeader sideOverId="student-sideover" />
     <StudentsFilters />
     <StudentsTable students={students} error={error} />

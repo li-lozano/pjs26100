@@ -10,19 +10,20 @@ export function isTutor(user: any): boolean {
 
 export async function getTutorPageData(token: string, tutorId: string) {
   try {
-    const [tutorData, degrees, academicPeriods, enrollmentData] = await Promise.all([
-      ReadTutor(token, tutorId),
-      ReadDegrees(token),
-      ReadAcademicPeriods(token),
-      ReadEnrollments(token)
-    ]);
+    const [tutorData, degrees, academicPeriods, enrollmentData] =
+      await Promise.all([
+        ReadTutor(token, tutorId),
+        ReadDegrees(token),
+        ReadAcademicPeriods(token),
+        ReadEnrollments(token),
+      ]);
 
     return {
       tutorData,
       degrees,
       academicPeriods,
       enrollmentData,
-      error: null
+      error: null,
     };
   } catch (error) {
     console.error("Error fetching tutor page data:", error);
@@ -30,7 +31,8 @@ export async function getTutorPageData(token: string, tutorId: string) {
       tutorData: null,
       degrees: [],
       academicPeriods: [],
-      error: "Ocurrió un error al cargar los datos. Por favor, intente nuevamente."
+      error:
+        "Ocurrió un error al cargar los datos. Por favor, intente nuevamente.",
     };
   }
 }

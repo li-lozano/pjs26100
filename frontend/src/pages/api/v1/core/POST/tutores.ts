@@ -11,7 +11,7 @@ const tutorSchema = z.object({
   surnames: z.string().min(1, "Apellidos es requerido"),
   email: z.string().email("Email es requerido"),
   cell_phone: z.string().min(1, "Celular es requerido"),
-})
+});
 
 export const POST: APIRoute = async ({ request, redirect, locals }) => {
   const { token } = locals;
@@ -26,7 +26,9 @@ export const POST: APIRoute = async ({ request, redirect, locals }) => {
   const result = tutorSchema.safeParse(data);
 
   if (!result.success) {
-    const message = result.error.issues.map((issue) => issue.message).join(", ");
+    const message = result.error.issues
+      .map((issue) => issue.message)
+      .join(", ");
     return redirect(`/dashboard/tutores?error=${encodeURIComponent(message)}`);
   }
 
@@ -37,7 +39,7 @@ export const POST: APIRoute = async ({ request, redirect, locals }) => {
     role: roleId,
     confirmed: true,
     blocked: false,
-  }
+  };
 
   try {
     const userResult = await CreateUser(token as string, userData);
@@ -51,7 +53,7 @@ export const POST: APIRoute = async ({ request, redirect, locals }) => {
       dni: result.data.dni,
       cell_phone: result.data.cell_phone,
       users_permissions_user: userResult.id,
-    }
+    };
 
     const profile = await CreateProfile(token as string, profileData);
     if (!profile) {
@@ -73,6 +75,8 @@ export const POST: APIRoute = async ({ request, redirect, locals }) => {
       }
     }
 
-    return redirect(`/dashboard/tutores?error=${encodeURIComponent(errorMessage)}`);
+    return redirect(
+      `/dashboard/tutores?error=${encodeURIComponent(errorMessage)}`,
+    );
   }
-}
+};

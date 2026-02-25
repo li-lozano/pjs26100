@@ -6,9 +6,9 @@ interface Props {
 const { sideOverId } = Astro.props;
 ---
 
-<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex flex-col justify-between gap-4 md:flex-row md:items-center">
   <div>
-    <h2 class="text-2xl font-bold text-text-primary">Gestión de Matrículas</h2>
+    <h2 class="text-text-primary text-2xl font-bold">Gestión de Matrículas</h2>
     <p class="text-text-secondary mt-1">
       Administra el registro y seguimiento de matrículas de estudiantes.
     </p>
@@ -17,7 +17,7 @@ const { sideOverId } = Astro.props;
     onclick={sideOverId
       ? `document.getElementById('${sideOverId}').showModal()`
       : ""}
-    class="flex items-center justify-center px-6 py-3 bg-rayito-blue text-white font-bold rounded-xl hover:bg-rayito-blue/90 transition-all transform hover:scale-105 shadow-lg shadow-rayito-blue/20"
+    class="bg-rayito-blue hover:bg-rayito-blue/90 shadow-rayito-blue/20 flex transform items-center justify-center rounded-xl px-6 py-3 font-bold text-white shadow-lg transition-all hover:scale-105"
   >
     <span class="mr-2 text-xl">+</span> Nueva Matrícula
   </button>

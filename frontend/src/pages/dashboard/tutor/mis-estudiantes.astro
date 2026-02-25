@@ -15,12 +15,18 @@ const { user, token } = Astro.locals;
 // Redirigir si no es tutor
 if (!user || !isTutor(user)) {
   return Astro.redirect(
-    "/dashboard?error=No tienes permisos para acceder a esta sección"
+    "/dashboard?error=No tienes permisos para acceder a esta sección",
   );
 }
 
 const tutorId = user.profile?.documentId;
-const { tutorData, degrees, academicPeriods, enrollmentData, error: fetchError } = await getTutorPageData(token as string, tutorId);
+const {
+  tutorData,
+  degrees,
+  academicPeriods,
+  enrollmentData,
+  error: fetchError,
+} = await getTutorPageData(token as string, tutorId);
 
 const apiError = tutorData?.error;
 const displayError = fetchError || apiError;
@@ -31,9 +37,9 @@ const pageTitle = "Mis Estudiantes";
 ---
 
 <DashboardLayout pageTitle={pageTitle}>
-  <div class="space-y-8 animate-fade-in">
-    <TutorHeader 
-      title="Mis Estudiantes" 
+  <div class="animate-fade-in space-y-8">
+    <TutorHeader
+      title="Mis Estudiantes"
       description="Aquí puedes ver la información de tus hijos registrados"
       showSecondaryButton={true}
       secondaryButtonText="Registrar Nuevo Hijo"
@@ -47,16 +53,18 @@ const pageTitle = "Mis Estudiantes";
 
     {!displayError && students.length === 0 && <EmptyState />}
 
-    {!displayError && students.length > 0 && (
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {students.map((student) => (
-          <StudentCard student={student} enrollmentsList={enrollmentsList} />
-        ))}
-      </div>
-    )}
+    {
+      !displayError && students.length > 0 && (
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {students.map((student) => (
+            <StudentCard student={student} enrollmentsList={enrollmentsList} />
+          ))}
+        </div>
+      )
+    }
   </div>
 
-  <RequestEnrollmentSideOver 
+  <RequestEnrollmentSideOver
     students={students}
     enrollmentsList={enrollmentsList}
     degrees={degrees}
@@ -64,9 +72,7 @@ const pageTitle = "Mis Estudiantes";
     tutorProfileId={user.profile?.documentId || ""}
   />
 
-  <RegisterStudentSideOver 
-    tutorProfileId={user.profile?.documentId || ""}
-  />
+  <RegisterStudentSideOver tutorProfileId={user.profile?.documentId || ""} />
 </DashboardLayout>
 
 <style>
@@ -87,13 +93,21 @@ const pageTitle = "Mis Estudiantes";
 </style>
 
 <script>
-  document.getElementById("request-enrollment-btn")?.addEventListener("click", () => {
-    const dialog = document.getElementById("tutor-enrollment-sideover") as HTMLDialogElement;
-    dialog?.showModal();
-  });
+  document
+    .getElementById("request-enrollment-btn")
+    ?.addEventListener("click", () => {
+      const dialog = document.getElementById(
+        "tutor-enrollment-sideover",
+      ) as HTMLDialogElement;
+      dialog?.showModal();
+    });
 
-  document.getElementById("register-student-btn")?.addEventListener("click", () => {
-    const dialog = document.getElementById("register-student-sideover") as HTMLDialogElement;
-    dialog?.showModal();
-  });
+  document
+    .getElementById("register-student-btn")
+    ?.addEventListener("click", () => {
+      const dialog = document.getElementById(
+        "register-student-sideover",
+      ) as HTMLDialogElement;
+      dialog?.showModal();
+    });
 </script>

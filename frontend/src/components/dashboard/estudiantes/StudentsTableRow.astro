@@ -9,14 +9,14 @@ interface Props {
 const { student } = Astro.props;
 ---
 
-<tr class="hover:bg-white/50 transition-colors group">
-  <td class="px-6 py-4 text-sm text-gray-600 font-medium hidden md:table-cell">
+<tr class="group transition-colors hover:bg-white/50">
+  <td class="hidden px-6 py-4 text-sm font-medium text-gray-600 md:table-cell">
     {student.dni}
   </td>
-  <td class="px-6 py-4 ">
+  <td class="px-6 py-4">
     <div class="flex items-center">
       <div
-        class="w-10 h-10 rounded-xl bg-rayito-blue/10 flex items-center justify-center text-rayito-blue font-bold mr-3 group-hover:bg-rayito-blue group-hover:text-white transition-colors"
+        class="bg-rayito-blue/10 text-rayito-blue group-hover:bg-rayito-blue mr-3 flex h-10 w-10 items-center justify-center rounded-xl font-bold transition-colors group-hover:text-white"
       >
         {student.names[0]}
       </div>
@@ -31,29 +31,38 @@ const { student } = Astro.props;
       </div>
     </div>
   </td>
-  <td class="px-6 py-4 text-sm text-gray-600 hidden md:table-cell">
+  <td class="hidden px-6 py-4 text-sm text-gray-600 md:table-cell">
     {student.student_status}
   </td>
-  <td class="px-6 py-4 text-sm text-gray-600 hidden md:table-cell">
+  <td class="hidden px-6 py-4 text-sm text-gray-600 md:table-cell">
     {new Date(student.birthday).toLocaleDateString()}
   </td>
-  <td class="px-6 py-4 hidden md:table-cell">
-    {student.profile ? (
-      <div class="flex flex-col">
-        <span class="text-sm font-medium text-gray-700">{student.profile.names} {student.profile.surnames}</span>
-        <span class="text-[10px] text-gray-400 uppercase font-bold tracking-tight">Responsable</span>
-      </div>
-    ) : (
-      <span class="text-xs text-gray-400 italic">No asignado</span>
-    )}
+  <td class="hidden px-6 py-4 md:table-cell">
+    {
+      student.profile ? (
+        <div class="flex flex-col">
+          <span class="text-sm font-medium text-gray-700">
+            {student.profile.names} {student.profile.surnames}
+          </span>
+          <span class="text-[10px] font-bold tracking-tight text-gray-400 uppercase">
+            Responsable
+          </span>
+        </div>
+      ) : (
+        <span class="text-xs text-gray-400 italic">No asignado</span>
+      )
+    }
   </td>
   <td class="px-6 py-4 text-right">
     <div class="flex items-center justify-end space-x-2">
-      <a 
-      href={`/dashboard/estudiantes/${student.documentId}`}
-      class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-rayito-blue/10 group-hover:bg-rayito-blue group-hover:text-white transition-all cursor-pointer"
-      >        
-       <Icon name="mdi:dots-horizontal" class="w-5 h-5 text-gray-400 hover:text-rayito-blue transition-all" />
+      <a
+        href={`/dashboard/estudiantes/${student.documentId}`}
+        class="bg-rayito-blue/10 group-hover:bg-rayito-blue flex cursor-pointer items-center gap-2 rounded-lg px-3 py-1.5 transition-all group-hover:text-white"
+      >
+        <Icon
+          name="mdi:dots-horizontal"
+          class="hover:text-rayito-blue h-5 w-5 text-gray-400 transition-all"
+        />
       </a>
     </div>
   </td>

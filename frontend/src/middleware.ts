@@ -1,14 +1,13 @@
-import { defineMiddleware } from 'astro:middleware';
-import ReadMe from '@lib/services/private/ReadMe';
+import { defineMiddleware } from "astro:middleware";
+import ReadMe from "@lib/services/private/ReadMe";
 
-
-const protectedRoutes = ['/dashboard'];
-const loginRoute = '/login'; // La página de login es la raíz del sitio.
+const protectedRoutes = ["/dashboard"];
+const loginRoute = "/login"; // La página de login es la raíz del sitio.
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const { url, cookies, redirect, locals } = context;
   const pathname = url.pathname;
-  const token = cookies.get('strapi_jwt');
+  const token = cookies.get("strapi_jwt");
 
   if (token && token.value) {
     try {
@@ -17,17 +16,20 @@ export const onRequest = defineMiddleware(async (context, next) => {
         locals.user = user;
         locals.token = token.value;
       } else {
-        cookies.delete('strapi_jwt', { path: '/' });
+        cookies.delete("strapi_jwt", { path: "/" });
         locals.user = undefined;
       }
     } catch (error) {
       console.error("Error fetching user in middleware:", error);
-      cookies.delete('strapi_jwt', { path: '/' });
+      cookies.delete("strapi_jwt", { path: "/" });
       locals.user = undefined;
     }
   }
 
-  if (protectedRoutes.some(route => pathname.startsWith(route)) && !locals.user) {
+  if (
+    protectedRoutes.some((route) => pathname.startsWith(route)) &&
+    !locals.user
+  ) {
     return redirect(loginRoute);
   }
 

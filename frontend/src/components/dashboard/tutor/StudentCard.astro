@@ -4,7 +4,6 @@ import type { Enrollment } from "@lib/types/enrollment";
 import { calculateAge } from "@lib/utils/date";
 import StudentStatusBadge from "./StudentStatusBadge.astro";
 
-
 interface Props {
   student: Student;
   enrollmentsList: Enrollment[];
@@ -15,28 +14,27 @@ const { student, enrollmentsList } = Astro.props;
 const age = calculateAge(student.birthday);
 const initials = student.names.charAt(0) + student.surnames.charAt(0);
 
-
 const studentEnrollments = enrollmentsList.filter((enrollment) => {
-  return enrollment.student?.documentId === student.documentId
+  return enrollment.student?.documentId === student.documentId;
 });
-
 ---
 
 <div
-  class="bg-white/80 backdrop-blur-md rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 group hover:-translate-y-1"
+  class="group rounded-2xl border border-gray-100 bg-white/80 p-6 shadow-sm backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
 >
   <div class="flex items-start space-x-4">
     <!-- Avatar -->
     <div
-      class="w-16 h-16 rounded-full bg-rayito-yellow flex items-center justify-center text-white font-bold text-xl shadow-lg group-hover:scale-110 transition-transform shrink-0"
+      class="bg-rayito-yellow flex h-16 w-16 shrink-0 items-center justify-center rounded-full text-xl font-bold text-white shadow-lg transition-transform group-hover:scale-110"
     >
       {initials}
     </div>
 
     <!-- Info -->
-    <div class="flex-1 min-w-0">
-      <h3 class="text-lg font-bold text-gray-900 truncate mb-1">
-        {student.names} {student.surnames}
+    <div class="min-w-0 flex-1">
+      <h3 class="mb-1 truncate text-lg font-bold text-gray-900">
+        {student.names}
+        {student.surnames}
       </h3>
       <div class="space-y-1 text-sm text-gray-600">
         <p>
@@ -56,13 +54,16 @@ const studentEnrollments = enrollmentsList.filter((enrollment) => {
   </div>
 
   <!-- Additional Info (Optional) -->
-  <div class="mt-4 pt-4 border-t border-gray-100">
+  <div class="mt-4 border-t border-gray-100 pt-4">
     <p class="text-xs text-gray-500">
       <span class="font-medium">Dirección:</span>
       {student.address || "No especificada"}
     </p>
   </div>
 
-  <!-- Status Badge Component -->   
-  <StudentStatusBadge status={student.student_status} studentEnrollments={studentEnrollments} />
+  <!-- Status Badge Component -->
+  <StudentStatusBadge
+    status={student.student_status}
+    studentEnrollments={studentEnrollments}
+  />
 </div>

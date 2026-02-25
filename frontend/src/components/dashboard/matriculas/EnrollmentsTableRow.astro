@@ -3,34 +3,35 @@ import type { Enrollment } from "@lib/types/enrollment";
 import { Icon } from "astro-icon/components";
 import { getEnrollmentStatusConfig } from "@lib/utils/enrollmentStatus";
 
-
 interface Props {
   enrollment: Enrollment;
 }
 
 const { enrollment } = Astro.props;
 
-const currentEnrollmentStatus = getEnrollmentStatusConfig(enrollment.enrollment_status);
-
+const currentEnrollmentStatus = getEnrollmentStatusConfig(
+  enrollment.enrollment_status,
+);
 ---
 
-<tr class="hover:bg-white/50 transition-colors group">
+<tr class="group transition-colors hover:bg-white/50">
   <td class="px-6 py-4">
     <div class="text-sm font-medium text-gray-700">
       {enrollment.code}
     </div>
   </td>
-  <td class="px-6 py-4 hidden md:table-cell">
+  <td class="hidden px-6 py-4 md:table-cell">
     <div class="flex items-center gap-3">
       <div
-        class="w-10 h-10 rounded-xl bg-rayito-blue/10 flex items-center justify-center text-rayito-blue font-bold text-sm group-hover:bg-rayito-blue group-hover:text-white transition-colors"
+        class="bg-rayito-blue/10 text-rayito-blue group-hover:bg-rayito-blue flex h-10 w-10 items-center justify-center rounded-xl text-sm font-bold transition-colors group-hover:text-white"
       >
         {enrollment.student?.names.charAt(0)}
         {enrollment.student?.surnames.charAt(0)}
       </div>
       <div>
         <div class="text-sm font-bold text-gray-800">
-          {enrollment.student?.names}{" "} {enrollment.student?.surnames}
+          {enrollment.student?.names}{" "}
+          {enrollment.student?.surnames}
         </div>
         <div class="text-xs text-gray-500">
           DNI: {enrollment.student?.dni}
@@ -38,38 +39,39 @@ const currentEnrollmentStatus = getEnrollmentStatusConfig(enrollment.enrollment_
       </div>
     </div>
   </td>
-  <td class="px-6 py-4 hidden md:table-cell">
+  <td class="hidden px-6 py-4 md:table-cell">
     <div class="text-sm font-medium text-gray-700">
       {enrollment.degree?.name}
     </div>
-    <div class="text-xs text-gray-400 font-medium uppercase tracking-tight">
+    <div class="text-xs font-medium tracking-tight text-gray-400 uppercase">
       Sección: {enrollment.degree?.section}
     </div>
   </td>
-  <td class="px-6 py-4 border-l border-gray-50">
+  <td class="border-l border-gray-50 px-6 py-4">
     <span
-      class="text-sm font-bold text-gray-600 bg-gray-100/80 px-2 py-1 rounded-md"
+      class="rounded-md bg-gray-100/80 px-2 py-1 text-sm font-bold text-gray-600"
     >
       {enrollment.academic_period?.name}
     </span>
   </td>
-  <td class="px-6 py-4 hidden md:table-cell">
+  <td class="hidden px-6 py-4 md:table-cell">
     <span
       class={`${currentEnrollmentStatus?.bgIndex} ${currentEnrollmentStatus?.textIndex} text-sm font-bold px-2 py-1 rounded-md`}
     >
       {currentEnrollmentStatus?.label}
     </span>
-    
   </td>
   <td class="px-6 py-4 text-right">
     <div class="flex items-center justify-end space-x-2">
-      <a 
-      href={`/dashboard/matriculas/${enrollment.documentId}`} 
-      class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-rayito-blue/10 group-hover:bg-rayito-blue group-hover:text-white transition-all cursor-pointer"
-      >        
-       <Icon name="mdi:dots-horizontal" class="w-5 h-5 text-gray-400 group-hover:text-white transition-all" />
+      <a
+        href={`/dashboard/matriculas/${enrollment.documentId}`}
+        class="bg-rayito-blue/10 group-hover:bg-rayito-blue flex cursor-pointer items-center gap-2 rounded-lg px-3 py-1.5 transition-all group-hover:text-white"
+      >
+        <Icon
+          name="mdi:dots-horizontal"
+          class="h-5 w-5 text-gray-400 transition-all group-hover:text-white"
+        />
       </a>
     </div>
   </td>
 </tr>
-

@@ -7,35 +7,35 @@ import logo from "@assets/Logo_RDL.png";
 
 <WebLayout pageTitle="Iniciar Sesión">
   <main
-    class="min-h-screen flex items-center justify-center bg-gray-50 relative overflow-hidden"
+    class="relative flex min-h-screen items-center justify-center overflow-hidden bg-gray-50"
   >
     <!-- Animated background gradients -->
     <div
-      class="absolute top-0 -left-4 w-96 h-96 bg-rayito-blue/5 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"
+      class="bg-rayito-blue/5 animate-blob absolute top-0 -left-4 h-96 w-96 rounded-full opacity-70 mix-blend-multiply blur-3xl filter"
     >
     </div>
     <div
-      class="absolute top-0 -right-4 w-96 h-96 bg-rayito-yellow/5 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"
+      class="bg-rayito-yellow/5 animate-blob animation-delay-2000 absolute top-0 -right-4 h-96 w-96 rounded-full opacity-70 mix-blend-multiply blur-3xl filter"
     >
     </div>
     <div
-      class="absolute -bottom-8 left-20 w-96 h-96 bg-rayito-pink/5 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000"
+      class="bg-rayito-pink/5 animate-blob animation-delay-4000 absolute -bottom-8 left-20 h-96 w-96 rounded-full opacity-70 mix-blend-multiply blur-3xl filter"
     >
     </div>
 
-    <div class="w-full flex flex-col items-center px-4 relative">
+    <div class="relative flex w-full flex-col items-center px-4">
       <!-- Logo -->
-      <div class="mb-8 animate-fade-in">
+      <div class="animate-fade-in mb-8">
         <Image
           src={logo}
           alt="Logo Rayito de Luz"
-          class="w-48 h-auto drop-shadow-lg hover:scale-105 transition-transform duration-300"
+          class="h-auto w-48 drop-shadow-lg transition-transform duration-300 hover:scale-105"
         />
       </div>
 
       <LoginForm />
 
-      <footer class="mt-12 text-gray-400 text-xs text-center">
+      <footer class="mt-12 text-center text-xs text-gray-400">
         &copy; {new Date().getFullYear()} - Rayito de Luz. <br />
         Todos los derechos reservados.
       </footer>

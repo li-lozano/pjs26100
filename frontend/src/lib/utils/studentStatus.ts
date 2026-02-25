@@ -1,4 +1,4 @@
-import type { StudentStatus } from '@lib/types/student';
+import type { StudentStatus } from "@lib/types/student";
 
 interface StatusConfig {
   bgIndex: string;
@@ -24,7 +24,9 @@ export const STUDENT_STATUS_CONFIG: Record<StudentStatus, StatusConfig> = {
   },
 };
 
-export const getStudentStatusConfig = (status: StudentStatus | undefined): StatusConfig | null => {
+export const getStudentStatusConfig = (
+  status: StudentStatus | undefined,
+): StatusConfig | null => {
   if (!status) return null;
   return STUDENT_STATUS_CONFIG[status] || null;
 };

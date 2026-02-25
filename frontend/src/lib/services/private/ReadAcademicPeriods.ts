@@ -1,6 +1,8 @@
 import type { AcademicPeriod, StrapiResponse } from "@lib/types/enrollment";
 
-export default async function ReadAcademicPeriods(token: string): Promise<AcademicPeriod[]> {
+export default async function ReadAcademicPeriods(
+  token: string,
+): Promise<AcademicPeriod[]> {
   const baseUrl = import.meta.env.BASE_API_URL;
   const endpoint = `${baseUrl}/api/academic-periods?populate=*`;
 

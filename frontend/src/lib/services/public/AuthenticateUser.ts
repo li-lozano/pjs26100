@@ -1,6 +1,8 @@
 import type { AuthResponse, Credentials } from "@lib/types/auth";
 
-export default async function AuthenticateUser(credentials: Credentials): Promise<AuthResponse> {
+export default async function AuthenticateUser(
+  credentials: Credentials,
+): Promise<AuthResponse> {
   const baseUrl = import.meta.env.BASE_API_URL;
   const endpoint = `${baseUrl}/api/auth/local`;
 

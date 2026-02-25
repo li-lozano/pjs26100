@@ -15,14 +15,14 @@ const navItems = allNavItems.filter((item) => {
 
 <div
   id="mobile-sidebar"
-  class="fixed inset-0 z-50 lg:hidden hidden"
+  class="fixed inset-0 z-50 hidden lg:hidden"
   role="dialog"
   aria-modal="true"
 >
   <!-- Backdrop -->
   <div
     id="mobile-sidebar-backdrop"
-    class="fixed inset-0 bg-gray-900/80 backdrop-blur-sm transition-opacity opacity-0"
+    class="fixed inset-0 bg-gray-900/80 opacity-0 backdrop-blur-sm transition-opacity"
   >
   </div>
 
@@ -30,23 +30,23 @@ const navItems = allNavItems.filter((item) => {
     <!-- Sidebar Panel -->
     <div
       id="mobile-sidebar-panel"
-      class="relative mr-16 flex w-full max-w-xs flex-1 flex-col bg-white transition-transform -translate-x-full"
+      class="relative mr-16 flex w-full max-w-xs flex-1 -translate-x-full flex-col bg-white transition-transform"
     >
       <!-- Close button -->
       <div class="absolute top-0 right-0 -mr-12 pt-2">
         <button
           id="close-mobile-menu"
           type="button"
-          class="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+          class="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:ring-2 focus:ring-white focus:outline-none focus:ring-inset"
         >
           <span class="sr-only">Cerrar menú</span>
-          <span class="text-white text-2xl">✕</span>
+          <span class="text-2xl text-white">✕</span>
         </button>
       </div>
 
       <div class="flex flex-1 flex-col overflow-y-auto pb-4">
-        <div class="flex justify-center shrink-0 items-center px-6 py-8">
-          <Image src={logo} alt="Rayito de Luz" class="w-32 h-auto" />
+        <div class="flex shrink-0 items-center justify-center px-6 py-8">
+          <Image src={logo} alt="Rayito de Luz" class="h-auto w-32" />
         </div>
 
         <nav class="mt-2 flex-1 space-y-1 px-4">
@@ -60,10 +60,10 @@ const navItems = allNavItems.filter((item) => {
               return (
                 <a
                   href={item.href}
-                  class={`flex items-center px-4 py-3 rounded-xl transition-all duration-200 group ${
+                  class={`group flex items-center rounded-xl px-4 py-3 transition-all duration-200 ${
                     isActive
-                      ? "bg-rayito-blue text-white shadow-lg shadow-rayito-blue/30"
-                      : "text-gray-600 hover:bg-rayito-blue/5 hover:text-rayito-blue"
+                      ? "bg-rayito-blue shadow-rayito-blue/30 text-white shadow-lg"
+                      : "hover:bg-rayito-blue/5 hover:text-rayito-blue text-gray-600"
                   }`}
                 >
                   <span class="mr-3 text-xl">{item.icon}</span>
@@ -76,17 +76,17 @@ const navItems = allNavItems.filter((item) => {
       </div>
 
       <div class="shrink-0 border-t border-gray-100 p-4">
-        <div class="flex items-center p-3 rounded-xl bg-gray-50">
+        <div class="flex items-center rounded-xl bg-gray-50 p-3">
           <div
-            class="w-10 h-10 rounded-full bg-rayito-yellow flex items-center justify-center text-white font-bold"
+            class="bg-rayito-yellow flex h-10 w-10 items-center justify-center rounded-full font-bold text-white"
           >
             {user?.username?.charAt(0).toUpperCase() || "U"}
           </div>
           <div class="ml-3 overflow-hidden">
-            <p class="text-sm font-semibold text-gray-900 truncate">
+            <p class="truncate text-sm font-semibold text-gray-900">
               {user?.profile?.names || "Usuario"}
             </p>
-            <p class="text-xs text-gray-500 truncate">
+            <p class="truncate text-xs text-gray-500">
               {user?.role?.name || ""}
             </p>
           </div>
@@ -94,7 +94,7 @@ const navItems = allNavItems.filter((item) => {
         <form action="/api/v1/auth/logout" method="POST" class="mt-2">
           <button
             type="submit"
-            class="w-full text-left px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg flex items-center"
+            class="flex w-full items-center rounded-lg px-4 py-2 text-left text-sm font-medium text-red-600 hover:bg-red-50"
           >
             <span class="mr-2">🚪</span> Cerrar Sesión
           </button>

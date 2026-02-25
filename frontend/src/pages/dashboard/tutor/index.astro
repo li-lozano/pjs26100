@@ -9,11 +9,19 @@ const { user, token } = Astro.locals;
 
 // Redirigir si no es tutor
 if (!user || user.role?.name?.toLowerCase() !== "tutor") {
-  return Astro.redirect("/dashboard?error=No tienes permisos para acceder a esta sección");
+  return Astro.redirect(
+    "/dashboard?error=No tienes permisos para acceder a esta sección",
+  );
 }
 
 const tutorId = user.profile?.documentId;
-const { tutorData, degrees, academicPeriods, enrollmentData, error: fetchError } = await getTutorPageData(token as string, tutorId);
+const {
+  tutorData,
+  degrees,
+  academicPeriods,
+  enrollmentData,
+  error: fetchError,
+} = await getTutorPageData(token as string, tutorId);
 
 const apiError = tutorData?.error;
 const displayError = fetchError || apiError;
@@ -24,13 +32,13 @@ const studentCount = students.length;
 ---
 
 <DashboardLayout pageTitle="Mi Panel">
-  <div class="space-y-8 animate-fade-in">
+  <div class="animate-fade-in space-y-8">
     <!-- Hero Section -->
     <section
-      class="relative overflow-hidden rounded-3xl bg-linear-to-br from-rayito-blue to-rayito-sky p-6 md:p-12 text-white shadow-2xl shadow-rayito-blue/20"
+      class="from-rayito-blue to-rayito-sky shadow-rayito-blue/20 relative overflow-hidden rounded-3xl bg-linear-to-br p-6 text-white shadow-2xl md:p-12"
     >
       <div class="relative z-10 max-w-2xl">
-        <h2 class="text-2xl md:text-4xl font-bold mb-4">
+        <h2 class="mb-4 text-2xl font-bold md:text-4xl">
           ¡Hola {user?.profile?.names || "Tutor"}! 👋
         </h2>
         <p class="text-text-on-brand/90 text-lg leading-relaxed">
@@ -41,64 +49,62 @@ const studentCount = students.length;
 
       <!-- Decorative element -->
       <div
-        class="absolute right-0 bottom-0 opacity-20 transform translate-x-1/4 translate-y-1/4"
+        class="absolute right-0 bottom-0 translate-x-1/4 translate-y-1/4 transform opacity-20"
       >
-        <div class="w-64 h-64 bg-white rounded-full blur-3xl"></div>
+        <div class="h-64 w-64 rounded-full bg-white blur-3xl"></div>
       </div>
     </section>
 
     <!-- Quick Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
       <div
-        class="bg-white/60 backdrop-blur-md rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow group"
+        class="group rounded-2xl border border-gray-100 bg-white/60 p-6 shadow-sm backdrop-blur-md transition-shadow hover:shadow-md"
       >
-        <div class="flex items-center justify-between mb-4">
+        <div class="mb-4 flex items-center justify-between">
           <div
-            class="w-12 h-12 rounded-xl bg-rayito-yellow flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition-transform"
+            class="bg-rayito-yellow flex h-12 w-12 items-center justify-center rounded-xl text-2xl shadow-inner transition-transform group-hover:scale-110"
           >
             👶
           </div>
         </div>
-        <p class="text-text-secondary text-sm font-medium">
-          Mis Estudiantes
-        </p>
-        <h3 class="text-2xl font-bold text-text-primary mt-1">
+        <p class="text-text-secondary text-sm font-medium">Mis Estudiantes</p>
+        <h3 class="text-text-primary mt-1 text-2xl font-bold">
           {studentCount}
         </h3>
       </div>
 
       <div
-        class="bg-white/60 backdrop-blur-md rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow group"
+        class="group rounded-2xl border border-gray-100 bg-white/60 p-6 shadow-sm backdrop-blur-md transition-shadow hover:shadow-md"
       >
-        <div class="flex items-center justify-between mb-4">
+        <div class="mb-4 flex items-center justify-between">
           <div
-            class="w-12 h-12 rounded-xl bg-rayito-pink flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition-transform"
+            class="bg-rayito-pink flex h-12 w-12 items-center justify-center rounded-xl text-2xl shadow-inner transition-transform group-hover:scale-110"
           >
             📝
           </div>
         </div>
-        <p class="text-text-secondary text-sm font-medium">
-          Próximas Acciones
-        </p>
-        <h3 class="text-2xl font-bold text-text-primary mt-1">-</h3>
+        <p class="text-text-secondary text-sm font-medium">Próximas Acciones</p>
+        <h3 class="text-text-primary mt-1 text-2xl font-bold">-</h3>
       </div>
     </div>
 
     <!-- Quick Actions -->
     <section
-      class="bg-white/40 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/40 shadow-sm"
+      class="rounded-2xl border border-white/40 bg-white/40 p-6 shadow-sm backdrop-blur-sm md:p-8"
     >
-      <h3 class="text-xl font-bold text-text-primary mb-6 flex items-center">
+      <h3 class="text-text-primary mb-6 flex items-center text-xl font-bold">
         <span class="mr-2">🚀</span> Accesos Rápidos
       </h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
         <a
           href="/dashboard/tutor/mis-estudiantes"
-          class="p-6 bg-white rounded-xl border-2 border-gray-100 hover:border-rayito-blue transition-all group flex items-center space-x-4"
+          class="hover:border-rayito-blue group flex items-center space-x-4 rounded-xl border-2 border-gray-100 bg-white p-6 transition-all"
         >
           <p class="text-4xl">👶</p>
           <div>
-            <p class="text-lg font-bold text-gray-700 group-hover:text-rayito-blue">
+            <p
+              class="group-hover:text-rayito-blue text-lg font-bold text-gray-700"
+            >
               Ver Mis Estudiantes
             </p>
             <p class="text-sm text-gray-500">Información de tus hijos</p>
@@ -107,13 +113,11 @@ const studentCount = students.length;
 
         <button
           id="request-enrollment-btn"
-          class="p-6 bg-linear-to-r from-rayito-yellow to-rayito-orange rounded-xl border-2 border-transparent hover:scale-105 transition-all group flex items-center space-x-4 text-left shadow-lg hover:shadow-xl"
+          class="from-rayito-yellow to-rayito-orange group flex items-center space-x-4 rounded-xl border-2 border-transparent bg-linear-to-r p-6 text-left shadow-lg transition-all hover:scale-105 hover:shadow-xl"
         >
           <p class="text-4xl">📋</p>
           <div>
-            <p class="text-lg font-bold text-white">
-              Solicitar Matrícula
-            </p>
+            <p class="text-lg font-bold text-white">Solicitar Matrícula</p>
             <p class="text-sm text-white/80">Registra a tu estudiante</p>
           </div>
         </button>
@@ -121,7 +125,7 @@ const studentCount = students.length;
     </section>
   </div>
 
-  <RequestEnrollmentSideOver 
+  <RequestEnrollmentSideOver
     students={students}
     degrees={degrees}
     academicPeriods={academicPeriods}
@@ -147,8 +151,12 @@ const studentCount = students.length;
 </style>
 
 <script>
-  document.getElementById("request-enrollment-btn")?.addEventListener("click", () => {
-    const dialog = document.getElementById("tutor-enrollment-sideover") as HTMLDialogElement;
-    dialog?.showModal();
-  });
+  document
+    .getElementById("request-enrollment-btn")
+    ?.addEventListener("click", () => {
+      const dialog = document.getElementById(
+        "tutor-enrollment-sideover",
+      ) as HTMLDialogElement;
+      dialog?.showModal();
+    });
 </script>

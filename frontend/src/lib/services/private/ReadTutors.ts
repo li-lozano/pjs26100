@@ -8,7 +8,7 @@ export default async function ReadTutors(token: string): Promise<User[]> {
     const response = await fetch(endpoint, {
       method: "GET",
       headers: {
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -16,7 +16,7 @@ export default async function ReadTutors(token: string): Promise<User[]> {
       throw new Error("Error fetching tutors");
     }
 
-    const data = await response.json() as User[];
+    const data = (await response.json()) as User[];
     return data;
   } catch (error) {
     console.error("Error fetching tutors:", error);

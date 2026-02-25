@@ -3,28 +3,28 @@
 ---
 
 <div
-  class="bg-white/60 backdrop-blur-md p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4"
+  class="flex flex-col gap-4 rounded-2xl border border-gray-100 bg-white/60 p-4 shadow-sm backdrop-blur-md md:flex-row"
 >
   <div class="relative flex-1">
-    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+    <span class="absolute top-1/2 left-4 -translate-y-1/2 text-gray-400"
       >🔍</span
     >
     <input
       type="text"
       placeholder="Buscar por nombre, apellidos o DNI..."
-      class="w-full pl-11 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-rayito-blue/20 focus:border-rayito-blue outline-none transition-all placeholder:text-gray-400 text-sm"
+      class="focus:ring-rayito-blue/20 focus:border-rayito-blue w-full rounded-xl border border-gray-200 bg-white py-2.5 pr-4 pl-11 text-sm transition-all outline-none placeholder:text-gray-400 focus:ring-2"
     />
   </div>
   <div class="flex gap-2">
     <select
-      class="px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-600 focus:ring-2 focus:ring-rayito-blue/20 outline-none transition-all"
+      class="focus:ring-rayito-blue/20 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-600 transition-all outline-none focus:ring-2"
     >
       <option>Todos los Grados</option>
       <option>1° Grado</option>
       <option>2° Grado</option>
     </select>
     <button
-      class="px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
+      class="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50"
     >
       Filtros
     </button>

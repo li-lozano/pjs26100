@@ -1,10 +1,13 @@
-import type { CreateEnrollmentData, Enrollment, StrapiSingleResponse } from "@lib/types/enrollment";
+import type {
+  CreateEnrollmentData,
+  Enrollment,
+  StrapiSingleResponse,
+} from "@lib/types/enrollment";
 
 export default async function CreateEnrollment(
   token: string,
-  data: CreateEnrollmentData | FormData
+  data: CreateEnrollmentData | FormData,
 ): Promise<StrapiSingleResponse<Enrollment>> {
-
   const baseUrl = import.meta.env.BASE_API_URL;
   const endpoint = `${baseUrl}/api/enrollments`;
 
@@ -13,7 +16,7 @@ export default async function CreateEnrollment(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ data }),
     });
@@ -22,10 +25,10 @@ export default async function CreateEnrollment(
       const errorBody = await response.json();
       console.error(
         "DEBUG: Strapi Error Response:",
-        JSON.stringify(errorBody, null, 2)
+        JSON.stringify(errorBody, null, 2),
       );
       throw new Error(
-        errorBody.error?.message || "No se pudo registrar la matrícula"
+        errorBody.error?.message || "No se pudo registrar la matrícula",
       );
     }
 

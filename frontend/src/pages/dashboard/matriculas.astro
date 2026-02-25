@@ -49,9 +49,9 @@ try {
 const pageTitle = "Matrículas";
 ---
 
-<DashboardLayout pageTitle={pageTitle}>  
-  <div class="space-y-8 animate-fade-in">
-    <EnrollmentsHeader sideOverId="enrollment-sideover" />    
+<DashboardLayout pageTitle={pageTitle}>
+  <div class="animate-fade-in space-y-8">
+    <EnrollmentsHeader sideOverId="enrollment-sideover" />
     <EnrollmentsFilters />
     <EnrollmentsTable enrollments={enrollments} error={error} />
   </div>
@@ -59,7 +59,7 @@ const pageTitle = "Matrículas";
   <CreateEnrollmentSideOver
     students={students}
     degrees={degrees}
-    academicPeriods={academicPeriods}    
+    academicPeriods={academicPeriods}
   />
 </DashboardLayout>
 

@@ -6,40 +6,40 @@ import logo from "@assets/Logo_RDL.png";
 
 <WebLayout pageTitle="Página no encontrada">
   <main
-    class="min-h-screen flex items-center justify-center bg-gray-50 relative overflow-hidden"
+    class="relative flex min-h-screen items-center justify-center overflow-hidden bg-gray-50"
   >
     <!-- Animated background gradients -->
     <div
-      class="absolute top-0 -left-4 w-96 h-96 bg-rayito-blue/10 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"
+      class="bg-rayito-blue/10 animate-blob absolute top-0 -left-4 h-96 w-96 rounded-full opacity-70 mix-blend-multiply blur-3xl filter"
     >
     </div>
     <div
-      class="absolute top-0 -right-4 w-96 h-96 bg-rayito-yellow/10 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"
+      class="bg-rayito-yellow/10 animate-blob animation-delay-2000 absolute top-0 -right-4 h-96 w-96 rounded-full opacity-70 mix-blend-multiply blur-3xl filter"
     >
     </div>
     <div
-      class="absolute -bottom-8 left-20 w-96 h-96 bg-rayito-pink/10 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000"
+      class="bg-rayito-pink/10 animate-blob animation-delay-4000 absolute -bottom-8 left-20 h-96 w-96 rounded-full opacity-70 mix-blend-multiply blur-3xl filter"
     >
     </div>
 
     <div
-      class="w-full flex flex-col items-center px-4 relative z-10 text-center"
+      class="relative z-10 flex w-full flex-col items-center px-4 text-center"
     >
       <!-- Logo -->
-      <div class="mb-12 animate-fade-in">
+      <div class="animate-fade-in mb-12">
         <Image
           src={logo}
           alt="Logo Rayito de Luz"
-          class="w-48 h-auto drop-shadow-lg hover:scale-105 transition-transform duration-300"
+          class="h-auto w-48 drop-shadow-lg transition-transform duration-300 hover:scale-105"
         />
       </div>
 
-      <div class="space-y-6 max-w-lg animate-fade-in-up">
-        <h1 class="text-9xl font-bold text-rayito-blue drop-shadow-sm">404</h1>
+      <div class="animate-fade-in-up max-w-lg space-y-6">
+        <h1 class="text-rayito-blue text-9xl font-bold drop-shadow-sm">404</h1>
         <h2 class="text-3xl font-bold text-gray-800">
           ¡Ups! Página no encontrada
         </h2>
-        <p class="text-gray-500 text-lg">
+        <p class="text-lg text-gray-500">
           Parece que te has perdido en el jardín. No te preocupes, ¡vamos a
           llevarte de vuelta a casa!
         </p>
@@ -47,11 +47,11 @@ import logo from "@assets/Logo_RDL.png";
         <div class="pt-8">
           <a
             href="/"
-            class="inline-flex items-center px-8 py-4 bg-rayito-blue text-white font-semibold rounded-2xl shadow-lg hover:bg-blue-600 hover:scale-105 active:scale-95 transition-all duration-300 group"
+            class="bg-rayito-blue group inline-flex items-center rounded-2xl px-8 py-4 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-blue-600 active:scale-95"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 mr-2 group-hover:-translate-x-1 transition-transform"
+              class="mr-2 h-5 w-5 transition-transform group-hover:-translate-x-1"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -68,7 +68,7 @@ import logo from "@assets/Logo_RDL.png";
       </div>
 
       <footer
-        class="mt-20 text-gray-400 text-xs text-center border-t border-gray-100 pt-8 w-64"
+        class="mt-20 w-64 border-t border-gray-100 pt-8 text-center text-xs text-gray-400"
       >
         &copy; {new Date().getFullYear()} Jardín Infantil Rayito de Luz. <br />
         Todos los derechos reservados.

@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
 @theme {
-
   /* Brand Colors - Rayito de Luz */
   --color-brand-primary: #0e7490;
 
@@ -17,7 +16,6 @@
   /* gray-900 */
   --color-text-secondary: #4b5563;
   --color-text-on-brand: #ffffff;
-
 }
 
 @layer utilities {

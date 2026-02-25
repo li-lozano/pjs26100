@@ -8,7 +8,7 @@ import type { CreateUserData, User } from "../../types/user";
  */
 export default async function CreateUser(
   token: string,
-  data: CreateUserData
+  data: CreateUserData,
 ): Promise<User> {
   const baseUrl = import.meta.env.BASE_API_URL;
   const endpoint = `${baseUrl}/api/users`;
@@ -17,7 +17,7 @@ export default async function CreateUser(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(data),
   });

@@ -11,11 +11,11 @@ const uniqueId = `success-message-${Math.random().toString(36).substring(2, 9)}`
 
 <div
   id={uniqueId}
-  class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-md animate-in fade-in slide-in-from-top-4 duration-300"
+  class="animate-in fade-in slide-in-from-top-4 fixed top-4 left-1/2 z-50 w-[90%] max-w-md -translate-x-1/2 duration-300"
   role="alert"
 >
   <div
-    class="bg-emerald-900/90 backdrop-blur-xl border border-emerald-500/30 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] px-4 py-3 flex items-center gap-3 relative overflow-hidden"
+    class="relative flex items-center gap-3 overflow-hidden rounded-2xl border border-emerald-500/30 bg-emerald-900/90 px-4 py-3 shadow-[0_20px_50px_rgba(0,0,0,0.3)] backdrop-blur-xl"
   >
     <!-- Decorative gradient background -->
     <div
@@ -25,23 +25,23 @@ const uniqueId = `success-message-${Math.random().toString(36).substring(2, 9)}`
     </div>
 
     <div
-      class="shrink-0 w-10 h-10 rounded-xl flex items-center justify-center relative z-10 bg-emerald-500/20"
+      class="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/20"
     >
-      <Icon name="mdi:check-circle" class="w-6 h-6 text-emerald-400" />
+      <Icon name="mdi:check-circle" class="h-6 w-6 text-emerald-400" />
     </div>
 
     <div
-      class="flex-1 text-sm font-semibold leading-relaxed text-white relative z-10"
+      class="relative z-10 flex-1 text-sm leading-relaxed font-semibold text-white"
     >
       {message}
     </div>
 
     <button
       onclick={`document.getElementById('${uniqueId}').remove()`}
-      class="shrink-0 p-1.5 rounded-lg transition-all duration-200 relative z-10 text-emerald-300/60 hover:bg-emerald-500/20 hover:text-emerald-300"
+      class="relative z-10 shrink-0 rounded-lg p-1.5 text-emerald-300/60 transition-all duration-200 hover:bg-emerald-500/20 hover:text-emerald-300"
       aria-label="Cerrar"
     >
-      <Icon name="mdi:close" class="w-5 h-5" />
+      <Icon name="mdi:close" class="h-5 w-5" />
     </button>
   </div>
 </div>

@@ -8,7 +8,7 @@ const { tutorProfileId } = Astro.props;
 
 <dialog
   id="register-student-sideover"
-  class="fixed inset-y-0 right-0 h-screen w-full max-w-lg m-0 p-0 border-none shadow-2xl backdrop:backdrop-blur-sm overflow-hidden transition-all duration-300 ease-in-out translate-x-full open:translate-x-0 bg-white"
+  class="fixed inset-y-0 right-0 m-0 h-screen w-full max-w-lg translate-x-full overflow-hidden border-none bg-white p-0 shadow-2xl transition-all duration-300 ease-in-out backdrop:backdrop-blur-sm open:translate-x-0"
 >
   <style>
     dialog#register-student-sideover {
@@ -40,17 +40,17 @@ const { tutorProfileId } = Astro.props;
   </style>
 
   <div
-    class="bg-linear-to-br from-rayito-yellow to-rayito-orange p-8 text-white flex justify-between items-center shrink-0"
+    class="from-rayito-yellow to-rayito-orange flex shrink-0 items-center justify-between bg-linear-to-br p-8 text-white"
   >
     <div>
       <h3 class="text-2xl font-bold">Registrar Nuevo Hijo</h3>
-      <p class="text-white/90 text-sm mt-1">
+      <p class="mt-1 text-sm text-white/90">
         Completa la información de tu hijo/a
       </p>
     </div>
     <button
       onclick="document.getElementById('register-student-sideover').close()"
-      class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors text-2xl"
+      class="flex h-10 w-10 items-center justify-center rounded-full text-2xl transition-colors hover:bg-white/10"
       aria-label="Cerrar"
     >
       ×
@@ -60,7 +60,7 @@ const { tutorProfileId } = Astro.props;
   <form
     method="POST"
     action="/api/v1/core/POST/estudiantes"
-    class="flex-1 overflow-y-auto p-8 space-y-6 bg-white"
+    class="flex-1 space-y-6 overflow-y-auto bg-white p-8"
   >
     <!-- Hidden fields -->
     <input type="hidden" name="profile" value={tutorProfileId} />
@@ -68,7 +68,7 @@ const { tutorProfileId } = Astro.props;
 
     <div class="space-y-4">
       <h4
-        class="text-sm font-bold text-rayito-orange uppercase tracking-widest border-b border-gray-50 pb-2"
+        class="text-rayito-orange border-b border-gray-50 pb-2 text-sm font-bold tracking-widest uppercase"
       >
         Información Personal
       </h4>
@@ -76,7 +76,7 @@ const { tutorProfileId } = Astro.props;
       <div class="grid grid-cols-2 gap-4">
         <div class="space-y-1.5">
           <label
-            class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1"
+            class="ml-1 text-xs font-bold tracking-wider text-gray-400 uppercase"
           >
             Nombres <span class="text-red-500">*</span>
           </label>
@@ -84,13 +84,13 @@ const { tutorProfileId } = Astro.props;
             type="text"
             name="names"
             required
-            class="w-full px-4 py-3 rounded-xl border border-gray-100 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-rayito-orange/20 focus:border-rayito-orange transition-all outline-none text-gray-800"
+            class="focus:ring-rayito-orange/20 focus:border-rayito-orange w-full rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-gray-800 transition-all outline-none focus:bg-white focus:ring-2"
             placeholder="Ej: Ana Maria"
           />
         </div>
         <div class="space-y-1.5">
           <label
-            class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1"
+            class="ml-1 text-xs font-bold tracking-wider text-gray-400 uppercase"
           >
             Apellidos <span class="text-red-500">*</span>
           </label>
@@ -98,7 +98,7 @@ const { tutorProfileId } = Astro.props;
             type="text"
             name="surnames"
             required
-            class="w-full px-4 py-3 rounded-xl border border-gray-100 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-rayito-orange/20 focus:border-rayito-orange transition-all outline-none text-gray-800"
+            class="focus:ring-rayito-orange/20 focus:border-rayito-orange w-full rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-gray-800 transition-all outline-none focus:bg-white focus:ring-2"
             placeholder="Ej: García López"
           />
         </div>
@@ -107,7 +107,7 @@ const { tutorProfileId } = Astro.props;
       <div class="grid grid-cols-2 gap-4">
         <div class="space-y-1.5">
           <label
-            class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1"
+            class="ml-1 text-xs font-bold tracking-wider text-gray-400 uppercase"
           >
             DNI <span class="text-red-500">*</span>
           </label>
@@ -116,13 +116,13 @@ const { tutorProfileId } = Astro.props;
             name="dni"
             required
             maxlength="8"
-            class="w-full px-4 py-3 rounded-xl border border-gray-100 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-rayito-orange/20 focus:border-rayito-orange transition-all outline-none text-gray-800"
+            class="focus:ring-rayito-orange/20 focus:border-rayito-orange w-full rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-gray-800 transition-all outline-none focus:bg-white focus:ring-2"
             placeholder="8 dígitos"
           />
         </div>
         <div class="space-y-1.5">
           <label
-            class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1"
+            class="ml-1 text-xs font-bold tracking-wider text-gray-400 uppercase"
           >
             F. Nacimiento <span class="text-red-500">*</span>
           </label>
@@ -130,7 +130,7 @@ const { tutorProfileId } = Astro.props;
             type="date"
             name="birthday"
             required
-            class="w-full px-4 py-3 rounded-xl border border-gray-100 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-rayito-orange/20 focus:border-rayito-orange transition-all outline-none text-gray-800"
+            class="focus:ring-rayito-orange/20 focus:border-rayito-orange w-full rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-gray-800 transition-all outline-none focus:bg-white focus:ring-2"
           />
         </div>
       </div>
@@ -138,14 +138,14 @@ const { tutorProfileId } = Astro.props;
       <div class="grid grid-cols-2 gap-4">
         <div class="space-y-1.5">
           <label
-            class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1"
+            class="ml-1 text-xs font-bold tracking-wider text-gray-400 uppercase"
           >
             Género <span class="text-red-500">*</span>
           </label>
           <select
             name="gender"
             required
-            class="w-full px-4 py-3 rounded-xl border border-gray-100 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-rayito-orange/20 focus:border-rayito-orange transition-all outline-none text-gray-800"
+            class="focus:ring-rayito-orange/20 focus:border-rayito-orange w-full rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-gray-800 transition-all outline-none focus:bg-white focus:ring-2"
           >
             <option value="" disabled selected>Seleccionar</option>
             <option value="Masculino">Masculino</option>
@@ -155,7 +155,7 @@ const { tutorProfileId } = Astro.props;
         </div>
         <div class="space-y-1.5">
           <label
-            class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1"
+            class="ml-1 text-xs font-bold tracking-wider text-gray-400 uppercase"
           >
             Dirección <span class="text-red-500">*</span>
           </label>
@@ -163,19 +163,19 @@ const { tutorProfileId } = Astro.props;
             type="text"
             name="address"
             required
-            class="w-full px-4 py-3 rounded-xl border border-gray-100 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-rayito-orange/20 focus:border-rayito-orange transition-all outline-none text-gray-800"
+            class="focus:ring-rayito-orange/20 focus:border-rayito-orange w-full rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-gray-800 transition-all outline-none focus:bg-white focus:ring-2"
             placeholder="Ej: Av. Las Flores 123"
           />
         </div>
       </div>
 
       <!-- Info Box -->
-      <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+      <div class="rounded-xl border border-blue-200 bg-blue-50 p-4">
         <div class="flex items-start space-x-2">
-          <span class="text-blue-600 text-xl">ℹ️</span>
+          <span class="text-xl text-blue-600">ℹ️</span>
           <div class="text-sm text-blue-800">
-            <p class="font-medium mb-1">Información importante:</p>
-            <ul class="list-disc list-inside space-y-0.5 text-xs">
+            <p class="mb-1 font-medium">Información importante:</p>
+            <ul class="list-inside list-disc space-y-0.5 text-xs">
               <li>El estudiante será registrado con estado "Pendiente"</li>
               <li>Un administrador debe aprobar el registro</li>
               <li>Solo podrás solicitar matrículas para estudiantes activos</li>
@@ -186,18 +186,18 @@ const { tutorProfileId } = Astro.props;
     </div>
 
     <div
-      class="pt-8 border-t border-gray-50 flex gap-4 sticky bottom-0 bg-white"
+      class="sticky bottom-0 flex gap-4 border-t border-gray-50 bg-white pt-8"
     >
       <button
         type="button"
         onclick="document.getElementById('register-student-sideover').close()"
-        class="flex-1 px-6 py-3.5 rounded-xl border border-gray-200 text-gray-600 font-bold hover:bg-gray-50 transition-all"
+        class="flex-1 rounded-xl border border-gray-200 px-6 py-3.5 font-bold text-gray-600 transition-all hover:bg-gray-50"
       >
         Cancelar
       </button>
       <button
         type="submit"
-        class="flex-2 px-6 py-3.5 rounded-xl bg-linear-to-r from-rayito-yellow to-rayito-orange text-white font-bold hover:shadow-lg transition-all shadow-md"
+        class="from-rayito-yellow to-rayito-orange flex-2 rounded-xl bg-linear-to-r px-6 py-3.5 font-bold text-white shadow-md transition-all hover:shadow-lg"
       >
         Registrar Estudiante
       </button>

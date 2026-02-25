@@ -23,39 +23,43 @@ const {
 ---
 
 <div
-  class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4 w-full"
+  class="mb-8 flex w-full flex-col gap-4 md:flex-row md:items-center md:justify-between"
 >
-  <div class="flex-1 min-w-0">
+  <div class="min-w-0 flex-1">
     <h1
-      class="text-3xl font-bold bg-linear-to-r from-rayito-blue to-rayito-sky bg-clip-text text-transparent mb-2"
+      class="from-rayito-blue to-rayito-sky mb-2 bg-linear-to-r bg-clip-text text-3xl font-bold text-transparent"
     >
       {title}
     </h1>
-    {description && (
-      <p class="text-text-secondary text-sm md:text-base">{description}</p>
-    )}
+    {
+      description && (
+        <p class="text-text-secondary text-sm md:text-base">{description}</p>
+      )
+    }
   </div>
 
-  {(showActionButton || showSecondaryButton) && (
-    <div class="flex flex-col sm:flex-row gap-3 shrink-0">
-      {showSecondaryButton && (
-        <button
-          id={secondaryButtonId}
-          class="px-6 py-3 bg-white text-rayito-blue border-2 border-rayito-blue font-bold rounded-xl hover:bg-rayito-blue hover:text-white transition-all transform hover:scale-105 shadow-sm whitespace-nowrap"
-        >
-          <span class="mr-2">➕</span>
-          {secondaryButtonText}
-        </button>
-      )}
-      {showActionButton && (
-        <button
-          id={actionButtonId}
-          class="px-6 py-3 bg-linear-to-r from-rayito-yellow to-rayito-orange text-white font-bold rounded-xl hover:shadow-lg transition-all transform hover:scale-105 shadow-md whitespace-nowrap"
-        >
-          <span class="mr-2">✨</span>
-          {actionButtonText}
-        </button>
-      )}
-    </div>
-  )}
+  {
+    (showActionButton || showSecondaryButton) && (
+      <div class="flex shrink-0 flex-col gap-3 sm:flex-row">
+        {showSecondaryButton && (
+          <button
+            id={secondaryButtonId}
+            class="text-rayito-blue border-rayito-blue hover:bg-rayito-blue transform rounded-xl border-2 bg-white px-6 py-3 font-bold whitespace-nowrap shadow-sm transition-all hover:scale-105 hover:text-white"
+          >
+            <span class="mr-2">➕</span>
+            {secondaryButtonText}
+          </button>
+        )}
+        {showActionButton && (
+          <button
+            id={actionButtonId}
+            class="from-rayito-yellow to-rayito-orange transform rounded-xl bg-linear-to-r px-6 py-3 font-bold whitespace-nowrap text-white shadow-md transition-all hover:scale-105 hover:shadow-lg"
+          >
+            <span class="mr-2">✨</span>
+            {actionButtonText}
+          </button>
+        )}
+      </div>
+    )
+  }
 </div>

@@ -5,7 +5,7 @@ import type { Degree, AcademicPeriod } from "@lib/types/enrollment";
 interface Props {
   students: Student[];
   degrees: Degree[];
-  academicPeriods: AcademicPeriod[];  
+  academicPeriods: AcademicPeriod[];
 }
 
 const { students, degrees, academicPeriods } = Astro.props;
@@ -13,7 +13,7 @@ const { students, degrees, academicPeriods } = Astro.props;
 
 <dialog
   id="enrollment-sideover"
-  class="fixed inset-y-0 right-0 h-screen w-full max-w-lg m-0 p-0 border-none shadow-2xl backdrop:backdrop-blur-sm overflow-hidden transition-all duration-300 ease-in-out translate-x-full open:translate-x-0 bg-white"
+  class="fixed inset-y-0 right-0 m-0 h-screen w-full max-w-lg translate-x-full overflow-hidden border-none bg-white p-0 shadow-2xl transition-all duration-300 ease-in-out backdrop:backdrop-blur-sm open:translate-x-0"
 >
   <style>
     dialog#enrollment-sideover {
@@ -45,17 +45,17 @@ const { students, degrees, academicPeriods } = Astro.props;
   </style>
 
   <div
-    class="bg-linear-to-br from-rayito-blue to-rayito-sky p-8 text-white flex justify-between items-center shrink-0"
+    class="from-rayito-blue to-rayito-sky flex shrink-0 items-center justify-between bg-linear-to-br p-8 text-white"
   >
     <div>
       <h3 class="text-2xl font-bold">Registrar Nueva Matrícula</h3>
-      <p class="text-white/80 text-sm mt-1">
+      <p class="mt-1 text-sm text-white/80">
         Asigna un estudiante a un grado y período académico
       </p>
     </div>
     <button
       onclick="document.getElementById('enrollment-sideover').close()"
-      class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors text-2xl"
+      class="flex h-10 w-10 items-center justify-center rounded-full text-2xl transition-colors hover:bg-white/10"
       aria-label="Cerrar"
     >
       ×
@@ -66,25 +66,25 @@ const { students, degrees, academicPeriods } = Astro.props;
     method="POST"
     action="/api/v1/core/POST/matriculas"
     enctype="multipart/form-data"
-    class="flex-1 overflow-y-auto p-8 space-y-6 bg-white"
+    class="flex-1 space-y-6 overflow-y-auto bg-white p-8"
   >
     <div class="space-y-4">
       <h4
-        class="text-sm font-bold text-rayito-blue uppercase tracking-widest border-b border-gray-50 pb-2"
+        class="text-rayito-blue border-b border-gray-50 pb-2 text-sm font-bold tracking-widest uppercase"
       >
         Datos de la Matrícula
       </h4>
 
       <div class="space-y-1.5">
         <label
-          class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1"
+          class="ml-1 text-xs font-bold tracking-wider text-gray-400 uppercase"
         >
           Estudiante
         </label>
         <select
           name="student"
           required
-          class="w-full px-4 py-3 rounded-xl border border-gray-100 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-rayito-blue/20 focus:border-rayito-blue transition-all outline-none text-gray-800"
+          class="focus:ring-rayito-blue/20 focus:border-rayito-blue w-full rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-gray-800 transition-all outline-none focus:bg-white focus:ring-2"
         >
           <option value="" disabled selected>Selecciona un estudiante</option>
           {
@@ -97,17 +97,17 @@ const { students, degrees, academicPeriods } = Astro.props;
         </select>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div class="space-y-1.5">
           <label
-            class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1"
+            class="ml-1 text-xs font-bold tracking-wider text-gray-400 uppercase"
           >
             Grado y Sección
           </label>
           <select
             name="degree"
             required
-            class="w-full px-4 py-3 rounded-xl border border-gray-100 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-rayito-blue/20 focus:border-rayito-blue transition-all outline-none text-gray-800"
+            class="focus:ring-rayito-blue/20 focus:border-rayito-blue w-full rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-gray-800 transition-all outline-none focus:bg-white focus:ring-2"
           >
             <option value="" disabled selected>Selecciona grado</option>
             {
@@ -122,14 +122,14 @@ const { students, degrees, academicPeriods } = Astro.props;
 
         <div class="space-y-1.5">
           <label
-            class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1"
+            class="ml-1 text-xs font-bold tracking-wider text-gray-400 uppercase"
           >
             Período Académico
           </label>
           <select
             name="academic_period"
             required
-            class="w-full px-4 py-3 rounded-xl border border-gray-100 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-rayito-blue/20 focus:border-rayito-blue transition-all outline-none text-gray-800"
+            class="focus:ring-rayito-blue/20 focus:border-rayito-blue w-full rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-gray-800 transition-all outline-none focus:bg-white focus:ring-2"
           >
             <option value="" disabled selected>Selecciona período</option>
             {
@@ -145,14 +145,14 @@ const { students, degrees, academicPeriods } = Astro.props;
 
       <div class="space-y-1.5">
         <label
-          class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1"
+          class="ml-1 text-xs font-bold tracking-wider text-gray-400 uppercase"
         >
           Estado Inicial
         </label>
         <select
           name="enrollment_status"
           required
-          class="w-full px-4 py-3 rounded-xl border border-gray-100 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-rayito-blue/20 focus:border-rayito-blue transition-all outline-none text-gray-800"
+          class="focus:ring-rayito-blue/20 focus:border-rayito-blue w-full rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-gray-800 transition-all outline-none focus:bg-white focus:ring-2"
         >
           <option value="Pendiente" selected>Pendiente</option>
           <option value="Aprobado">Aprobado</option>
@@ -163,7 +163,7 @@ const { students, degrees, academicPeriods } = Astro.props;
 
       <div class="space-y-1.5">
         <label
-          class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1"
+          class="ml-1 text-xs font-bold tracking-wider text-gray-400 uppercase"
         >
           Fecha de Matrícula
         </label>
@@ -171,39 +171,37 @@ const { students, degrees, academicPeriods } = Astro.props;
           type="datetime-local"
           name="enrollment_date"
           required
-          class="w-full px-4 py-3 rounded-xl border border-gray-100 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-rayito-blue/20 focus:border-rayito-blue transition-all outline-none text-gray-800"
+          class="focus:ring-rayito-blue/20 focus:border-rayito-blue w-full rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-gray-800 transition-all outline-none focus:bg-white focus:ring-2"
         />
       </div>
 
       <div class="space-y-1.5">
         <label
-          class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1"
+          class="ml-1 text-xs font-bold tracking-wider text-gray-400 uppercase"
         >
           Observaciones
         </label>
         <textarea
           name="observations"
           rows="3"
-          class="w-full px-4 py-3 rounded-xl border border-gray-100 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-rayito-blue/20 focus:border-rayito-blue transition-all outline-none text-gray-800 resize-none"
-          placeholder="Notas adicionales sobre el proceso..."
-        ></textarea>
+          class="focus:ring-rayito-blue/20 focus:border-rayito-blue w-full resize-none rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-gray-800 transition-all outline-none focus:bg-white focus:ring-2"
+          placeholder="Notas adicionales sobre el proceso..."></textarea>
       </div>
-               
     </div>
 
     <div
-      class="pt-8 border-t border-gray-50 flex gap-4 sticky bottom-0 bg-white"
+      class="sticky bottom-0 flex gap-4 border-t border-gray-50 bg-white pt-8"
     >
       <button
         type="button"
         onclick="document.getElementById('enrollment-sideover').close()"
-        class="flex-1 px-6 py-3.5 rounded-xl border border-gray-200 text-gray-600 font-bold hover:bg-gray-50 transition-all"
+        class="flex-1 rounded-xl border border-gray-200 px-6 py-3.5 font-bold text-gray-600 transition-all hover:bg-gray-50"
       >
         Cancelar
       </button>
       <button
         type="submit"
-        class="flex-2 px-6 py-3.5 rounded-xl bg-rayito-blue text-white font-bold hover:bg-rayito-sky transition-all shadow-lg shadow-rayito-blue/20"
+        class="bg-rayito-blue hover:bg-rayito-sky shadow-rayito-blue/20 flex-2 rounded-xl px-6 py-3.5 font-bold text-white shadow-lg transition-all"
       >
         Registrar Matrícula
       </button>

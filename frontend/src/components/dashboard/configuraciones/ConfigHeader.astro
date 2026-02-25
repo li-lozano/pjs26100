@@ -10,20 +10,20 @@ const { title, subtitle, buttonText, sideOverId } = Astro.props;
 ---
 
 <div
-  class="flex flex-col md:flex-row md:items-center justify-between gap-4 py-4"
+  class="flex flex-col justify-between gap-4 py-4 md:flex-row md:items-center"
 >
   <div class="space-y-1">
-    <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight">
+    <h2 class="text-3xl font-extrabold tracking-tight text-gray-900">
       {title}
     </h2>
-    <p class="text-gray-500 font-medium">{subtitle}</p>
+    <p class="font-medium text-gray-500">{subtitle}</p>
   </div>
   <button
     onclick={`document.getElementById('${sideOverId}').showModal()`}
-    class="relative group overflow-hidden bg-rayito-blue text-white px-8 py-3 rounded-2xl font-bold hover:shadow-xl hover:shadow-rayito-blue/30 transition-all duration-300 flex items-center justify-center gap-2"
+    class="group bg-rayito-blue hover:shadow-rayito-blue/30 relative flex items-center justify-center gap-2 overflow-hidden rounded-2xl px-8 py-3 font-bold text-white transition-all duration-300 hover:shadow-xl"
   >
     <div
-      class="absolute inset-0 bg-gradient-to-r from-rayito-sky to-rayito-blue opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+      class="from-rayito-sky to-rayito-blue absolute inset-0 bg-gradient-to-r opacity-0 transition-opacity duration-300 group-hover:opacity-100"
     >
     </div>
     <span class="relative z-10 flex items-center gap-2">

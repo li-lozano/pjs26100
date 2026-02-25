@@ -3,7 +3,7 @@ import type { StrapiResponse } from "@lib/types/strapi";
 
 export default async function ReadStudentsByTutor(
   token: string,
-  tutorProfileId: string
+  tutorProfileId: string,
 ): Promise<Student[]> {
   const baseUrl = import.meta.env.BASE_API_URL;
   const endpoint = `${baseUrl}/api/students?filters[profile][documentId][$eq]=${tutorProfileId}&populate[profile]=*&populate[enrollments][populate][academic_period]=*`;
@@ -12,7 +12,7 @@ export default async function ReadStudentsByTutor(
     const response = await fetch(endpoint, {
       method: "GET",
       headers: {
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -24,7 +24,6 @@ export default async function ReadStudentsByTutor(
 
     const { data } = json as StrapiResponse<Student>;
     return data;
-
   } catch (error) {
     console.error("Error fetching students by tutor:", error);
     throw error;

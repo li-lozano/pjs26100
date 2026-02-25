@@ -20,12 +20,11 @@ export default async function CreateDegree(
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(
-        errorData.error?.message || "Error al crear el grado",
-      );
+      throw new Error(errorData.error?.message || "Error al crear el grado");
     }
 
-    const { data: createdData } = (await response.json()) as StrapiSingleResponse<Degree>;
+    const { data: createdData } =
+      (await response.json()) as StrapiSingleResponse<Degree>;
     return createdData;
   } catch (error) {
     console.error("Error creating degree:", error);

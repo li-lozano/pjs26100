@@ -3,7 +3,7 @@ export const allNavItems = [
     label: "Inicio",
     icon: "🏠",
     href: "/dashboard",
-    roles: ["Administrador", "Encargado"]
+    roles: ["Administrador", "Encargado"],
   },
   {
     label: "Tutores",

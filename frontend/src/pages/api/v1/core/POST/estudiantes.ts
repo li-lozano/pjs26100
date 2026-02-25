@@ -3,11 +3,13 @@ import type { CreateStudentData } from "@lib/types/student";
 import CreateStudent from "@lib/services/private/CreateStudent";
 import { z } from "zod";
 
-
 const studentSchema = z.object({
   names: z.string().min(1, "El nombre es requerido"),
   surnames: z.string().min(1, "El apellido es requerido"),
-  dni: z.string().min(8, "El DNI debe tener al menos 8 caracteres").max(8, "El DNI debe tener como máximo 8 caracteres"),
+  dni: z
+    .string()
+    .min(8, "El DNI debe tener al menos 8 caracteres")
+    .max(8, "El DNI debe tener como máximo 8 caracteres"),
   birthday: z.string().min(1, "La fecha de nacimiento es requerida"),
   gender: z.enum(["Masculino", "Femenino", "Otro"], {
     errorMap: () => ({ message: "Seleccione un género válido" }),
@@ -30,12 +32,16 @@ export const POST: APIRoute = async ({ request, redirect, locals }) => {
 
   if (!result.success) {
     const message = "Datos inválidos";
-    return redirect(`/dashboard/estudiantes?error=${encodeURIComponent(message)}`);
+    return redirect(
+      `/dashboard/estudiantes?error=${encodeURIComponent(message)}`,
+    );
   }
 
   // Detectar si el usuario es tutor
   const isTutor = user?.role?.name?.toLowerCase() === "tutor";
-  let redirectUrl = isTutor ? "/dashboard/tutor/mis-estudiantes" : "/dashboard/estudiantes";
+  let redirectUrl = isTutor
+    ? "/dashboard/tutor/mis-estudiantes"
+    : "/dashboard/estudiantes";
 
   const studentData: CreateStudentData = {
     names: result.data.names,
@@ -68,7 +74,9 @@ export const POST: APIRoute = async ({ request, redirect, locals }) => {
       ? "Estudiante registrado. Esperando aprobación del administrador."
       : "Estudiante creado correctamente";
 
-    return redirect(`${redirectUrl}?success=${encodeURIComponent(successMessage)}`);
+    return redirect(
+      `${redirectUrl}?success=${encodeURIComponent(successMessage)}`,
+    );
   } catch (error) {
     let errorMessage = "Error desconocido al crear el estudiante";
 
@@ -83,5 +91,4 @@ export const POST: APIRoute = async ({ request, redirect, locals }) => {
 
     return redirect(`${redirectUrl}?error=${encodeURIComponent(errorMessage)}`);
   }
-
-}
+};

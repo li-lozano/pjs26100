@@ -9,25 +9,25 @@ const { degrees } = Astro.props;
 ---
 
 <div
-  class="overflow-hidden bg-white/40 backdrop-blur-md rounded-3xl border border-white/20 shadow-xl shadow-gray-200/50"
+  class="overflow-hidden rounded-3xl border border-white/20 bg-white/40 shadow-xl shadow-gray-200/50 backdrop-blur-md"
 >
-  <table class="w-full text-left border-collapse">
+  <table class="w-full border-collapse text-left">
     <thead>
-      <tr class="bg-gray-50/50 border-b border-gray-100">
+      <tr class="border-b border-gray-100 bg-gray-50/50">
         <th
-          class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-widest"
+          class="px-6 py-5 text-xs font-bold tracking-widest text-gray-400 uppercase"
           >Grado</th
         >
         <th
-          class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-widest text-center"
+          class="px-6 py-5 text-center text-xs font-bold tracking-widest text-gray-400 uppercase"
           >Sección</th
         >
         <th
-          class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-widest text-center"
+          class="px-6 py-5 text-center text-xs font-bold tracking-widest text-gray-400 uppercase"
           >Capacidad</th
         >
         <th
-          class="px-6 py-5 text-xs font-bold text-gray-400 uppercase tracking-widest text-center"
+          class="px-6 py-5 text-center text-xs font-bold tracking-widest text-gray-400 uppercase"
           >Acciones</th
         >
       </tr>
@@ -39,7 +39,7 @@ const { degrees } = Astro.props;
             <td colspan="4" class="px-6 py-20 text-center">
               <div class="flex flex-col items-center gap-3">
                 <span class="text-4xl opacity-50">🏫</span>
-                <p class="text-gray-400 font-medium">
+                <p class="font-medium text-gray-400">
                   No hay grados registrados
                 </p>
               </div>
@@ -47,27 +47,27 @@ const { degrees } = Astro.props;
           </tr>
         ) : (
           degrees.map((degree) => (
-            <tr class="group hover:bg-gray-50/80 transition-colors duration-200">
+            <tr class="group transition-colors duration-200 hover:bg-gray-50/80">
               <td class="px-6 py-4">
-                <span class="text-base font-semibold text-gray-800 group-hover:text-rayito-blue transition-colors">
+                <span class="group-hover:text-rayito-blue text-base font-semibold text-gray-800 transition-colors">
                   {degree.name}
                 </span>
               </td>
               <td class="px-6 py-4 text-center">
-                <span class="px-3 py-1 bg-rayito-blue/5 text-rayito-blue rounded-lg font-bold text-sm">
+                <span class="bg-rayito-blue/5 text-rayito-blue rounded-lg px-3 py-1 text-sm font-bold">
                   {degree.section}
                 </span>
               </td>
               <td class="px-6 py-4 text-center">
                 <div class="flex items-center justify-center gap-2">
-                  <span class="text-gray-500 font-medium">
+                  <span class="font-medium text-gray-500">
                     {degree.capacity}
                   </span>
                   <span class="text-xs text-gray-400">estudiantes</span>
                 </div>
               </td>
               <td class="px-6 py-4 text-center">
-                <button class="p-2 text-gray-400 hover:text-rayito-blue transition-colors rounded-lg hover:bg-rayito-blue/5">
+                <button class="hover:text-rayito-blue hover:bg-rayito-blue/5 rounded-lg p-2 text-gray-400 transition-colors">
                   <span class="text-lg">⚙️</span>
                 </button>
               </td>

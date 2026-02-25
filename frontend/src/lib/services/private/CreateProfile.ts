@@ -8,7 +8,7 @@ import type { CreateProfileData, Profile } from "../../types/user";
  */
 export default async function CreateProfile(
   token: string,
-  data: CreateProfileData
+  data: CreateProfileData,
 ): Promise<Profile> {
   const baseUrl = import.meta.env.BASE_API_URL;
   const endpoint = `${baseUrl}/api/profiles`;
@@ -17,7 +17,7 @@ export default async function CreateProfile(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ data }),
   });
