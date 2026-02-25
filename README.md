@@ -1,75 +1,70 @@
-gestion de Matriculas para colegios
+# Sistema de Gestión de Matrículas Escolares 🏫
 
-tecnologias:
-- typescript
-- nodejs
+Una solución moderna y eficiente diseñada para simplificar el proceso de matrículas en instituciones educativas, optimizando la gestión de estudiantes, tutores y vacantes.
 
-backend: 
-- strapi v5
+## 🚀 Tecnologías
 
-frontend:
-- astro SSR
-- tailwindcss
+El proyecto utiliza un stack tecnológico de última generación para garantizar rendimiento, escalabilidad y facilidad de mantenimiento:
 
-PASO 1 - El backend acargo de strapji brinda funcionalidades de autenticacion, roles y permisos, ademas de la API Rest para el frontend.
+- **Frontend:** [Astro v5](https://astro.build/) (SSR) con [Tailwind CSS v4](https://tailwindcss.com/)
+- **Backend:** [Strapi v5](https://strapi.io/) (Headless CMS)
+- **Lenguaje:** [TypeScript](https://www.typescriptlang.org/)
+- **Base de Datos:** PostgreSQL
+- **Estilos:** Diseño responsivo y moderno con Tailwind CSS.
 
-### Estructura de Base de Datos (Content Types)
+## 📁 Estructura del Proyecto
 
-**1. Estudiante**
-- `nombres`: Text
-- `apellidos`: Text
-- `dni`: String (Unique)
-- `fecha_nacimiento`: Date
-- `tutor`: Relation (Many-to-One -> Tutor)
+El repositorio se organiza de la siguiente manera:
 
-**2. Tutor**
-- `nombre_completo`: Text
-- `dni`: String
-- `telefono`: Text
-- `email`: Email
+```text
+.
+├── backend/    # Servidor Strapi (API, Content Types, Autenticación)
+└── frontend/   # Aplicación Astro (Dashboard, UI, Consumo de API)
+```
 
-**3. Grado**
-- `nombre`: String (Ej: 1° Grado Secundaria)
-- `seccion`: String
-- `cupos_totales`: Integer
+## 🏗️ Modelo de Datos (Content Types)
 
-**4. Periodo_Academico**
-- `nombre`: String (Ej: 2025)
-- `activo`: Boolean
+El backend gestiona las siguientes entidades principales:
 
-**5. Matricula**
-- `estudiante`: Relation (Many-to-One -> Estudiante)
-- `grado`: Relation (Many-to-One -> Grado)
-- `periodo`: Relation (Many-to-One -> Periodo_Academico)
-- `estado`: Enumeration (pendiente, aprobado, rechazado, pagado)
-- `documento_pago`: Media (Single file)
+1.  **Estudiante:** Información personal, DNI (único) y relación con su tutor.
+2.  **Tutor:** Datos de contacto del responsable legal.
+3.  **Grado:** Niveles escolares con control de vacantes y secciones.
+4.  **Periodo Académico:** Gestión de años escolares activos.
+5.  **Matrícula:** Vinculación de estudiante-grado-periodo con gestión de estados (Pendiente, Aprobado, Rechazado, Pagado).
 
-### Flujo de Trabajo (MVP)
+## 🛠️ Instalación y Configuración
 
-1.  **Configuración**: El Administrador crea el `Periodo_Academico` vigente y los `Grados` disponibles.
-2.  **Registro de Identidad**: Se dan de alta los datos del `Tutor` y el `Estudiante` en el sistema.
-3.  **Solicitud de Matrícula**: El usuario genera una `Matricula` vinculando al estudiante con un grado y periodo específico. El estado inicial es `pendiente`.
-4.  **Validación y Cierre**: El Administrador revisa la solicitud desde el Dashboard de Strapi o el Frontend de Astro, valida los requisitos y cambia el estado a `aprobado` o `pagado` para formalizar la vacante.
+### Prerrequisitos
 
+- Node.js (>= 20.x)
+- npm o yarn
+- Instancia de PostgreSQL (para el backend)
 
-PASO 2 - Este proyecto tendra un dashboard donde por roles podran acceder a diferentes funcionalidades administrador y usuario.
-usaremos rutas API internas (APIROUTE) para el consumo de datos del backend.
+### Backend (Strapi)
 
-se estructura (ejemplo):
+1. Navega a la carpeta backend: `cd backend`
+2. Instala las dependencias: `npm install`
+3. Configura el archivo `.env` basado en `.env.example`.
+4. Inicia en modo desarrollo: `npm run dev`
 
-src/
-...
-├── lib
-│   ├── services
-│   │   ├── private
-│   │   └── public
-│   └── types
-├── pages
-│   ├── api
-│   ├── dashboards
-└── styles
+### Frontend (Astro)
 
+1. Navega a la carpeta frontend: `cd frontend`
+2. Instala las dependencias: `npm install`
+3. Configura el archivo `.env` con la URL de la API de Strapi.
+4. Inicia el servidor de desarrollo: `npm run dev`
 
+## 🔄 Flujo de Trabajo (MVP)
 
+1.  **Configuración:** El administrador define el periodo académico vigente y los grados disponibles.
+2.  **Registro:** Se registran los datos del tutor y del estudiante.
+3.  **Solicitud:** Se genera la matrícula vinculando al estudiante con un grado y periodo. El estado inicial es **Pendiente**.
+4.  **Validación:** El administrador revisa la documentación y el pago, cambiando el estado a **Aprobado** o **Pagado** para formalizar la vacante.
 
+## 👥 Contribuidores
 
+- Desarrollo inicial a cargo de [Tu Nombre/Empresa].
+
+---
+
+Desarrollado con ❤️ para mejorar la educación.
