@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import CreateUser from "@lib/services/private/CreateUser";
 import CreateProfile from "@lib/services/private/CreateProfile";
+import DeleteUser from "@lib/services/private/DeleteUser";
 import { getRoleIdByName } from "@lib/services/private/ReadRole";
 import type { CreateUserData, CreateProfileData } from "@lib/types/user";
 import { z } from "zod";
@@ -15,11 +16,12 @@ const tutorSchema = z.object({
 
 export const POST: APIRoute = async ({ request, redirect, locals }) => {
   const { token } = locals;
-  const roleId = await getRoleIdByName(token as string, "Tutor");
 
   if (!token) {
     return redirect("/login?error=" + encodeURIComponent("Sesión expirada"));
   }
+
+  const roleId = await getRoleIdByName(token, "Tutor");
 
   const formData = await request.formData();
   const data = Object.fromEntries(formData.entries());
@@ -41,11 +43,15 @@ export const POST: APIRoute = async ({ request, redirect, locals }) => {
     blocked: false,
   };
 
+  let createdUserId: number | null = null;
+
   try {
-    const userResult = await CreateUser(token as string, userData);
+    const userResult = await CreateUser(token, userData);
     if (!userResult || !userResult.id) {
       return redirect(`/dashboard/tutores?error=Error al crear el usuario`);
     }
+
+    createdUserId = userResult.id;
 
     const profileData: CreateProfileData = {
       names: result.data.names,
@@ -55,13 +61,27 @@ export const POST: APIRoute = async ({ request, redirect, locals }) => {
       users_permissions_user: userResult.id,
     };
 
-    const profile = await CreateProfile(token as string, profileData);
+    const profile = await CreateProfile(token, profileData);
     if (!profile) {
+      // Intento de limpieza si no hay perfil
+      await DeleteUser(token, createdUserId);
       return redirect(`/dashboard/tutores?error=Error al crear el perfil`);
     }
 
     return redirect(`/dashboard/tutores?success=Tutor creado correctamente`);
   } catch (error) {
+    // Si se creó el usuario pero falló después, intentamos borrarlo
+    if (createdUserId) {
+      try {
+        await DeleteUser(token, createdUserId);
+      } catch (deleteError) {
+        console.error(
+          "Error al limpiar usuario tras fallo en perfil:",
+          deleteError,
+        );
+      }
+    }
+
     let errorMessage = "Error desconocido al crear el tutor";
 
     if (error instanceof Error) {

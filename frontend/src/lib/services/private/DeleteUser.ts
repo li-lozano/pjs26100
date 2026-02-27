@@ -1,4 +1,7 @@
-export default async function DeleteUser(token: string, documentId: string) {
+export default async function DeleteUser(
+  token: string,
+  documentId: string | number,
+) {
   const baseUrl = import.meta.env.BASE_API_URL;
   const endpoint = `${baseUrl}/api/users/${documentId}`;
 

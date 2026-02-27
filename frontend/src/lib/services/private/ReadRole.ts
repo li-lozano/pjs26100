@@ -9,12 +9,13 @@ export interface Role {
   nb_users: number;
 }
 
-const getRoles = async (): Promise<Role[]> => {
+const getRoles = async (token: string): Promise<Role[]> => {
   const baseUrl = import.meta.env.BASE_API_URL;
   const response = await fetch(`${baseUrl}/api/users-permissions/roles`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
   });
 
@@ -30,7 +31,7 @@ export const getRoleIdByName = async (
   token: string,
   rolname: string,
 ): Promise<number> => {
-  const roles = await getRoles();
+  const roles = await getRoles(token);
   const role = roles.find((role: Role) => role.name === rolname);
 
   if (!role) {
@@ -44,7 +45,7 @@ export const getRoleDocumentIdByName = async (
   token: string,
   rolname: string,
 ): Promise<string> => {
-  const roles = await getRoles();
+  const roles = await getRoles(token);
   const role = roles.find((role: Role) => role.name === rolname);
 
   if (!role) {
